@@ -1,3 +1,4 @@
+import 'package:chat_room/components/Contact.dart';
 import 'package:chat_room/components/category.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: <Widget>[
           Category(),
+          Column(
+            children: <Widget>[
+              Contact(),
+            ],
+          )
         ],
       ),
     );
