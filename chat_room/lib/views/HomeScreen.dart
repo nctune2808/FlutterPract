@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: Text(
           "Chats",
-          style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[
           IconButton(
