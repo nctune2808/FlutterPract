@@ -3,7 +3,7 @@ import 'package:chat_room/models/User.dart';
 class Message {
   final User sender;
   final String time;
-  final String text;
+  final List<String> text;
   final bool isLiked;
   final bool unread;
 
@@ -64,42 +64,55 @@ List<Message> chats = [
   Message(
     sender: messi,
     time: "11:00 AM",
-    text: "Hello, I am Messi",
+    text: [
+      "Hello, I am Messi. How are you doing? Do you want to join with my team?",
+    ],
     isLiked: false,
-    unread: true,
+    unread: false,
   ),
   Message(
     sender: stegen,
     time: "14:00 PM",
-    text: "Hello, I am Stegen",
+    text: [
+      "Hello, I am Stegen. How are you doing? Do you want to join with my team?",
+    ],
     isLiked: false,
     unread: true,
   ),
   Message(
     sender: pique,
     time: "17:00 PM",
-    text: "Hello, I am Pique",
+    text: [
+      "Hello, I am Pique. How are you doing? Do you want to join with my team?",
+      "Hey! Bro, Are you ok? We need you!!!",
+    ],
     isLiked: false,
     unread: true,
   ),
   Message(
     sender: garcia,
     time: "18:00 PM",
-    text: "Hello, I am Garcia",
+    text: [
+      "Hello, I am Garcia. How are you doing? Do you want to join with my team?",
+    ],
     isLiked: false,
     unread: true,
   ),
   Message(
     sender: dejong,
     time: "20:00 PM",
-    text: "Hello, I am DeJong",
+    text: [
+      "Hello, I am DeJong. How are you doing? Do you want to join with my team?",
+    ],
     isLiked: false,
     unread: true,
   ),
   Message(
     sender: pedri,
     time: "22:00 PM",
-    text: "Hello, I am Pedri",
+    text: [
+      "Hello, I am Pedri. How are you doing? Do you want to join with my team?",
+    ],
     isLiked: false,
     unread: true,
   ),
