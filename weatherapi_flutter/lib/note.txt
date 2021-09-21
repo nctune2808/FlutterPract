@@ -1,0 +1,12 @@
+{
+    "weather": [
+        {
+            "description": "scattered clouds",
+            "icon": "03d"
+        }
+    ],
+    "main": {
+        "temp": 294.06,
+    },
+    "name": "London",
+}
