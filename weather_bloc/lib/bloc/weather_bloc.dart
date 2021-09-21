@@ -20,14 +20,20 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   ) async* {
     // TODO: implement mapEventToState
 
-    if (event is GetWeather) {
-      try {
+    try {
+      if (event is GetWeather) {
         yield WeatherLoading();
         final weather = await _weatherRepository.fetchWeather(event.cityName);
         yield WeatherLoaded(weather);
-      } on NetworkImageLoadException {
-        yield WeatherError("Couldn't fetch");
+      } else if (event is GetDetailedWeather) {
+        // Code duplication 😢 to keep the code simple for the tutorial...
+
+        final weather =
+            await _weatherRepository.fetchDetailWeather(event.cityName);
+        yield WeatherLoaded(weather);
       }
+    } catch (e) {
+      yield WeatherError("Couldn't fetch");
     }
   }
 }

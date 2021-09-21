@@ -18,14 +18,7 @@ class WeatherLoaded extends WeatherState {
   const WeatherLoaded(this.weather);
 
   @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is WeatherLoaded && o.weather == weather;
-  }
-
-  @override
-  int get hashCode => weather.hashCode;
+  List<Object> get props => [weather];
 }
 
 class WeatherError extends WeatherState {
@@ -33,12 +26,5 @@ class WeatherError extends WeatherState {
   const WeatherError(this.message);
 
   @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is WeatherError && o.message == message;
-  }
-
-  @override
-  int get hashCode => message.hashCode;
+  List<Object> get props => [message];
 }

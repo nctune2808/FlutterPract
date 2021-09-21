@@ -42,7 +42,9 @@ class FakeWeatherRepository implements WeatherRepository {
       Duration(seconds: 1),
       () {
         return Weather(
-            cityName: cityName, temperatureCelsius: temperatureCelsius);
+            cityName: cityName,
+            temperatureCelsius: temperatureCelsius,
+            temperatureFahrenheit: temperatureCelsius * 1.8 + 32);
       },
     );
   }

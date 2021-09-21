@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_bloc/bloc/weather_bloc.dart';
 import 'package:weather_bloc/model/weather.dart';
 
+import 'weather_detail_page.dart';
+
 class WeatherSearchPage extends StatefulWidget {
   @override
   _WeatherSearchPageState createState() => _WeatherSearchPageState();
@@ -71,6 +73,20 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
           "${weather.temperatureCelsius.toStringAsFixed(1)} °C",
           style: TextStyle(fontSize: 80),
         ),
+        RaisedButton(
+          child: Text('See Details'),
+          color: Colors.lightBlue[100],
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => BlocProvider.value(
+                value: BlocProvider.of<WeatherBloc>(context),
+                child: WeatherDetailPage(
+                  masterWeather: weather,
+                ),
+              ),
+            ));
+          },
+        ),
         CityInputField(),
       ],
     );
@@ -96,7 +112,7 @@ class CityInputField extends StatelessWidget {
 
   void submitCityName(BuildContext context, String cityName) {
     // TODO: Get weather for the city
-    final weatherBloc = context.read<WeatherBloc>();
+    final weatherBloc = BlocProvider.of<WeatherBloc>(context);
     weatherBloc.add(GetWeather(cityName));
   }
 }
