@@ -3,10 +3,6 @@ class WeatherResponse {
   final TemperatureInfo tempInfo;
   final WeatherInfo weaInfo;
 
-  String get iconURL {
-    return 'https://openweathermap.org/img/wn/${weaInfo.icon}@2x.png';
-  }
-
   WeatherResponse(
       {required this.cityName, required this.tempInfo, required this.weaInfo});
 
@@ -17,6 +13,10 @@ class WeatherResponse {
 
     return WeatherResponse(
         cityName: cityName, tempInfo: tempInfo, weaInfo: weaInfo);
+  }
+
+  String get iconURL {
+    return 'https://openweathermap.org/img/wn/${weaInfo.icon}@2x.png';
   }
 }
 

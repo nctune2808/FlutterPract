@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _cityTextController = TextEditingController();
   final _dataService = DataService();
-  late WeatherResponse _response;
+  var _response;
 
   void _search() async {
     final response = await _dataService.getWeather(_cityTextController.text);
@@ -34,16 +34,19 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                children: [
-                  Image.network(_response.iconURL),
-                  Text(
-                    "${_response.tempInfo.temperature}",
-                    style: TextStyle(fontSize: 40),
-                  ),
-                  Text(_response.weaInfo.description)
-                ],
-              ),
+              if (_response != null)
+                Column(
+                  children: [
+                    Image.network(
+                      _response.iconURL,
+                    ),
+                    Text(
+                      "${_response.tempInfo.temperature}",
+                      style: TextStyle(fontSize: 40),
+                    ),
+                    Text(_response.weaInfo.description)
+                  ],
+                ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 50),
                 child: SizedBox(
