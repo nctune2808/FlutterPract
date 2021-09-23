@@ -14,20 +14,22 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final pokemonDetails = DetailsCubit();
+
     return MaterialApp(
       theme: Theme.of(context)
           .copyWith(primaryColor: Colors.red, accentColor: Colors.redAccent),
       home: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => NavCubit(detailsCubit: DetailsCubit()),
+            create: (context) => NavCubit(detailsCubit: pokemonDetails),
           ),
           BlocProvider(
             create: (context) =>
                 PokemonBloc()..add(PokemonPageRequest(page: 0)),
           ),
           BlocProvider(
-            create: (context) => DetailsCubit(),
+            create: (context) => pokemonDetails,
           ),
         ],
         child: AppNavigator(),

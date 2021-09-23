@@ -3,19 +3,20 @@ import 'package:meta/meta.dart';
 
 import 'package:pokemon_bloc/cubit/details_cubit.dart';
 
-class NavCubit extends Cubit<int> {
+class NavCubit extends Cubit<int?> {
   DetailsCubit detailsCubit;
   NavCubit({
     required this.detailsCubit,
-  }) : super(0);
+  }) : super(null);
 
-  void showPokemonDetails(int pokemonId) async {
+  void showPokemonDetails(int pokemonId) {
+    print(pokemonId);
     detailsCubit.getDetails(pokemonId);
     emit(pokemonId);
   }
 
-  void popToPokemon() async {
-    // emit(null);
+  void popToPokemon() {
+    emit(null);
     detailsCubit.clearDetails();
   }
 }

@@ -10,7 +10,7 @@ class DetailsView extends StatelessWidget {
       appBar: AppBar(
         title: Text('Details'),
       ),
-      body: BlocBuilder<DetailsCubit, PokemonDetails>(
+      body: BlocBuilder<DetailsCubit, PokemonDetails?>(
         builder: (context, details) {
           return details != null
               ? Center(
