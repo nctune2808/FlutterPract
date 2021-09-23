@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:post_bloc/app_navigator.dart';
+import 'package:post_bloc/nav_bloc.dart';
 
 import 'post_bloc.dart';
 
@@ -36,6 +38,9 @@ class PostsView extends StatelessWidget {
                     return Card(
                       child: ListTile(
                         title: Text(state.posts[index].title),
+                        // onTap: () => AppNavigator(
+                        //   post: state.posts[index],
+                        // ),
                       ),
                     );
                   }),
