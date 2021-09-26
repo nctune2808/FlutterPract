@@ -1,6 +1,8 @@
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_aws_cubit/cubit/todo_cubit.dart';
 import 'package:todo_aws_cubit/loading_view.dart';
 
 import 'amplifyconfiguration.dart';
@@ -28,7 +30,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: _amplifyConfigured ? TodosView() : LoadingView(),
+      home: BlocProvider(
+        create: (context) => TodoCubit()..getListTodo(),
+        child: _amplifyConfigured ? TodosView() : LoadingView(),
+      ),
     );
   }
 
