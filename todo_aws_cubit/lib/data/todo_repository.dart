@@ -28,4 +28,16 @@ class TodoRepository {
       throw e;
     }
   }
+
+  Future<void> deleteTodo(Todo todo) async {
+    try {
+      await Amplify.DataStore.delete(todo);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Stream observeTodos() {
+    return Amplify.DataStore.observe(Todo.classType);
+  }
 }

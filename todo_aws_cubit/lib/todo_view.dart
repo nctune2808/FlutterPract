@@ -12,6 +12,7 @@ class TodosView extends StatefulWidget {
 
 class _TodosViewState extends State<TodosView> {
   final _titleController = TextEditingController();
+  bool _isDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +71,24 @@ class _TodosViewState extends State<TodosView> {
           final todo = todos[index];
           return Card(
             child: CheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
               onChanged: (newVal) {
                 BlocProvider.of<TodoCubit>(context).updateTodo(todo, newVal!);
+                _isDone = true;
               },
               value: todo.isDone,
-              title: Text(todo.title.toString()),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(todo.title.toString()),
+                  IconButton(
+                    icon: new Icon(Icons.delete),
+                    onPressed: () {
+                      BlocProvider.of<TodoCubit>(context).deleteTodo(todo);
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         });

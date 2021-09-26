@@ -22,13 +22,20 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
+  void observeTodo() {
+    final todoStream = _todoRepo.observeTodos();
+    todoStream.listen((_) => getListTodo());
+  }
+
   void createTodo(String title) async {
     await _todoRepo.createTodo(title);
-    getListTodo();
   }
 
   void updateTodo(Todo todo, bool isDone) async {
     await _todoRepo.updateTodo(todo, isDone);
-    getListTodo();
+  }
+
+  void deleteTodo(Todo todo) async {
+    await _todoRepo.deleteTodo(todo);
   }
 }
