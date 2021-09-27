@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_aws_cubit/cubit/auth_cubit.dart';
 import 'package:todo_aws_cubit/cubit/todo_cubit.dart';
 import 'package:todo_aws_cubit/loading_view.dart';
 
@@ -12,7 +13,6 @@ class TodosView extends StatefulWidget {
 
 class _TodosViewState extends State<TodosView> {
   final _titleController = TextEditingController();
-  bool _isDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +30,6 @@ class _TodosViewState extends State<TodosView> {
           } else {
             return LoadingView();
           }
-
-          // return _emptyTodosView();
         },
       ),
     );
@@ -40,6 +38,24 @@ class _TodosViewState extends State<TodosView> {
   AppBar _navBar() {
     return AppBar(
       title: Text('Todos'),
+      leading: IconButton(
+        icon: Icon(
+          Icons.menu,
+          size: 30,
+        ),
+        onPressed: () {},
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.logout,
+            size: 30,
+          ),
+          onPressed: () {
+            BlocProvider.of<AuthCubit>(context).signOut();
+          },
+        ),
+      ],
     );
   }
 
@@ -74,7 +90,6 @@ class _TodosViewState extends State<TodosView> {
               controlAffinity: ListTileControlAffinity.leading,
               onChanged: (newVal) {
                 BlocProvider.of<TodoCubit>(context).updateTodo(todo, newVal!);
-                _isDone = true;
               },
               value: todo.isDone,
               title: Row(

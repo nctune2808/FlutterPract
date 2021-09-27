@@ -2,17 +2,18 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:todo_aws_cubit/models/Todo.dart';
 
 class TodoRepository {
-  Future<List<Todo>> getListTodo() async {
+  Future<List<Todo>> getListTodo(String userId) async {
     try {
-      final todos = await Amplify.DataStore.query(Todo.classType);
+      final todos = await Amplify.DataStore.query(Todo.classType,
+          where: Todo.USERID.eq(userId));
       return todos;
     } catch (e) {
       throw e;
     }
   }
 
-  Future<void> createTodo(String title) async {
-    final newTodo = Todo(title: title, isDone: false);
+  Future<void> createTodo(String title, String userId) async {
+    final newTodo = Todo(title: title, isDone: false, userId: userId);
     try {
       return await Amplify.DataStore.save(newTodo);
     } catch (e) {

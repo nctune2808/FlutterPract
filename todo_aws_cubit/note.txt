@@ -1,0 +1,5 @@
+edit aws on website => deploying
+
+$ amplify pull
+
+if not logout yet, go to debug mode
