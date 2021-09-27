@@ -52,14 +52,22 @@ class SignInView extends StatelessWidget {
   }
 
   Widget _loginForm() {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [_usernameField(), _passwordField(), _loginButton()],
+    return BlocListener<SigninBloc, SigninState>(
+      listener: (context, state) {
+        final formStatus = state.formStatus;
+        if (formStatus is SubmissionFailed) {
+          _showSnackBar(context, formStatus.exception.toString());
+        }
+      },
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [_usernameField(), _passwordField(), _loginButton()],
+            ),
           ),
         ),
       ),
@@ -80,5 +88,10 @@ class SignInView extends StatelessWidget {
                 child: Text('Login'));
       },
     );
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
