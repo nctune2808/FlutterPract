@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo_timeline/auth/auth_navigator.dart';
 
+import 'app_navigator.dart';
 import 'auth/auth_repository.dart';
 import 'session_cubit.dart';
 
@@ -14,14 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider(create: (context) => AuthRepository()),
-        ],
+      home: RepositoryProvider(
+        create: (context) => AuthRepository(),
         child: BlocProvider(
           create: (context) =>
               SessionCubit(authRepo: context.read<AuthRepository>()),
-          child: AuthNavigator(),
+          child: AppNavigator(),
         ),
       ),
     );
