@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tolo_timeline/auth/auth_cubit.dart';
 import 'package:tolo_timeline/auth/auth_repository.dart';
 import 'package:tolo_timeline/auth/form_submission_status.dart';
 
@@ -14,8 +15,12 @@ class SignInView extends StatelessWidget {
       body: BlocProvider(
         create: (context) => SigninBloc(
           authRepo: context.read<AuthRepository>(),
+          authCubit: context.read<AuthCubit>(),
         ),
-        child: _loginForm(),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [_loginForm(), _showSignUpButton(context)],
+        ),
       ),
     );
   }
@@ -87,6 +92,15 @@ class SignInView extends StatelessWidget {
                 },
                 child: Text('Login'));
       },
+    );
+  }
+
+  Widget _showSignUpButton(BuildContext context) {
+    return SafeArea(
+      child: TextButton(
+        onPressed: () => context.read<AuthCubit>().showSignUp(),
+        child: Text('Don\'t have an account yet? Sign Up'),
+      ),
     );
   }
 
