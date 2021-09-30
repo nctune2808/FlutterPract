@@ -17,24 +17,24 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if (event is LoadingItemEvent) {
       yield ListCartInitial();
       try {
-        final items = await cartRepo.getListItems();
-        yield ListCartSuccess(items: items);
+        final initItems = await cartRepo.getListItems();
+        yield ListCartSuccess(items: initItems);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
     } else if (event is AddItemEvent) {
       print("Press ADD");
       try {
-        final items = await cartRepo.addItemToList(item: event.item);
-        yield ListCartSuccess(items: items);
+        state.items!.add(event.item);
+        yield ListCartSuccess(items: state.items!);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
     } else if (event is DeleteItemEvent) {
       print("Press DEL");
       try {
-        final items = await cartRepo.delItemFromList(item: event.item);
-        yield ListCartSuccess(items: items);
+        state.items!.remove(event.item);
+        yield ListCartSuccess(items: state.items!);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }

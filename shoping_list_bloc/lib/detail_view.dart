@@ -4,51 +4,93 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/cart_bloc.dart';
 import 'model/item.dart';
 
-class DetailView extends StatefulWidget {
-  @override
-  _DetailViewState createState() => _DetailViewState();
-}
+class DetailView extends StatelessWidget {
+  List<Item> items;
 
-class _DetailViewState extends State<DetailView> {
+  DetailView({
+    Key? key,
+    required this.items,
+  }) : super(key: key);
+
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 500,
-      child: BlocBuilder<CartBloc, CartState>(
-        builder: (context, state) {
-          if (state is ListCartInitial) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is ListCartSuccess) {
-            return ListView.builder(
-              itemCount: state.items.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(state.items[index].title),
-                    leading: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        BlocProvider.of<CartBloc>(context)
-                          ..add(DeleteItemEvent(
-                            item: state.items[index],
-                          ));
-                      },
-                    ),
-                    subtitle: Text(state.items[index].note),
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: CheckboxListTile(
+              checkColor: Colors.black45,
+              activeColor: Colors.white,
+              controlAffinity: ListTileControlAffinity.leading,
+              title: ListTile(
+                title: Center(
+                  child: Text(
+                    items[index].title,
+                    style: items[index].isDone
+                        ? TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.black45)
+                        : TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                   ),
-                );
+                ),
+                // subtitle: Text(items[index].note),
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: items[index].isDone ? Colors.black45 : Colors.blue,
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<CartBloc>(context)
+                      ..add(DeleteItemEvent(
+                        item: items[index],
+                      ));
+                  },
+                ),
+                onTap: () {
+                  print(items[index].title);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Center(child: Text(items[index].title)),
+                        content: Text(items[index].note),
+                      );
+                    },
+                  );
+                },
+              ),
+              value: items[index].isDone,
+              onChanged: (value) {
+                BlocProvider.of<CartBloc>(context)
+                  ..add(UpdateItemEvent(
+                    item: items[index],
+                    isDone: value!,
+                  ));
               },
-            );
-          } else if (state is ListCartFailure) {
-            return Center(
-              child: Text('Error: ${state.exception}'),
-            );
-          } else {
-            return Container();
-          }
+            ),
+          );
         },
       ),
     );
   }
+
+  // Widget _newPage() {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(builder: (context) {
+  //       return Scaffold(
+  //         appBar: AppBar(
+  //             title: Text(
+  //           items[index].title,
+  //         )),
+  //         body: Center(
+  //           child: Text(items[index].note),
+  //         ),
+  //       );
+  //     }),
+  //   );
+  // }
 }

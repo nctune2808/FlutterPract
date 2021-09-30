@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_list_bloc/detail_view.dart';
+import 'package:shoping_list_bloc/loading_view.dart';
 import 'package:shoping_list_bloc/model/item.dart';
 
 import 'bloc/cart_bloc.dart';
@@ -19,19 +18,48 @@ class _CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _cartForm());
+    return Scaffold(
+      appBar: _navBar(),
+      // Daclare state for all CART ITEMS here
+      body: BlocBuilder<CartBloc, CartState>(
+        builder: (context, state) {
+          if (state is ListCartSuccess) {
+            // pass state
+            return state.items.isEmpty ? _emptyForm() : _cartForm(state.items);
+          } else if (state is ListCartFailure) {
+            return Center(child: Text('Error: ${state.exception}'));
+          } else {
+            return LoadingView();
+          }
+        },
+      ),
+      floatingActionButton: _floatingButton(),
+    );
   }
 
-  Widget _cartForm() {
+  AppBar _navBar() {
+    return AppBar(
+      title: Text('Shopping List'),
+      leading: IconButton(icon: Icon(Icons.menu, size: 30), onPressed: () {}),
+      actions: [
+        IconButton(icon: Icon(Icons.logout, size: 30), onPressed: () {}),
+      ],
+    );
+  }
+
+  Widget _emptyForm() {
+    return Center(
+      child: Text(
+        'Empty Cart\nTap button to create new',
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _cartForm(List<Item> items) {
     return Form(
       key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [_groupTextField(), _addItemButton(), _previewList()],
-        ),
-      ),
+      child: DetailView(items: items),
     );
   }
 
@@ -61,6 +89,7 @@ class _CartViewState extends State<CartView> {
               isDone: false,
             ),
           ));
+        Navigator.of(context).pop();
         _titleController.text = '';
         _noteController.text = '';
       },
@@ -68,70 +97,23 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget _previewList() {
-    return SizedBox(
-      height: 500,
-      child: BlocBuilder<CartBloc, CartState>(
-        builder: (context, state) {
-          if (state is ListCartInitial) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is ListCartSuccess) {
-            return ListView.builder(
-              itemCount: state.items.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: CheckboxListTile(
-                    checkColor: Colors.black,
-                    activeColor: Colors.white,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    title: ListTile(
-                      title: Text(
-                        state.items[index].title,
-                        style: state.items[index].isDone
-                            ? TextStyle(decoration: TextDecoration.lineThrough)
-                            : null,
-                      ),
-                      // subtitle: Text(state.items[index].note),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          BlocProvider.of<CartBloc>(context)
-                            ..add(DeleteItemEvent(
-                              item: state.items[index],
-                            ));
-                        },
-                      ),
-                      onTap: () {
-                        print(state.items[index].title);
-                      },
-                    ),
-                    value: state.items[index].isDone,
-                    onChanged: (value) {
-                      print("checkbox click ${state.items[index].title}");
-
-                      BlocProvider.of<CartBloc>(context)
-                        ..add(UpdateItemEvent(
-                          item: state.items[index],
-                          isDone: value as bool,
-                        ));
-
-                      print("value: ${value}");
-                    },
-                  ),
-                );
-              },
-            );
-          } else if (state is ListCartFailure) {
-            return Center(
-              child: Text('Error: ${state.exception}'),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
+  Widget _floatingButton() {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              children: [
+                _groupTextField(),
+                _addItemButton(),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -11,26 +11,17 @@ class CartRepository {
     return items;
   }
 
-  Future<List<Item>> addItemToList({required Item item}) async {
-    final newItem = Item(
-      title: item.title,
-      note: item.note,
-      isDone: item.isDone,
-    );
-    items.add(newItem);
-    return items;
-  }
+  // Future<Item> addItemToList({required Item item}) async {
+  //   return item;
+  // }
 
-  Future<List<Item>> delItemFromList({required Item item}) async {
-    items.remove(item);
-    return items;
-  }
+  // Future<Item> delItemFromList({required Item item}) async {
+  //   return item;
+  // }
 
-  Future<Item> updateItemToList(
-      {required Item item, required bool isDone}) async {
-    item.copyWith(isDone: !isDone);
-
-    // items.add(item);
-    return item;
-  }
+  // Future<Item> updateItemToList(
+  //     {required Item item, required bool isDone}) async {
+  //   // item.copyWith(isDone: !isDone);
+  //   return item;
+  // }
 }
