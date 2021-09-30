@@ -107,10 +107,18 @@ class _CartViewState extends State<CartView> {
                         print(state.items[index].title);
                       },
                     ),
+                    value: state.items[index].isDone,
                     onChanged: (value) {
                       print("checkbox click ${state.items[index].title}");
+
+                      BlocProvider.of<CartBloc>(context)
+                        ..add(UpdateItemEvent(
+                          item: state.items[index],
+                          isDone: value as bool,
+                        ));
+
+                      print("value: ${value}");
                     },
-                    value: state.items[index].isDone,
                   ),
                 );
               },

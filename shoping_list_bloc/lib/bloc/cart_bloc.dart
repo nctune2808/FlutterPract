@@ -10,7 +10,7 @@ part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   final cartRepo = CartRepository();
-  CartBloc() : super(ListCartInitial());
+  CartBloc() : super(CartState());
 
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
@@ -35,6 +35,18 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       try {
         final items = await cartRepo.delItemFromList(item: event.item);
         yield ListCartSuccess(items: items);
+      } catch (e) {
+        yield ListCartFailure(exception: e);
+      }
+    } else if (event is UpdateItemEvent) {
+      print("Press UP");
+      try {
+        final List<Item> updateItems = state.items!.map((item) {
+          return item == event.item
+              ? item.copyWith(isDone: event.isDone)
+              : item;
+        }).toList();
+        yield ListCartSuccess(items: updateItems);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }

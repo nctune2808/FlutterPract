@@ -25,4 +25,12 @@ class CartRepository {
     items.remove(item);
     return items;
   }
+
+  Future<Item> updateItemToList(
+      {required Item item, required bool isDone}) async {
+    item.copyWith(isDone: !isDone);
+
+    // items.add(item);
+    return item;
+  }
 }

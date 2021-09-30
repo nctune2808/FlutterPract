@@ -1,7 +1,20 @@
 part of 'cart_bloc.dart';
 
-@immutable
-abstract class CartState {}
+class CartState {
+  final List<Item>? items;
+
+  CartState({
+    this.items,
+  });
+
+  CartState copyWith({
+    List<Item>? items,
+  }) {
+    return CartState(
+      items: items ?? this.items,
+    );
+  }
+}
 
 class ListCartInitial extends CartState {}
 
@@ -19,16 +32,9 @@ class ListCartFailure extends CartState {
   });
 }
 
-// class AddItemSuccess extends CartState {
+// class UpdateCartSuccess extends CartState {
 //   final Item item;
-//   AddItemSuccess({
+//   UpdateCartSuccess({
 //     required this.item,
-//   });
-// }
-
-// class AddItemFailure extends CartState {
-//   final dynamic exception;
-//   AddItemFailure({
-//     required this.exception,
 //   });
 // }

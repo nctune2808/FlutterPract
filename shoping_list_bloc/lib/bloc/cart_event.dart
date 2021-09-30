@@ -19,4 +19,11 @@ class DeleteItemEvent extends CartEvent {
   });
 }
 
-class UpdateItemEvent extends CartEvent {}
+class UpdateItemEvent extends CartEvent {
+  Item item;
+  bool isDone;
+  UpdateItemEvent({
+    required this.item,
+    required this.isDone,
+  });
+}
