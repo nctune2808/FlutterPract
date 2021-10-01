@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoping_list_bloc/itemDetails_view.dart';
 
 import 'bloc/cart_bloc.dart';
 import 'model/item.dart';
 
-class DetailView extends StatelessWidget {
-  List<Item> items;
+class IemListView extends StatelessWidget {
+  final List<Item> items;
 
-  DetailView({
+  IemListView({
     Key? key,
     required this.items,
   }) : super(key: key);
@@ -52,14 +53,22 @@ class DetailView extends StatelessWidget {
                 ),
                 onTap: () {
                   print(items[index].title);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Center(child: Text(items[index].title)),
-                        content: Text(items[index].note),
-                      );
-                    },
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     return AlertDialog(
+                  //       title: Center(child: Text(items[index].title)),
+                  //       content: Text(items[index].note),
+                  //     );
+                  //   },
+                  // );
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ItemDetailsView(
+                        item: items[index],
+                      ),
+                    ),
                   );
                 },
               ),

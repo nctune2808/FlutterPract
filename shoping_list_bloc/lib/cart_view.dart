@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoping_list_bloc/detail_view.dart';
+import 'package:shoping_list_bloc/itemList_view.dart';
 import 'package:shoping_list_bloc/loading_view.dart';
 import 'package:shoping_list_bloc/model/item.dart';
 
 import 'bloc/cart_bloc.dart';
+import 'itemDetails_view.dart';
 
 class CartView extends StatefulWidget {
   @override
@@ -15,7 +16,6 @@ class _CartViewState extends State<CartView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _noteController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +59,10 @@ class _CartViewState extends State<CartView> {
   Widget _cartForm(List<Item> items) {
     return Form(
       key: _formKey,
-      child: DetailView(items: items),
+      child: IemListView(
+        items: items,
+      ),
+      // child: LoadingView(),
     );
   }
 
