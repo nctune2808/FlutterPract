@@ -7,7 +7,7 @@ import 'package:todo_aws_cubit/models/Todo.dart';
 part 'todo_state.dart';
 
 class TodoCubit extends Cubit<TodoState> {
-  final _todoRepo = TodoRepository();
+  final _todoRepo = TodoRepository.instance;
   final String userId;
 
   TodoCubit({

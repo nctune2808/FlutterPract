@@ -2,6 +2,9 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:todo_aws_cubit/models/Todo.dart';
 
 class TodoRepository {
+  TodoRepository._();
+  static final TodoRepository instance = TodoRepository._();
+
   Future<List<Todo>> getListTodo(String userId) async {
     try {
       final todos = await Amplify.DataStore.query(Todo.classType,
