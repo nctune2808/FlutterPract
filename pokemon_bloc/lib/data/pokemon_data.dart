@@ -45,7 +45,7 @@ class PokemonInfo {
     required this.weight,
   });
 
-  factory PokemonInfo.fromInfo(Map<String, dynamic> json) {
+  factory PokemonInfo.fromJsonToInfo(Map<String, dynamic> json) {
     final id = json['id'];
     final name = json['name'];
     final imgURL = json['sprites']['front_default'];
@@ -70,7 +70,7 @@ class PokemonSpecies {
     required this.description,
   });
 
-  factory PokemonSpecies.fromJson(Map<String, dynamic> json) {
+  factory PokemonSpecies.fromJsonToSpecies(Map<String, dynamic> json) {
     final description = json['flavor_text_entries'][0]['flavor_text'];
     return PokemonSpecies(description: description);
   }

@@ -12,8 +12,29 @@ class LoadPostsEvent extends PostsEvent {}
 // event2: Refresh
 class PullToRefreshEvent extends PostsEvent {}
 
+class DeletePostEvent extends PostsEvent {
+  Post post;
+  DeletePostEvent({
+    required this.post,
+  });
+}
+
 // create ----------------------------State----------------------------
-abstract class PostsState {}
+class PostsState {
+  final List<Post>? posts;
+
+  PostsState({
+    this.posts,
+  });
+
+  PostsState copyWith({
+    List<Post>? posts,
+  }) {
+    return PostsState(
+      posts: posts ?? this.posts,
+    );
+  }
+}
 
 // state1: Loading
 class LoadingPostsState extends PostsState {}
@@ -43,6 +64,13 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       try {
         final posts = await _dataService.getPosts();
         yield LoadedPostsState(posts: posts);
+      } catch (e) {
+        yield FailToLoadPostsState(err: e);
+      }
+    } else if (event is DeletePostEvent) {
+      try {
+        final posts = state.posts!.remove(event.post);
+        yield LoadedPostsState(posts: state.posts!);
       } catch (e) {
         yield FailToLoadPostsState(err: e);
       }

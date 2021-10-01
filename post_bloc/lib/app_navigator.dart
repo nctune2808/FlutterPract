@@ -5,8 +5,6 @@ import 'package:post_bloc/post_bloc.dart';
 import 'package:post_bloc/post_details.dart';
 import 'package:post_bloc/post_view.dart';
 
-import 'nav_bloc.dart';
-
 // class AppNavigator extends StatelessWidget {
 //   final Post post;
 //   const AppNavigator({Key? key, required this.post}) : super(key: key);

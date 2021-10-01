@@ -22,7 +22,7 @@ class PokemonRepository {
 
     final response = await client.get(uri);
     final json = jsonDecode(response.body);
-    return PokemonInfo.fromInfo(json);
+    return PokemonInfo.fromJsonToInfo(json);
   }
 
   Future<PokemonSpecies> getPokemonSpeciesInfo(int pokemonId) async {
@@ -30,6 +30,6 @@ class PokemonRepository {
 
     final response = await client.get(uri);
     final json = jsonDecode(response.body);
-    return PokemonSpecies.fromJson(json);
+    return PokemonSpecies.fromJsonToSpecies(json);
   }
 }
