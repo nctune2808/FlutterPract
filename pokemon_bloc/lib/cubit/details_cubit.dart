@@ -2,10 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'package:pokemon_bloc/bloc/pokemon_bloc.dart';
 import 'package:pokemon_bloc/data/pokemon_data.dart';
 import 'package:pokemon_bloc/data/pokemon_repository.dart';
 
-class DetailsCubit extends Cubit<PokemonDetails?> {
+class DetailsCubit extends Cubit<PokemonState?> {
   final _pokemonRepository = PokemonRepository();
 
   DetailsCubit() : super(null);
@@ -19,7 +20,7 @@ class DetailsCubit extends Cubit<PokemonDetails?> {
     final pokemonInfo = response[0] as PokemonInfo;
     final speciesInfo = response[1] as PokemonSpecies;
 
-    emit(PokemonDetails(pokemonInfo: pokemonInfo, pokemonSpecies: speciesInfo));
+    emit(PokemonState(pokemonInfo: pokemonInfo, pokemonSpecies: speciesInfo));
   }
 
   void clearDetails() => emit(null);

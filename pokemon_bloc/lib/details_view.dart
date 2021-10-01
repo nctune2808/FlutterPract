@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokemon_bloc/bloc/pokemon_bloc.dart';
 import 'package:pokemon_bloc/cubit/details_cubit.dart';
 import 'package:pokemon_bloc/data/pokemon_data.dart';
 
@@ -10,7 +11,7 @@ class DetailsView extends StatelessWidget {
       appBar: AppBar(
         title: Text('Details'),
       ),
-      body: BlocBuilder<DetailsCubit, PokemonDetails?>(
+      body: BlocBuilder<DetailsCubit, PokemonState?>(
         builder: (context, details) {
           return details != null
               ? Center(
@@ -19,16 +20,16 @@ class DetailsView extends StatelessWidget {
                       Card(
                         child: Column(
                           children: [
-                            Image.network(details.pokemonInfo.imgURL),
-                            Text(details.pokemonInfo.name),
+                            Image.network(details.pokemonInfo!.imgURL),
+                            Text(details.pokemonInfo!.name),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: details.pokemonInfo.types
+                              children: details.pokemonInfo!.types
                                   .map((type) => _pokemonTypeView(type))
                                   .toList(),
                             ),
                             Text(
-                                'ID: ${details.pokemonInfo.id} - Weight: ${details.pokemonInfo.weight} - Height: ${details.pokemonInfo.height}')
+                                'ID: ${details.pokemonInfo!.id} - Weight: ${details.pokemonInfo!.weight} - Height: ${details.pokemonInfo!.height}')
                           ],
                         ),
                       ),
@@ -38,7 +39,7 @@ class DetailsView extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              details.pokemonSpecies.description,
+                              details.pokemonSpecies!.description,
                               textAlign: TextAlign.center,
                             ),
                           ),

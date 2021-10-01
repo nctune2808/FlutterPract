@@ -1,7 +1,24 @@
 part of 'pokemon_bloc.dart';
 
-@immutable
-abstract class PokemonState {}
+class PokemonState {
+  PokemonInfo? pokemonInfo;
+  PokemonSpecies? pokemonSpecies;
+
+  PokemonState({
+    this.pokemonInfo,
+    this.pokemonSpecies,
+  });
+
+  PokemonState copyWith({
+    PokemonInfo? pokemonInfo,
+    PokemonSpecies? pokemonSpecies,
+  }) {
+    return PokemonState(
+      pokemonInfo: pokemonInfo ?? this.pokemonInfo,
+      pokemonSpecies: pokemonSpecies ?? this.pokemonSpecies,
+    );
+  }
+}
 
 class PokemonInitial extends PokemonState {}
 

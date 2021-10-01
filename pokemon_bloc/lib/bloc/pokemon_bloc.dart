@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:pokemon_bloc/data/pokemon_data.dart';
 
 import 'package:pokemon_bloc/data/pokemon_list.dart';
 import 'package:pokemon_bloc/data/pokemon_repository.dart';
@@ -16,7 +17,6 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
   Stream<PokemonState> mapEventToState(PokemonEvent event) async* {
     if (event is PokemonPageRequest) {
       yield PokemonLoading();
-
       try {
         final pokemonPageResponse =
             await _pokemonRepository.getPokemonPage(event.page);
@@ -27,5 +27,8 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         yield PokemonLoadFailed(error: e);
       }
     }
+    // else if (event is ){
+
+    // }
   }
 }

@@ -19,14 +19,14 @@ class PokemonData {
   }
 }
 
-class PokemonDetails {
-  PokemonInfo pokemonInfo;
-  PokemonSpecies pokemonSpecies;
-  PokemonDetails({
-    required this.pokemonInfo,
-    required this.pokemonSpecies,
-  });
-}
+// class PokemonDetails {
+//   PokemonInfo pokemonInfo;
+//   PokemonSpecies pokemonSpecies;
+//   PokemonDetails({
+//     required this.pokemonInfo,
+//     required this.pokemonSpecies,
+//   });
+// }
 
 class PokemonInfo {
   final int id;
