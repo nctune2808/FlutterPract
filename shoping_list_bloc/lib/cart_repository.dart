@@ -1,11 +1,7 @@
 import 'model/item.dart';
 
 class CartRepository {
-  List<Item> items = [
-    Item(title: '1', note: '1', isDone: false),
-    Item(title: '2', note: '2', isDone: true),
-    Item(title: '3', note: '3', isDone: false)
-  ];
+  List<Item> items = [];
 
   Future<List<Item>> getListItems() async {
     return items;

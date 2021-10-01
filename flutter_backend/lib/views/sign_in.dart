@@ -9,7 +9,6 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final AuthService _auth = AuthService();
   int number = 3;
-  int? nulnum = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +30,8 @@ class _SignInScreenState extends State<SignInScreen> {
               print("SUCCESSFUL");
               print(result.uid);
 
-              this.number = 5;
-              print("After number" + number.toString());
-
-              this.nulnum = null;
-              print("After nullable" + number.toString());
+              this.number = 8;
+              print("After number " + number.toString());
             }
           },
         ),
