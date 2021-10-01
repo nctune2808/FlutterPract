@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'model/item.dart';
+import '../../model/item.dart';
 
 class ItemDetailsView extends StatelessWidget {
-  static const valueKey = ValueKey('ItemDetailsView');
   final Item item;
 
   const ItemDetailsView({
@@ -14,7 +13,17 @@ class ItemDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(item.title)),
+        appBar: AppBar(
+          title: Text(item.title),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.check, size: 30),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
         body: Center(child: Text(item.note)));
   }
 }

@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:shoping_list_bloc/cart_repository.dart';
+import 'package:shoping_list_bloc/cart/cart_repository.dart';
 import 'package:shoping_list_bloc/model/item.dart';
 
 part 'cart_event.dart';

@@ -1,4 +1,4 @@
-import 'model/item.dart';
+import 'package:shoping_list_bloc/model/item.dart';
 
 class CartRepository {
   List<Item> items = [

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoping_list_bloc/itemList_view.dart';
-import 'package:shoping_list_bloc/loading_view.dart';
+import 'package:shoping_list_bloc/item/itemList_view.dart';
+import 'package:shoping_list_bloc/view/loading_view.dart';
 import 'package:shoping_list_bloc/model/item.dart';
 
-import 'bloc/cart_bloc.dart';
-import 'itemDetails_view.dart';
+import 'cart_bloc.dart';
 
 class CartView extends StatefulWidget {
   @override
