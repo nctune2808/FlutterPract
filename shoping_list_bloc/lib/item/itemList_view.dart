@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_list_bloc/cart/cart_bloc.dart';
 import 'package:shoping_list_bloc/model/item.dart';
+import 'package:shoping_list_bloc/route/router.dart';
 
 import 'itemDetails_view.dart';
 
@@ -91,9 +92,9 @@ class IemListView extends StatelessWidget {
               onPressed: () {
                 !item.isDone
                     ? Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ItemDetailsView(
-                              item: item,
-                            )))
+                        builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<CartBloc>(context),
+                            child: ItemDetailsView(item: item))))
                     : null;
               },
             ),

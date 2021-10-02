@@ -56,6 +56,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
+    } else if (event is SaveItemEvent) {
+      print('Press SAV');
+      try {
+        final List<Item> saveItems = state.items!.map((item) {
+          return item == event.item ? item.copyWith(note: event.note) : item;
+        }).toList();
+        yield ListCartSuccess(items: saveItems);
+      } catch (e) {
+        yield ListCartFailure(exception: e);
+      }
     }
   }
 }

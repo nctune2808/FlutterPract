@@ -19,6 +19,15 @@ class DeleteItemEvent extends CartEvent {
   });
 }
 
+class SaveItemEvent extends CartEvent {
+  Item item;
+  String note;
+  SaveItemEvent({
+    required this.item,
+    required this.note,
+  });
+}
+
 class UpdateItemEvent extends CartEvent {
   Item item;
   bool isDone;

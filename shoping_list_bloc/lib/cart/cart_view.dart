@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_list_bloc/item/itemList_view.dart';
-import 'package:shoping_list_bloc/view/loading_view.dart';
+import 'package:shoping_list_bloc/home/loading_view.dart';
 import 'package:shoping_list_bloc/model/item.dart';
 
 import 'cart_bloc.dart';
@@ -23,7 +23,6 @@ class _CartViewState extends State<CartView> {
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           if (state is ListCartSuccess) {
-            // pass state
             return state.items.isEmpty ? _emptyForm() : _cartForm(state.items);
           } else if (state is ListCartFailure) {
             return Center(child: Text('Error: ${state.exception}'));
@@ -61,7 +60,6 @@ class _CartViewState extends State<CartView> {
       child: IemListView(
         items: items,
       ),
-      // child: LoadingView(),
     );
   }
 

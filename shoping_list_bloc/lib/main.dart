@@ -1,25 +1,26 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'cart/cart_bloc.dart';
-import 'cart/cart_view.dart';
+import 'package:shoping_list_bloc/route/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MyApp(
+    router: AppRouter(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
+  final AppRouter? router;
+  const MyApp({
+    Key? key,
+    this.router,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (context) => CartBloc()..add(LoadingItemEvent()),
-        child: CartView(),
-      ),
+      onGenerateRoute: router!.generateRoute,
     );
   }
 }
