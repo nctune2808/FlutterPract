@@ -48,6 +48,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
+    } else if (event is InsertItemEvent) {
+      print('Press INS');
+      try {
+        state.items!.insert(event.index, event.deletedItem);
+        yield ListCartSuccess(items: state.items!);
+      } catch (e) {
+        yield ListCartFailure(exception: e);
+      }
     }
   }
 }

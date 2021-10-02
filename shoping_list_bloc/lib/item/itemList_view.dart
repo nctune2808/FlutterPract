@@ -19,6 +19,7 @@ class IemListView extends StatelessWidget {
       child: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
+          Item deteledItem = items[index];
           return Dismissible(
             key: UniqueKey(),
             background: Container(
@@ -45,7 +46,13 @@ class IemListView extends StatelessWidget {
                   '${items[index].title.toUpperCase()} Deleted',
                   textAlign: TextAlign.center,
                 ),
-                action: SnackBarAction(label: "UNDO", onPressed: () {}),
+                action: SnackBarAction(
+                    label: "UNDO",
+                    onPressed: () {
+                      BlocProvider.of<CartBloc>(context)
+                        ..add(InsertItemEvent(
+                            index: index, deletedItem: deteledItem));
+                    }),
               ));
             },
             child: _listCart(context, items[index]),

@@ -27,3 +27,12 @@ class UpdateItemEvent extends CartEvent {
     required this.isDone,
   });
 }
+
+class InsertItemEvent extends CartEvent {
+  int index;
+  Item deletedItem;
+  InsertItemEvent({
+    required this.index,
+    required this.deletedItem,
+  });
+}
