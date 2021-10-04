@@ -10,6 +10,13 @@ class SigninUsername extends SigninEvent {
   });
 }
 
+class SigninEmail extends SigninEvent {
+  final String email;
+  SigninEmail({
+    required this.email,
+  });
+}
+
 class SigninPassword extends SigninEvent {
   final String password;
   SigninPassword({

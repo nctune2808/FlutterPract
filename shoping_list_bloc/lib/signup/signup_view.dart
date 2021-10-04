@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,7 +87,6 @@ class SignUpView extends StatelessWidget {
       builder: (context, state) {
         return TextFormField(
           keyboardType: TextInputType.emailAddress,
-          obscureText: true,
           decoration:
               InputDecoration(icon: Icon(Icons.mail), hintText: "Email"),
           validator: (value) =>
@@ -108,6 +108,8 @@ class SignUpView extends StatelessWidget {
                   if (_formKey.currentState!.validate()) {
                     context.read<SignupBloc>().add(SignupSubmitted());
                   }
+
+                  Navigator.pushNamed(context, HOME_ROUTE);
                 },
                 child: Text('Register'),
               );

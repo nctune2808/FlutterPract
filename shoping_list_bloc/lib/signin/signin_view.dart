@@ -25,7 +25,7 @@ class SignInView extends StatelessWidget {
           decoration:
               InputDecoration(icon: Icon(Icons.person), hintText: "Username"),
           validator: (value) =>
-              state.isValidUsername ? null : 'Username is too short',
+              state.isValidEmail ? null : 'Username is too short',
           onChanged: (value) =>
               context.read<SigninBloc>().add(SigninUsername(username: value)),
         );
