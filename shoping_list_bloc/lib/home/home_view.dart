@@ -1,19 +1,26 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shoping_list_bloc/auth/auth_repository.dart';
 import 'package:shoping_list_bloc/route/router.dart';
 
 class HomeView extends StatelessWidget {
-  final _auth = FirebaseAuth.instance;
+  AuthRepository _authRepo = AuthRepository();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: Text("Hello ${_auth.currentUser!.email}"), actions: [
-        IconButton(
-            icon: Icon(Icons.logout, size: 30),
-            onPressed: () => Navigator.pop(context))
-      ]),
+      appBar: AppBar(
+        title: Text(
+            "Welcome, ${_authRepo.getCurrentUser().displayName!.toUpperCase()}"),
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout, size: 30),
+              onPressed: () => Navigator.pop(context))
+        ],
+      ),
       bottomNavigationBar: BottomAppBar(
         child: Text("Bottom Bar"),
       ),

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:shoping_list_bloc/auth/auth_repository.dart';
 import 'package:shoping_list_bloc/utility/form_submission_status.dart';
 
 part 'signup_event.dart';
@@ -8,7 +8,7 @@ part 'signup_state.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(SignupState());
-  final _auth = FirebaseAuth.instance;
+  AuthRepository _authRepo = AuthRepository();
 
   @override
   Stream<SignupState> mapEventToState(SignupEvent event) async* {
@@ -21,11 +21,14 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     } else if (event is SignupSubmitted) {
       yield state.copyWith(formStatus: FormSubmitting());
       try {
-        final newUser = await _auth.createUserWithEmailAndPassword(
-            email: state.email, password: state.password);
+        final newUser = await _authRepo.signUpEmail(
+            email: state.email,
+            password: state.password,
+            username: state.username);
         yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
         yield state.copyWith(formStatus: SubmissionFailed(exception: e));
+        yield state.copyWith(formStatus: InitialFormStatus());
       }
       // try {
       //   await authRepo.signUp(

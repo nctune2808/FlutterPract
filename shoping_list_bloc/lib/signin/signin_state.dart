@@ -24,5 +24,3 @@ class SigninState {
     );
   }
 }
-
-class EmailChange extends SigninState {}

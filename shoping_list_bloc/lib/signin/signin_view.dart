@@ -77,7 +77,6 @@ class SignInView extends StatelessWidget {
           _showSnackBar(
               context, 'Invalid User!!!\nPlease create account first');
         }
-        print(formStatus); // keep repeating <============
       },
       child: Form(
         key: _formKey,

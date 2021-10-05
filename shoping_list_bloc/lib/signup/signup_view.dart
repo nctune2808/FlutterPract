@@ -9,7 +9,6 @@ import 'signup_bloc.dart';
 
 class SignUpView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  bool didClick = false; // basic, set flag
 
   @override
   Widget build(BuildContext context) {
@@ -97,13 +96,9 @@ class SignUpView extends StatelessWidget {
           Navigator.popAndPushNamed(context, SIGNIN_ROUTE);
         } else if (formStatus is SubmissionFailed) {
           // _showSnackBar(context, formStatus.exception.toString());
-          if (didClick) _showSnackBar(context, 'Invalid Email / Weak Password');
-          didClick = false; // try to block by flagged <============
+          _showSnackBar(context, 'Invalid Email / Weak Password');
         }
       },
-      // listenWhen: (previous, current) {
-      //   return current.formStatus is SubmissionSucess;
-      // },
       child: BlocBuilder<SignupBloc, SignupState>(
         builder: (context, state) {
           return state.formStatus is FormSubmitting
@@ -111,7 +106,6 @@ class SignUpView extends StatelessWidget {
               : ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      didClick = true;
                       context.read<SignupBloc>().add(SignupSubmitted());
                     }
                   },
