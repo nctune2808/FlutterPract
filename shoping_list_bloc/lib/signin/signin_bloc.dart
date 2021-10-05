@@ -20,8 +20,6 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
       try {
         await _authRepo.signInEmail(
             email: state.email, password: state.password);
-
-        await _authRepo.getCurrentUser();
         yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
         yield state.copyWith(formStatus: SubmissionFailed(exception: e));

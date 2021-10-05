@@ -19,27 +19,13 @@ class SignInView extends StatelessWidget {
     );
   }
 
-  // Widget _usernameField() {
-  //   return BlocBuilder<SigninBloc, SigninState>(
-  //     builder: (context, state) {
-  //       return TextFormField(
-  //         decoration:
-  //             InputDecoration(icon: Icon(Icons.person), hintText: "Username"),
-  //         validator: (value) =>
-  //             state.isValidEmail ? null : 'Username is too short',
-  //         onChanged: (value) =>
-  //             context.read<SigninBloc>().add(SigninUsername(username: value)),
-  //       );
-  //     },
-  //   );
-  // }
-
   Widget _emailField() {
     return BlocBuilder<SigninBloc, SigninState>(
       builder: (context, state) {
         return TextFormField(
+          keyboardType: TextInputType.emailAddress,
           decoration:
-              InputDecoration(icon: Icon(Icons.person), hintText: "Email"),
+              InputDecoration(icon: Icon(Icons.email), hintText: "Email"),
           validator: (value) {},
           onChanged: (value) {
             // context.read<SigninBloc>().add(SigninUsername(username: value)),

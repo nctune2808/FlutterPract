@@ -3,14 +3,16 @@ import 'package:shoping_list_bloc/auth/auth_repository.dart';
 import 'package:shoping_list_bloc/route/router.dart';
 
 class HomeView extends StatelessWidget {
-  AuthRepository _authRepo = AuthRepository();
+  final _authRepo = AuthRepository();
 
   @override
   Widget build(BuildContext context) {
+    String? username = _authRepo.getCurrentUser().displayName;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "Welcome, ${_authRepo.getCurrentUser().displayName!.toUpperCase()}"),
+        title: username == null
+            ? Text("Hello")
+            : Text("Welcome, ${username.toUpperCase()}"),
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {},
