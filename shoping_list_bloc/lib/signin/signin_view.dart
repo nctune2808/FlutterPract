@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoping_list_bloc/auth/auth_repository.dart';
 import 'package:shoping_list_bloc/route/router.dart';
 import 'package:shoping_list_bloc/utility/form_submission_status.dart';
 
@@ -39,7 +40,7 @@ class SignInView extends StatelessWidget {
         return TextFormField(
           decoration:
               InputDecoration(icon: Icon(Icons.person), hintText: "Email"),
-          validator: (value) => state.isValidEmail ? null : 'Invalid Email',
+          validator: (value) {},
           onChanged: (value) {
             // context.read<SigninBloc>().add(SigninUsername(username: value)),
             context.read<SigninBloc>().add(SigninEmail(email: value));
@@ -56,8 +57,7 @@ class SignInView extends StatelessWidget {
           obscureText: true,
           decoration:
               InputDecoration(icon: Icon(Icons.security), hintText: "Password"),
-          validator: (value) =>
-              state.isValidPassword ? null : 'Password is too short',
+          validator: (value) {},
           onChanged: (value) =>
               context.read<SigninBloc>().add(SigninPassword(password: value)),
         );
@@ -69,9 +69,15 @@ class SignInView extends StatelessWidget {
     return BlocListener<SigninBloc, SigninState>(
       listener: (context, state) {
         final formStatus = state.formStatus;
-        if (formStatus is SubmissionFailed) {
-          _showSnackBar(context, formStatus.exception.toString());
+        if (formStatus is SubmissionSucess) {
+          _showSnackBar(context, "Signed In Successfully");
+          Navigator.popAndPushNamed(context, HOME_ROUTE);
+        } else if (formStatus is SubmissionFailed) {
+          // _showSnackBar(context, formStatus.exception.toString());
+          _showSnackBar(
+              context, 'Invalid User!!!\nPlease create account first');
         }
+        print(formStatus);
       },
       child: Form(
         key: _formKey,
@@ -80,7 +86,12 @@ class SignInView extends StatelessWidget {
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [_emailField(), _passwordField(), _loginButton()],
+              children: [
+                _emailField(),
+                _passwordField(),
+                _loginButton(),
+                _adminButton(),
+              ],
             ),
           ),
         ),
@@ -97,12 +108,25 @@ class SignInView extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     context.read<SigninBloc>().add(SigninSubmitted());
-
-                    // cannot check valid user ???
-                    Navigator.popAndPushNamed(context, HOME_ROUTE);
                   }
                 },
                 child: Text('Login'));
+      },
+    );
+  }
+
+  Widget _adminButton() {
+    final AuthRepository _authRepo = AuthRepository();
+
+    return BlocBuilder<SigninBloc, SigninState>(
+      builder: (context, state) {
+        return state.formStatus is AdminSubmitting
+            ? CircularProgressIndicator()
+            : ElevatedButton(
+                onPressed: () {
+                  context.read<SigninBloc>().add(FastTrackSubmitted());
+                },
+                child: Text('Fast Track'));
       },
     );
   }
@@ -111,7 +135,7 @@ class SignInView extends StatelessWidget {
     return SafeArea(
       child: TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, SIGNUP_ROUTE);
+          Navigator.popAndPushNamed(context, SIGNUP_ROUTE);
         },
         child: Text('Don\'t have an account yet? Sign Up'),
       ),

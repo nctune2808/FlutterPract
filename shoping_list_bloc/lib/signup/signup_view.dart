@@ -9,6 +9,7 @@ import 'signup_bloc.dart';
 
 class SignUpView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  bool didClick = false; // basic, set flag
 
   @override
   Widget build(BuildContext context) {
@@ -24,27 +25,19 @@ class SignUpView extends StatelessWidget {
   }
 
   Widget _signUpForm() {
-    return BlocListener<SignupBloc, SignupState>(
-      listener: (context, state) {
-        final formStatus = state.formStatus;
-        if (formStatus is SubmissionFailed) {
-          _showSnackBar(context, formStatus.exception.toString());
-        }
-      },
-      child: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _usernameField(),
-                _passwordField(),
-                _emailField(),
-                _registerButton()
-              ],
-            ),
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _usernameField(),
+              _passwordField(),
+              _emailField(),
+              _registerButton()
+            ],
           ),
         ),
       ),
@@ -57,8 +50,7 @@ class SignUpView extends StatelessWidget {
         return TextFormField(
           decoration:
               InputDecoration(icon: Icon(Icons.person), hintText: "Username"),
-          validator: (value) =>
-              state.isValidUsername ? null : 'Username is too short',
+          validator: (value) {},
           onChanged: (value) =>
               context.read<SignupBloc>().add(SignupUsername(username: value)),
         );
@@ -73,8 +65,7 @@ class SignUpView extends StatelessWidget {
           obscureText: true,
           decoration:
               InputDecoration(icon: Icon(Icons.security), hintText: "Password"),
-          validator: (value) =>
-              state.isValidPassword ? null : 'Password is too short',
+          validator: (value) {},
           onChanged: (value) =>
               context.read<SignupBloc>().add(SignupPassword(password: value)),
         );
@@ -89,8 +80,7 @@ class SignUpView extends StatelessWidget {
           keyboardType: TextInputType.emailAddress,
           decoration:
               InputDecoration(icon: Icon(Icons.mail), hintText: "Email"),
-          validator: (value) =>
-              state.isValidEmail ? null : 'Email is wrong type',
+          validator: (value) {},
           onChanged: (value) =>
               context.read<SignupBloc>().add(SignupEmail(email: value)),
         );
@@ -99,21 +89,36 @@ class SignUpView extends StatelessWidget {
   }
 
   Widget _registerButton() {
-    return BlocBuilder<SignupBloc, SignupState>(
-      builder: (context, state) {
-        return state.formStatus is FormSubmitting
-            ? CircularProgressIndicator()
-            : ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    context.read<SignupBloc>().add(SignupSubmitted());
-                  }
-
-                  Navigator.pushNamed(context, HOME_ROUTE);
-                },
-                child: Text('Register'),
-              );
+    return BlocListener<SignupBloc, SignupState>(
+      listener: (context, state) {
+        final formStatus = state.formStatus;
+        if (formStatus is SubmissionSucess) {
+          _showSnackBar(context, 'Signed Up Successfully');
+          Navigator.popAndPushNamed(context, SIGNIN_ROUTE);
+        } else if (formStatus is SubmissionFailed) {
+          // _showSnackBar(context, formStatus.exception.toString());
+          if (didClick) _showSnackBar(context, 'Invalid Email / Weak Password');
+          didClick = false;
+        }
       },
+      // listenWhen: (previous, current) {
+      //   return current.formStatus is SubmissionSucess;
+      // },
+      child: BlocBuilder<SignupBloc, SignupState>(
+        builder: (context, state) {
+          return state.formStatus is FormSubmitting
+              ? CircularProgressIndicator()
+              : ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      didClick = true;
+                      context.read<SignupBloc>().add(SignupSubmitted());
+                    }
+                  },
+                  child: Text('Register'),
+                );
+        },
+      ),
     );
   }
 
@@ -121,7 +126,7 @@ class SignUpView extends StatelessWidget {
     return SafeArea(
       child: TextButton(
         onPressed: () {
-          Navigator.pushNamed(context, SIGNIN_ROUTE);
+          Navigator.popAndPushNamed(context, SIGNIN_ROUTE);
         },
         child: Text('Already have an account? Sign In'),
       ),

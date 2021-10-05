@@ -1,10 +1,29 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
+import 'package:shoping_list_bloc/model/user.dart';
+
 class AuthRepository {
-  Future<String> signin({
-    required String username,
-    required String password,
-  }) async {
-    print('attempting login');
-    await Future.delayed(Duration(seconds: 3));
-    return 'abc';
+  final _auth = firebase.FirebaseAuth.instance;
+
+  User _fetchUser(firebase.User user) {
+    return User(userId: user.uid);
+  }
+
+  Future signInAnon() async {
+    try {
+      await _auth.signInAnonymously();
+      // return _fetchUser(credential.user!);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future signInEmail({required String email, required String password}) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      throw e;
+    }
   }
 }

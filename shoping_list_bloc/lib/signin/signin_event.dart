@@ -25,3 +25,5 @@ class SigninPassword extends SigninEvent {
 }
 
 class SigninSubmitted extends SigninEvent {}
+
+class FastTrackSubmitted extends SigninEvent {}

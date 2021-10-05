@@ -1,12 +1,15 @@
 class User {
-  String username;
-  String password;
-  String email;
-  String avatar;
+  String? userId;
+  String? username;
+  String? password;
+  String? email;
+  String? avatar;
+
   User({
-    required this.username,
-    required this.password,
-    required this.email,
-    required this.avatar,
+    this.userId,
+    this.username,
+    this.password,
+    this.email,
+    this.avatar,
   });
 }

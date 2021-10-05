@@ -9,6 +9,7 @@ part 'signup_state.dart';
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(SignupState());
   final _auth = FirebaseAuth.instance;
+
   @override
   Stream<SignupState> mapEventToState(SignupEvent event) async* {
     if (event is SignupUsername) {
@@ -22,7 +23,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       try {
         final newUser = await _auth.createUserWithEmailAndPassword(
             email: state.email, password: state.password);
-
         yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
         yield state.copyWith(formStatus: SubmissionFailed(exception: e));

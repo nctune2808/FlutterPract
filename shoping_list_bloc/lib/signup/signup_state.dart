@@ -2,13 +2,10 @@ part of 'signup_bloc.dart';
 
 class SignupState {
   final String username;
-  bool get isValidUsername => username.length > 3;
 
   final String password;
-  bool get isValidPassword => password.length > 6;
 
   final String email;
-  bool get isValidEmail => email.contains('@');
 
   final FormSubmissionStatus formStatus;
 

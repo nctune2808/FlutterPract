@@ -2,10 +2,8 @@ part of 'signin_bloc.dart';
 
 class SigninState {
   final String email;
-  bool get isValidEmail => email.length > 3;
 
   final String password;
-  bool get isValidPassword => password.length > 6;
 
   final FormSubmissionStatus formStatus;
 
@@ -26,3 +24,5 @@ class SigninState {
     );
   }
 }
+
+class EmailChange extends SigninState {}
