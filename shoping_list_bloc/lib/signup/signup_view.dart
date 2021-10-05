@@ -98,7 +98,7 @@ class SignUpView extends StatelessWidget {
         } else if (formStatus is SubmissionFailed) {
           // _showSnackBar(context, formStatus.exception.toString());
           if (didClick) _showSnackBar(context, 'Invalid Email / Weak Password');
-          didClick = false;
+          didClick = false; // try to block by flagged <============
         }
       },
       // listenWhen: (previous, current) {

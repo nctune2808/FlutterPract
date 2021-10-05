@@ -77,7 +77,7 @@ class SignInView extends StatelessWidget {
           _showSnackBar(
               context, 'Invalid User!!!\nPlease create account first');
         }
-        print(formStatus);
+        print(formStatus); // keep repeating <============
       },
       child: Form(
         key: _formKey,
@@ -116,8 +116,6 @@ class SignInView extends StatelessWidget {
   }
 
   Widget _adminButton() {
-    final AuthRepository _authRepo = AuthRepository();
-
     return BlocBuilder<SigninBloc, SigninState>(
       builder: (context, state) {
         return state.formStatus is AdminSubmitting
