@@ -39,9 +39,6 @@ class _CartViewState extends State<CartView> {
     return AppBar(
       title: Text('Shopping List'),
       leading: IconButton(icon: Icon(Icons.menu, size: 30), onPressed: () {}),
-      actions: [
-        IconButton(icon: Icon(Icons.logout, size: 30), onPressed: () {}),
-      ],
     );
   }
 

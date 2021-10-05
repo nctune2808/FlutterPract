@@ -18,16 +18,32 @@ class SignInView extends StatelessWidget {
     );
   }
 
-  Widget _usernameField() {
+  // Widget _usernameField() {
+  //   return BlocBuilder<SigninBloc, SigninState>(
+  //     builder: (context, state) {
+  //       return TextFormField(
+  //         decoration:
+  //             InputDecoration(icon: Icon(Icons.person), hintText: "Username"),
+  //         validator: (value) =>
+  //             state.isValidEmail ? null : 'Username is too short',
+  //         onChanged: (value) =>
+  //             context.read<SigninBloc>().add(SigninUsername(username: value)),
+  //       );
+  //     },
+  //   );
+  // }
+
+  Widget _emailField() {
     return BlocBuilder<SigninBloc, SigninState>(
       builder: (context, state) {
         return TextFormField(
           decoration:
-              InputDecoration(icon: Icon(Icons.person), hintText: "Username"),
-          validator: (value) =>
-              state.isValidEmail ? null : 'Username is too short',
-          onChanged: (value) =>
-              context.read<SigninBloc>().add(SigninUsername(username: value)),
+              InputDecoration(icon: Icon(Icons.person), hintText: "Email"),
+          validator: (value) => state.isValidEmail ? null : 'Invalid Email',
+          onChanged: (value) {
+            // context.read<SigninBloc>().add(SigninUsername(username: value)),
+            context.read<SigninBloc>().add(SigninEmail(email: value));
+          },
         );
       },
     );
@@ -64,7 +80,7 @@ class SignInView extends StatelessWidget {
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [_usernameField(), _passwordField(), _loginButton()],
+              children: [_emailField(), _passwordField(), _loginButton()],
             ),
           ),
         ),
@@ -81,6 +97,9 @@ class SignInView extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     context.read<SigninBloc>().add(SigninSubmitted());
+
+                    // cannot check valid user ???
+                    Navigator.popAndPushNamed(context, HOME_ROUTE);
                   }
                 },
                 child: Text('Login'));

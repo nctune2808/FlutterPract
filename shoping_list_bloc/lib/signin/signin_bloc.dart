@@ -10,8 +10,6 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
   final _auth = FirebaseAuth.instance;
   @override
   Stream<SigninState> mapEventToState(SigninEvent event) async* {
-    // if (event is SigninUsername) {
-    //   yield state.copyWith(email: event.username;
     if (event is SigninEmail) {
       yield state.copyWith(email: event.email);
     } else if (event is SigninPassword) {
@@ -20,9 +18,9 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
       yield state.copyWith(formStatus: FormSubmitting());
 
       try {
-        final newUser = await _auth.createUserWithEmailAndPassword(
+        final newUser = await _auth.signInWithEmailAndPassword(
             email: state.email, password: state.password);
-
+        print(state.email);
         yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
         yield state.copyWith(formStatus: SubmissionFailed(exception: e));
