@@ -9,6 +9,7 @@ import 'package:shoping_list_bloc/signin/signin_bloc.dart';
 import 'package:shoping_list_bloc/signin/signin_view.dart';
 import 'package:shoping_list_bloc/signup/signup_bloc.dart';
 import 'package:shoping_list_bloc/signup/signup_view.dart';
+import 'package:shoping_list_bloc/talk/talk_bloc.dart';
 import 'package:shoping_list_bloc/talk/talk_view.dart';
 
 const WELCOME_ROUTE = "/";
@@ -26,31 +27,25 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => WelcomeView());
       case SIGNIN_ROUTE:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => SigninBloc(),
-            child: SignInView(),
-          ),
-        );
+            builder: (_) => BlocProvider(
+                create: (context) => SigninBloc(), child: SignInView()));
       case SIGNUP_ROUTE:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => SignupBloc(),
-            child: SignUpView(),
-          ),
-        );
+            builder: (_) => BlocProvider(
+                create: (context) => SignupBloc(), child: SignUpView()));
       case HOME_ROUTE:
         return MaterialPageRoute(builder: (_) => HomeView());
       case CART_ROUTE:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => CartBloc()..add(LoadingItemEvent()),
-            child: CartView(),
-          ),
-        );
+            builder: (_) => BlocProvider(
+                create: (context) => CartBloc()..add(LoadingItemEvent()),
+                child: CartView()));
       case POST_ROUTE:
         return MaterialPageRoute(builder: (_) => LoadingView());
       case TALK_ROUTE:
-        return MaterialPageRoute(builder: (_) => TalkView());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                create: (context) => TalkBloc(), child: TalkView()));
       default:
         return null;
     }

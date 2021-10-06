@@ -86,7 +86,7 @@ class _CartViewState extends State<CartView> {
               isDone: false,
             ),
           ));
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
         _titleController.text = '';
         _noteController.text = '';
       },

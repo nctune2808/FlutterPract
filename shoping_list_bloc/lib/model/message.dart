@@ -1,16 +1,16 @@
-import 'package:shoping_list_bloc/model/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Message {
-  final User sender;
-  final String time;
+  final String sender;
   final String text;
-  final bool isLiked;
-  final bool seen;
+  final bool? isLiked;
+  final bool? seen;
+  final Timestamp? time;
   Message({
     required this.sender,
-    required this.time,
     required this.text,
-    required this.isLiked,
-    required this.seen,
+    this.time,
+    this.isLiked,
+    this.seen,
   });
 }

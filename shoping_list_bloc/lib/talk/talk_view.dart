@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoping_list_bloc/auth/auth_repository.dart';
+import 'package:shoping_list_bloc/model/message.dart';
+import 'package:shoping_list_bloc/talk/talk_bloc.dart';
+import 'package:shoping_list_bloc/talk/talk_repository.dart';
+import 'package:shoping_list_bloc/utility/form_submission_status.dart';
 
 class TalkView extends StatelessWidget {
   // _buildMessage(Message message, bool isMe) {
@@ -53,57 +59,69 @@ class TalkView extends StatelessWidget {
   //   );
   // }
 
-  final _firestore = FirebaseFirestore.instance;
   final _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "name",
-          // widget.user.name,
-          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          title: Text(
+            "name",
+            // widget.user.name,
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+          ),
+          elevation: 0,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.more_horiz),
+              iconSize: 30.0,
+              color: Colors.white,
+              onPressed: () {},
+            )
+          ],
         ),
-        elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.more_horiz),
-            iconSize: 30.0,
-            color: Colors.white,
-            onPressed: () {},
-          )
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Text("fetch"),
-            // child: ListView.builder(
-            //   reverse: true,
-            //   itemCount: messages.length,
-            //   itemBuilder: (BuildContext context, int index) {
-            //     final Message message = messages[index];
-            //     bool isMe = message.sender.id == admin.id;
-            //     return _buildMessage(message, isMe);
-            //   },
-            // ),
-          ),
-          SafeArea(
-            minimum: EdgeInsets.all(30),
-            child: TextFormField(
-              decoration: InputDecoration(hintText: "Send something?"),
-              validator: (value) {},
-              onChanged: (value) {},
-              onFieldSubmitted: (value) {
-                _firestore
-                    .collection('messages')
-                    .add({'text': value, 'sender': "me"});
-              },
-            ),
-            // IconButton(onPressed: () {}, icon: Icon(Icons.send))
-          ),
-        ],
+        body: _boxChat());
+  }
+
+  Widget _boxChat() {
+    return Column(
+      children: [
+        TextFormField(
+          decoration: InputDecoration(hintText: "Send something?"),
+          controller: _textController,
+        ),
+        _sendButton()
+      ],
+    );
+  }
+
+  Widget _sendButton() {
+    return BlocListener<TalkBloc, TalkState>(
+      listener: (context, state) {
+        if (state.formStatus is SubmissionSucess) {
+          _showSnackBar(context, 'Sent');
+        }
+        print(state.formStatus);
+      },
+      child: BlocBuilder<TalkBloc, TalkState>(
+        builder: (context, state) {
+          return state.formStatus is FormSubmitting
+              ? CircularProgressIndicator()
+              : IconButton(
+                  onPressed: () {
+                    context.read<TalkBloc>().add(SentMessageEvent(
+                        message:
+                            Message(sender: 'me', text: _textController.text)));
+                    _textController.text = '';
+                  },
+                  icon: Icon(Icons.open_in_browser),
+                );
+        },
       ),
     );
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

@@ -8,8 +8,6 @@ class InitialFormStatus extends FormSubmissionStatus {
 
 class FormSubmitting extends FormSubmissionStatus {}
 
-class AdminSubmitting extends FormSubmissionStatus {}
-
 class SubmissionSucess extends FormSubmissionStatus {}
 
 class SubmissionFailed extends FormSubmissionStatus {

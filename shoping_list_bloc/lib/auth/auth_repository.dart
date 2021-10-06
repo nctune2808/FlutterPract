@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 
 class AuthRepository {
   static final _auth = firebase.FirebaseAuth.instance;
-
   firebase.User getCurrentUser() {
     try {
       return _auth.currentUser!;

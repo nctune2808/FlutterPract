@@ -40,7 +40,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
       //   yield state.copyWith(formStatus: SubmissionFailed(exception: e));
       // }
     } else if (event is FastTrackSubmitted) {
-      yield state.copyWith(formStatus: AdminSubmitting());
+      yield state.copyWith(formStatus: FormSubmitting());
       try {
         await _authRepo.signInAnon();
         yield state.copyWith(formStatus: SubmissionSucess());
