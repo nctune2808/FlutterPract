@@ -103,7 +103,7 @@ class SignInView extends StatelessWidget {
   Widget _adminButton() {
     return BlocBuilder<SigninBloc, SigninState>(
       builder: (context, state) {
-        return state.formStatus is FormSubmitting
+        return state.formStatus is AdminSubmitting
             ? CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () {

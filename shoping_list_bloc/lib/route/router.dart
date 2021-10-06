@@ -45,7 +45,8 @@ class AppRouter {
       case TALK_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
-                create: (context) => TalkBloc(), child: TalkView()));
+                create: (context) => TalkBloc()..add(LoadingMessageEvent()),
+                child: TalkView()));
       default:
         return null;
     }

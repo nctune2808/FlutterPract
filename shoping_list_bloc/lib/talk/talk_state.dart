@@ -23,3 +23,5 @@ class TalkState {
     );
   }
 }
+
+class InitialMessage extends TalkState {}

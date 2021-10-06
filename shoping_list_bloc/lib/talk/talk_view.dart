@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoping_list_bloc/auth/auth_repository.dart';
-import 'package:shoping_list_bloc/model/message.dart';
 import 'package:shoping_list_bloc/talk/talk_bloc.dart';
 import 'package:shoping_list_bloc/talk/talk_repository.dart';
 import 'package:shoping_list_bloc/utility/form_submission_status.dart';
@@ -84,37 +82,67 @@ class TalkView extends StatelessWidget {
 
   Widget _boxChat() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextFormField(
-          decoration: InputDecoration(hintText: "Send something?"),
-          controller: _textController,
+        StreamBuilder<QuerySnapshot>(
+          stream: TalkRepository().getSnapshots(),
+          builder: (context, snapshot) {
+            print(snapshot.hasData);
+            if (snapshot.hasData) {
+              final messages = snapshot.data!.docs;
+              List<Text> messageWidget = [];
+              for (var message in messages) {
+                print('${message['text']} from ${message['sender']}');
+                final messageBuilder =
+                    Text('${message['text']} from ${message['sender']}');
+                messageWidget.add(messageBuilder);
+              }
+              return Column(children: messageWidget);
+            } else {
+              return Text('No Data');
+            }
+          },
         ),
-        _sendButton()
+        _composeForm()
       ],
     );
   }
 
-  Widget _sendButton() {
+  Widget _composeForm() {
     return BlocListener<TalkBloc, TalkState>(
       listener: (context, state) {
         if (state.formStatus is SubmissionSucess) {
           _showSnackBar(context, 'Sent');
         }
-        print(state.formStatus);
       },
       child: BlocBuilder<TalkBloc, TalkState>(
         builder: (context, state) {
-          return state.formStatus is FormSubmitting
-              ? CircularProgressIndicator()
-              : IconButton(
-                  onPressed: () {
-                    context.read<TalkBloc>().add(SentMessageEvent(
-                        message:
-                            Message(sender: 'me', text: _textController.text)));
-                    _textController.text = '';
-                  },
-                  icon: Icon(Icons.open_in_browser),
-                );
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(hintText: "Send something?"),
+                      controller: _textController,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      context
+                          .read<TalkBloc>()
+                          .add(SentMessageEvent(message: _textController.text));
+
+                      _textController.text = '';
+                    },
+                    icon: Icon(Icons.open_in_browser),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       ),
     );

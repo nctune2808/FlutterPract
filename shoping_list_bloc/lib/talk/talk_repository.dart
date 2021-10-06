@@ -1,13 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class TalkRepository {
-  static final _firestore = FirebaseFirestore.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   Future<void> getMessages() async {
     final messages = await _firestore.collection('messages').get();
     for (var message in messages.docs) {
       print(message.data());
     }
+  }
+
+  Stream<QuerySnapshot> getSnapshots() {
+    return _firestore.collection('messages').snapshots();
   }
 
   Future<void> streamMessages() async {
@@ -40,6 +45,7 @@ class TalkRepository {
         'seen': false,
       });
     } catch (e) {
+      print(e);
       throw e;
     }
   }
