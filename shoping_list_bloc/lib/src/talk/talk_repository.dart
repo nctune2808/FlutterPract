@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shoping_list_bloc/auth/auth_repository.dart';
+import 'package:shoping_list_bloc/model/message.dart';
 
 class TalkRepository {
   final _firestore = FirebaseFirestore.instance;
+  AuthRepository _authRepo = AuthRepository();
 
   Future<void> getMessages() async {
     final messages = await _firestore.collection('messages').get();
@@ -31,17 +34,11 @@ class TalkRepository {
     }
   }
 
-  Future<void> enterMessage({
-    required String text,
-    required String sender,
-    bool? isLiked,
-    bool? seen,
-    Timestamp? time,
-  }) async {
+  Future<void> enterMessage({required Message message}) async {
     try {
       await _firestore.collection('messages').add({
-        'text': text,
-        'sender': sender,
+        'text': message.text,
+        'sender': _authRepo.getCurrentUser().displayName,
         'time': Timestamp.fromDate(DateTime.now()),
         'isLiked': false,
         'seen': false,

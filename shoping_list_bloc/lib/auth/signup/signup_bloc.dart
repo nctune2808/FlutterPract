@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shoping_list_bloc/auth/auth_repository.dart';
-import 'package:shoping_list_bloc/utility/form_submission_status.dart';
+import 'package:shoping_list_bloc/utility/state/form_submission_status.dart';
 
 part 'signup_event.dart';
 part 'signup_state.dart';

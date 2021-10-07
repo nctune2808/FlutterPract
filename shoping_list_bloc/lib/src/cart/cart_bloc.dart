@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:shoping_list_bloc/cart/cart_repository.dart';
 import 'package:shoping_list_bloc/model/item.dart';
+import 'package:shoping_list_bloc/src/cart/cart_repository.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';

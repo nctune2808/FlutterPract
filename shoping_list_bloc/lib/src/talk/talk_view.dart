@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_list_bloc/auth/auth_repository.dart';
-import 'package:shoping_list_bloc/talk/talk_bloc.dart';
-import 'package:shoping_list_bloc/talk/talk_repository.dart';
-import 'package:shoping_list_bloc/utility/form_submission_status.dart';
-import 'package:shoping_list_bloc/utility/function/covert.dart';
+import 'package:shoping_list_bloc/model/message.dart';
+import 'package:shoping_list_bloc/src/talk/message/message_view.dart';
+import 'package:shoping_list_bloc/src/talk/talk_bloc.dart';
+import 'package:shoping_list_bloc/src/talk/talk_repository.dart';
 
 class TalkView extends StatefulWidget {
   @override
@@ -14,13 +14,14 @@ class TalkView extends StatefulWidget {
 
 class _TalkViewState extends State<TalkView> {
   final _textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
             "Message",
-            // widget.user.name,
+            textAlign: TextAlign.center,
             style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
           ),
           elevation: 0,
@@ -54,7 +55,7 @@ class _TalkViewState extends State<TalkView> {
                 reverse: true,
                 itemCount: messages.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _buildMessage(messages[index]);
+                  return MessageView(message: messages[index]);
                 },
               ),
             );
@@ -80,18 +81,14 @@ class _TalkViewState extends State<TalkView> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      autocorrect: false,
                       decoration: InputDecoration(hintText: "Send something?"),
                       controller: _textController,
+                      onEditingComplete: () => _onSubmission(),
                     ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      context
-                          .read<TalkBloc>()
-                          .add(SentMessageEvent(message: _textController.text));
-
-                      _textController.clear();
-                    },
+                    onPressed: () => _onSubmission(),
                     icon: Icon(Icons.send),
                   ),
                 ],
@@ -103,49 +100,11 @@ class _TalkViewState extends State<TalkView> {
     );
   }
 
-  Widget _buildMessage(QueryDocumentSnapshot message) {
-    final isMe =
-        message['sender'] == AuthRepository().getCurrentUser().displayName;
-    final Column msg = Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: isMe ? Colors.lightBlue[100] : Color(0xFFFFEFEE),
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-            ),
-            margin: isMe // max bubble size per chat
-                ? EdgeInsets.only(top: 20, left: 150)
-                : EdgeInsets.only(top: 20, right: 150),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            // width: MediaQuery.of(context).size.width * 0.75,
-            child: Column(
-              crossAxisAlignment:
-                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-              children: [
-                Text(
-                  readTime((message['time'] as Timestamp).toDate()),
-                  style: TextStyle(
-                    color: Colors.blueGrey,
-                    fontSize: 12.0,
-                  ),
-                ),
-                Text(
-                  message['text'],
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 15.0,
-                  ),
-                ),
-              ],
-            ),
-          )
-        ]);
-    if (isMe) {
-      return msg;
-    }
-    return msg;
+  void _onSubmission() {
+    context
+        .read<TalkBloc>()
+        .add(SentMessageEvent(message: Message(text: _textController.text)));
+    _textController.clear();
   }
 
   void _showSnackBar(BuildContext context, String message) {

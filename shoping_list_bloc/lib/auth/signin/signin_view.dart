@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_list_bloc/auth/auth_repository.dart';
 import 'package:shoping_list_bloc/route/router.dart';
-import 'package:shoping_list_bloc/utility/form_submission_status.dart';
+import 'package:shoping_list_bloc/utility/state/form_submission_status.dart';
 
 import 'signin_bloc.dart';
 

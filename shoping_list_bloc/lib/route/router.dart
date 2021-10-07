@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoping_list_bloc/cart/cart_bloc.dart';
-import 'package:shoping_list_bloc/cart/cart_view.dart';
-import 'package:shoping_list_bloc/home/home_view.dart';
-import 'package:shoping_list_bloc/home/loading_view.dart';
-import 'package:shoping_list_bloc/home/welcome_view.dart';
-import 'package:shoping_list_bloc/signin/signin_bloc.dart';
-import 'package:shoping_list_bloc/signin/signin_view.dart';
-import 'package:shoping_list_bloc/signup/signup_bloc.dart';
-import 'package:shoping_list_bloc/signup/signup_view.dart';
-import 'package:shoping_list_bloc/talk/talk_bloc.dart';
-import 'package:shoping_list_bloc/talk/talk_view.dart';
+import 'package:shoping_list_bloc/auth/signin/signin_bloc.dart';
+import 'package:shoping_list_bloc/auth/signin/signin_view.dart';
+import 'package:shoping_list_bloc/auth/signup/signup_bloc.dart';
+import 'package:shoping_list_bloc/auth/signup/signup_view.dart';
+import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
+import 'package:shoping_list_bloc/src/cart/cart_view.dart';
+import 'package:shoping_list_bloc/src/home/home_view.dart';
+import 'package:shoping_list_bloc/src/home/loading_view.dart';
+import 'package:shoping_list_bloc/src/home/welcome_view.dart';
+import 'package:shoping_list_bloc/src/talk/talk_bloc.dart';
+import 'package:shoping_list_bloc/src/talk/talk_view.dart';
 
 const WELCOME_ROUTE = "/";
 const SIGNIN_ROUTE = "/signin";

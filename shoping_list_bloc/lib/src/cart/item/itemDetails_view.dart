@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoping_list_bloc/cart/cart_bloc.dart';
-
-import '../../model/item.dart';
+import 'package:shoping_list_bloc/model/item.dart';
+import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
 
 class ItemDetailsView extends StatelessWidget {
   final Item item;
