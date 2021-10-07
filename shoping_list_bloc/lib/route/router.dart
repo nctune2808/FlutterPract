@@ -38,7 +38,7 @@ class AppRouter {
       case CART_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
-                create: (context) => CartBloc()..add(LoadingItemEvent()),
+                create: (context) => CartBloc()..add(LoadingCartEvent()),
                 child: CartView()));
       case POST_ROUTE:
         return MaterialPageRoute(builder: (_) => LoadingView());

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoping_list_bloc/model/item.dart';
+import 'package:shoping_list_bloc/model/cart.dart';
 import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
 
-class ItemDetailsView extends StatelessWidget {
-  final Item item;
+class CartDetailsView extends StatelessWidget {
+  final Cart cart;
 
-  const ItemDetailsView({
+  const CartDetailsView({
     Key? key,
-    required this.item,
+    required this.cart,
   }) : super(key: key);
 
   @override
@@ -16,12 +16,12 @@ class ItemDetailsView extends StatelessWidget {
     final _noteController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: Text(item.title), actions: [
+      appBar: AppBar(title: Text(cart.item.name), actions: [
         IconButton(
           icon: Icon(Icons.check, size: 30),
           onPressed: () {
             BlocProvider.of<CartBloc>(context)
-              ..add(SaveItemEvent(item: item, note: _noteController.text));
+              ..add(SaveCartEvent(cart: cart, note: _noteController.text));
             Navigator.of(context).pop();
           },
         )
@@ -35,7 +35,7 @@ class ItemDetailsView extends StatelessWidget {
               Text('Note'),
               TextFormField(
                 textAlign: TextAlign.center,
-                decoration: InputDecoration(hintText: item.note),
+                decoration: InputDecoration(hintText: cart.note),
                 controller: _noteController,
               ),
             ],

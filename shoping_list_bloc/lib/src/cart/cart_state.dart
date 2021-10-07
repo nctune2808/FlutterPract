@@ -1,17 +1,17 @@
 part of 'cart_bloc.dart';
 
 class CartState {
-  final List<Item>? items;
+  final List<Cart>? carts;
 
   CartState({
-    this.items,
+    this.carts,
   });
 
   CartState copyWith({
-    List<Item>? items,
+    List<Cart>? carts,
   }) {
     return CartState(
-      items: items ?? this.items,
+      carts: carts ?? this.carts,
     );
   }
 }
@@ -19,9 +19,9 @@ class CartState {
 class ListCartInitial extends CartState {}
 
 class ListCartSuccess extends CartState {
-  final List<Item> items;
+  final List<Cart> carts;
   ListCartSuccess({
-    required this.items,
+    required this.carts,
   });
 }
 
@@ -33,8 +33,8 @@ class ListCartFailure extends CartState {
 }
 
 // class UpdateCartSuccess extends CartState {
-//   final Item item;
+//   final Cart cart;
 //   UpdateCartSuccess({
-//     required this.item,
+//     required this.cart,
 //   });
 // }

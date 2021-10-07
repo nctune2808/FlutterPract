@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoping_list_bloc/model/item.dart';
-import 'package:shoping_list_bloc/route/router.dart';
+import 'package:shoping_list_bloc/model/cart.dart';
+import 'package:shoping_list_bloc/src/cart/cardDetails_view.dart';
 import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
 
-import 'itemDetails_view.dart';
+class CartListView extends StatelessWidget {
+  final List<Cart> carts;
 
-class IemListView extends StatelessWidget {
-  final List<Item> items;
-
-  IemListView({
+  CartListView({
     Key? key,
-    required this.items,
+    required this.carts,
   }) : super(key: key);
 
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: ListView.builder(
-        itemCount: items.length,
+        itemCount: carts.length,
         itemBuilder: (context, index) {
-          Item deteledItem = items[index];
+          Cart deteledCart = carts[index];
           return Dismissible(
             key: UniqueKey(),
             background: Container(
@@ -36,34 +34,32 @@ class IemListView extends StatelessWidget {
                 ),
               ),
             ),
-            direction: items[index].isDone
+            direction: carts[index].isDone
                 ? DismissDirection.endToStart
                 : DismissDirection.none,
             onDismissed: (direction) {
-              BlocProvider.of<CartBloc>(context)
-                ..add(DeleteItemEvent(item: items[index]));
+              context.read<CartBloc>().add(DeleteCartEvent(cart: carts[index]));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
-                  '${items[index].title.toUpperCase()} Deleted',
-                  textAlign: TextAlign.center,
+                  'Cart \'${carts[index].item.name.toUpperCase()}\' is Deleted',
+                  textAlign: TextAlign.start,
                 ),
                 action: SnackBarAction(
                     label: "UNDO",
                     onPressed: () {
-                      BlocProvider.of<CartBloc>(context)
-                        ..add(InsertItemEvent(
-                            index: index, deletedItem: deteledItem));
+                      context.read<CartBloc>().add(InsertCartEvent(
+                          index: index, deletedCart: deteledCart));
                     }),
               ));
             },
-            child: _listCart(context, items[index]),
+            child: _listCart(context, carts[index]),
           );
         },
       ),
     );
   }
 
-  Widget _listCart(BuildContext context, Item item) {
+  Widget _listCart(BuildContext context, Cart cart) {
     return Card(
       child: CheckboxListTile(
         checkColor: Colors.black45,
@@ -74,8 +70,8 @@ class IemListView extends StatelessWidget {
           children: [
             SizedBox(),
             Text(
-              item.title,
-              style: item.isDone
+              cart.item.name,
+              style: cart.isDone
                   ? TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.black45)
@@ -87,26 +83,23 @@ class IemListView extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Icons.edit,
-                color: item.isDone ? Colors.black45 : Colors.blue,
+                color: cart.isDone ? Colors.black45 : Colors.blue,
               ),
               onPressed: () {
-                !item.isDone
-                    ? Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<CartBloc>(context),
-                            child: ItemDetailsView(item: item))))
-                    : null;
+                if (!cart.isDone)
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => BlocProvider.value(
+                          value: BlocProvider.of<CartBloc>(context),
+                          child: CartDetailsView(cart: cart))));
               },
             ),
           ],
         ),
-        value: item.isDone,
+        value: cart.isDone,
         onChanged: (value) {
-          BlocProvider.of<CartBloc>(context)
-            ..add(UpdateItemEvent(
-              item: item,
-              isDone: value!,
-            ));
+          context
+              .read<CartBloc>()
+              .add(UpdateCartEvent(cart: cart, isDone: value!));
         },
       ),
     );

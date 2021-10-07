@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoping_list_bloc/model/cart.dart';
 import 'package:shoping_list_bloc/model/item.dart';
+import 'package:shoping_list_bloc/src/cart/cartList_view.dart';
 import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
-import 'package:shoping_list_bloc/src/cart/item/itemList_view.dart';
 import 'package:shoping_list_bloc/src/home/loading_view.dart';
 
 class CartView extends StatefulWidget {
@@ -22,7 +23,7 @@ class _CartViewState extends State<CartView> {
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           if (state is ListCartSuccess) {
-            return state.items.isEmpty ? _emptyForm() : _cartForm(state.items);
+            return state.carts.isEmpty ? _emptyForm() : _cartForm(state.carts);
           } else if (state is ListCartFailure) {
             return Center(child: Text('Error: ${state.exception}'));
           } else {
@@ -50,11 +51,11 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget _cartForm(List<Item> items) {
+  Widget _cartForm(List<Cart> carts) {
     return Form(
       key: _formKey,
-      child: IemListView(
-        items: items,
+      child: CartListView(
+        carts: carts,
       ),
     );
   }
@@ -74,22 +75,21 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget _addItemButton() {
+  Widget _addCartButton() {
     return ElevatedButton(
       onPressed: () {
-        BlocProvider.of<CartBloc>(context)
-          ..add(AddItemEvent(
-            item: Item(
-              title: _titleController.text,
-              note: _noteController.text,
-              isDone: false,
-            ),
-          ));
-        // Navigator.of(context).pop();
-        _titleController.text = '';
-        _noteController.text = '';
+        context.read<CartBloc>().add(AddCartEvent(
+              cart: Cart(
+                item: Item(name: _titleController.text),
+                note: _noteController.text,
+                isDone: false,
+              ),
+            ));
+        Navigator.of(context).pop();
+        _titleController.clear();
+        _noteController.clear();
       },
-      child: Text('Add Item'),
+      child: Text('Add Cart'),
     );
   }
 
@@ -104,7 +104,7 @@ class _CartViewState extends State<CartView> {
             child: Column(
               children: [
                 _groupTextField(),
-                _addItemButton(),
+                _addCartButton(),
               ],
             ),
           ),

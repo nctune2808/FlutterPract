@@ -1,68 +1,72 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:shoping_list_bloc/model/item.dart';
+import 'package:shoping_list_bloc/model/cart.dart';
+import 'package:shoping_list_bloc/model/cart.dart';
 import 'package:shoping_list_bloc/src/cart/cart_repository.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  final cartRepo = CartRepository();
+  final _cartRepo = CartRepository();
   CartBloc() : super(CartState());
 
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
-    if (event is LoadingItemEvent) {
+    if (event is LoadingCartEvent) {
       yield ListCartInitial();
       try {
-        final initItems = await cartRepo.getListItems();
-        yield ListCartSuccess(items: initItems);
+        final initCarts = await _cartRepo.getListCarts();
+        _cartRepo.getCarts();
+        yield ListCartSuccess(carts: initCarts);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
-    } else if (event is AddItemEvent) {
+    } else if (event is AddCartEvent) {
       print("Press ADD");
       try {
-        state.items!.add(event.item);
-        yield ListCartSuccess(items: state.items!);
+        // state.carts!.add(event.cart);
+        _cartRepo.addCartToCarts(cart: event.cart);
+        yield ListCartSuccess(carts: state.carts!);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
-    } else if (event is DeleteItemEvent) {
+    } else if (event is DeleteCartEvent) {
       print("Press DEL");
       try {
-        state.items!.remove(event.item);
-        yield ListCartSuccess(items: state.items!);
+        state.carts!.remove(event.cart);
+        _cartRepo.delCartToCarts(cart: event.cart);
+        yield ListCartSuccess(carts: state.carts!);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
-    } else if (event is UpdateItemEvent) {
+    } else if (event is UpdateCartEvent) {
       print("Press UP");
       try {
-        final List<Item> updateItems = state.items!.map((item) {
-          return item == event.item
-              ? item.copyWith(isDone: event.isDone)
-              : item;
+        final List<Cart> updateCarts = state.carts!.map((cart) {
+          return cart == event.cart
+              ? cart.copyWith(isDone: event.isDone)
+              : cart;
         }).toList();
-        yield ListCartSuccess(items: updateItems);
+        yield ListCartSuccess(carts: updateCarts);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
-    } else if (event is InsertItemEvent) {
+    } else if (event is InsertCartEvent) {
       print('Press INS');
       try {
-        state.items!.insert(event.index, event.deletedItem);
-        yield ListCartSuccess(items: state.items!);
+        state.carts!.insert(event.index, event.deletedCart);
+        yield ListCartSuccess(carts: state.carts!);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
-    } else if (event is SaveItemEvent) {
+    } else if (event is SaveCartEvent) {
       print('Press SAV');
       try {
-        final List<Item> saveItems = state.items!.map((item) {
-          return item == event.item ? item.copyWith(note: event.note) : item;
+        final List<Cart> saveCarts = state.carts!.map((cart) {
+          return cart == event.cart ? cart.copyWith(note: event.note) : cart;
         }).toList();
-        yield ListCartSuccess(items: saveItems);
+        yield ListCartSuccess(carts: saveCarts);
       } catch (e) {
         yield ListCartFailure(exception: e);
       }

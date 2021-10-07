@@ -34,35 +34,39 @@ class _TalkViewState extends State<TalkView> {
             )
           ],
         ),
-        body: _boxChat());
+        body: _sceneBuilder());
+  }
+
+  Widget _sceneBuilder() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [_boxChat(), _composeForm()],
+    );
   }
 
   Widget _boxChat() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        StreamBuilder<QuerySnapshot>(
-          stream: TalkRepository().getSnapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            final messages = snapshot.data!.docs;
-            return Expanded(
-              child: ListView.builder(
-                reverse: true,
-                itemCount: messages.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return MessageView(message: messages[index]);
-                },
-              ),
-            );
-          },
-        ),
-        _composeForm()
-      ],
+    return StreamBuilder<QuerySnapshot>(
+      stream: TalkRepository().getSnapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        final messages = snapshot.data!.docs;
+        // snapshot.data!.docs.forEach((element) {
+        //   print(element.id);
+        // });
+        return Expanded(
+          child: ListView.builder(
+            reverse: true,
+            itemCount: messages.length,
+            itemBuilder: (BuildContext context, int index) {
+              return MessageView(message: messages[index]);
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -82,6 +86,7 @@ class _TalkViewState extends State<TalkView> {
                   Expanded(
                     child: TextFormField(
                       autocorrect: false,
+                      autofocus: true,
                       decoration: InputDecoration(hintText: "Send something?"),
                       controller: _textController,
                       onEditingComplete: () => _onSubmission(),

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shoping_list_bloc/auth/auth_repository.dart';
-import 'package:shoping_list_bloc/utility/function/covert.dart';
 
 class MessageView extends StatelessWidget {
   QueryDocumentSnapshot message;
