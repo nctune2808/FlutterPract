@@ -85,18 +85,21 @@ class SignInView extends StatelessWidget {
   }
 
   Widget _loginButton() {
-    return BlocBuilder<SigninBloc, SigninState>(
-      builder: (context, state) {
-        return state.formStatus is FormSubmitting
-            ? CircularProgressIndicator()
-            : ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    context.read<SigninBloc>().add(SigninSubmitted());
-                  }
-                },
-                child: Text('Login'));
-      },
+    return Flexible(
+      // for android test
+      child: BlocBuilder<SigninBloc, SigninState>(
+        builder: (context, state) {
+          return state.formStatus is FormSubmitting
+              ? CircularProgressIndicator()
+              : ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      context.read<SigninBloc>().add(SigninSubmitted());
+                    }
+                  },
+                  child: Text('Login'));
+        },
+      ),
     );
   }
 

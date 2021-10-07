@@ -1,69 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoping_list_bloc/auth/auth_repository.dart';
 import 'package:shoping_list_bloc/talk/talk_bloc.dart';
 import 'package:shoping_list_bloc/talk/talk_repository.dart';
 import 'package:shoping_list_bloc/utility/form_submission_status.dart';
+import 'package:shoping_list_bloc/utility/function/covert.dart';
 
-class TalkView extends StatelessWidget {
-  // _buildMessage(Message message, bool isMe) {
-  //   final Container msg = Container(
-  //     decoration: BoxDecoration(
-  //       color: isMe ? Colors.lightBlue[100] : Color(0xFFFFEFEE),
-  //       borderRadius: BorderRadius.all(Radius.circular(15)),
-  //     ),
-  //     margin: isMe
-  //         ? EdgeInsets.only(top: 20, left: 100)
-  //         : EdgeInsets.only(
-  //             top: 20,
-  //           ),
-  //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  //     width: MediaQuery.of(context).size.width * 0.75,
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Text(
-  //           message.time,
-  //           style: TextStyle(
-  //             color: Colors.blueGrey,
-  //             fontSize: 12.0,
-  //           ),
-  //         ),
-  //         Text(
-  //           message.text,
-  //           style: TextStyle(
-  //             color: Colors.black87,
-  //             fontSize: 15.0,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  //   if (isMe) {
-  //     return msg;
-  //   }
-  //   return Row(
-  //     children: [
-  //       msg,
-  //       IconButton(
-  //         icon: message.isLiked
-  //             ? Icon(Icons.favorite)
-  //             : Icon(Icons.favorite_border),
-  //         iconSize: 30.0,
-  //         color: message.isLiked ? Colors.red : Colors.blueGrey,
-  //         onPressed: () {},
-  //       )
-  //     ],
-  //   );
-  // }
+class TalkView extends StatefulWidget {
+  @override
+  _TalkViewState createState() => _TalkViewState();
+}
 
+class _TalkViewState extends State<TalkView> {
   final _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "name",
+            "Message",
             // widget.user.name,
             style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
           ),
@@ -83,25 +39,25 @@ class TalkView extends StatelessWidget {
   Widget _boxChat() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         StreamBuilder<QuerySnapshot>(
           stream: TalkRepository().getSnapshots(),
           builder: (context, snapshot) {
-            print(snapshot.hasData);
-            if (snapshot.hasData) {
-              final messages = snapshot.data!.docs;
-              List<Text> messageWidget = [];
-              for (var message in messages) {
-                print('${message['text']} from ${message['sender']}');
-                final messageBuilder =
-                    Text('${message['text']} from ${message['sender']}');
-                messageWidget.add(messageBuilder);
-              }
-              return Column(children: messageWidget);
-            } else {
-              return Text('No Data');
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
+            final messages = snapshot.data!.docs;
+            return Expanded(
+              child: ListView.builder(
+                reverse: true,
+                itemCount: messages.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _buildMessage(messages[index]);
+                },
+              ),
+            );
           },
         ),
         _composeForm()
@@ -112,9 +68,7 @@ class TalkView extends StatelessWidget {
   Widget _composeForm() {
     return BlocListener<TalkBloc, TalkState>(
       listener: (context, state) {
-        if (state.formStatus is SubmissionSucess) {
-          _showSnackBar(context, 'Sent');
-        }
+        print(state.formStatus);
       },
       child: BlocBuilder<TalkBloc, TalkState>(
         builder: (context, state) {
@@ -122,6 +76,7 @@ class TalkView extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     child: TextFormField(
@@ -135,9 +90,9 @@ class TalkView extends StatelessWidget {
                           .read<TalkBloc>()
                           .add(SentMessageEvent(message: _textController.text));
 
-                      _textController.text = '';
+                      _textController.clear();
                     },
-                    icon: Icon(Icons.open_in_browser),
+                    icon: Icon(Icons.send),
                   ),
                 ],
               ),
@@ -146,6 +101,51 @@ class TalkView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _buildMessage(QueryDocumentSnapshot message) {
+    final isMe =
+        message['sender'] == AuthRepository().getCurrentUser().displayName;
+    final Column msg = Column(
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: isMe ? Colors.lightBlue[100] : Color(0xFFFFEFEE),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            margin: isMe // max bubble size per chat
+                ? EdgeInsets.only(top: 20, left: 150)
+                : EdgeInsets.only(top: 20, right: 150),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            // width: MediaQuery.of(context).size.width * 0.75,
+            child: Column(
+              crossAxisAlignment:
+                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: [
+                Text(
+                  readTime((message['time'] as Timestamp).toDate()),
+                  style: TextStyle(
+                    color: Colors.blueGrey,
+                    fontSize: 12.0,
+                  ),
+                ),
+                Text(
+                  message['text'],
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 15.0,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ]);
+    if (isMe) {
+      return msg;
+    }
+    return msg;
   }
 
   void _showSnackBar(BuildContext context, String message) {

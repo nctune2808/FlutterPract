@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class TalkRepository {
   final _firestore = FirebaseFirestore.instance;
@@ -12,7 +11,10 @@ class TalkRepository {
   }
 
   Stream<QuerySnapshot> getSnapshots() {
-    return _firestore.collection('messages').snapshots();
+    return _firestore
+        .collection("messages")
+        .orderBy("time", descending: true)
+        .snapshots();
   }
 
   Future<void> streamMessages() async {
