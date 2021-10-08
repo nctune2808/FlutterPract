@@ -1,6 +1,5 @@
 part of 'cart_bloc.dart';
 
-@immutable
 abstract class CartEvent {}
 
 class LoadingCartEvent extends CartEvent {}
@@ -13,9 +12,9 @@ class AddCartEvent extends CartEvent {
 }
 
 class DeleteCartEvent extends CartEvent {
-  String cartId;
+  Cart cart;
   DeleteCartEvent({
-    required this.cartId,
+    required this.cart,
   });
 }
 
@@ -30,18 +29,14 @@ class SaveCartEvent extends CartEvent {
 
 class UpdateCartEvent extends CartEvent {
   Cart cart;
-  bool isDone;
   UpdateCartEvent({
     required this.cart,
-    required this.isDone,
   });
 }
 
 class InsertCartEvent extends CartEvent {
-  int index;
-  Cart deletedCart;
+  Cart cart;
   InsertCartEvent({
-    required this.index,
-    required this.deletedCart,
+    required this.cart,
   });
 }

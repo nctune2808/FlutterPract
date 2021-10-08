@@ -12,10 +12,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final _cartRepo = CartRepository();
   CartBloc() : super(CartState());
 
+  void dispose() {
+    super.close();
+  }
+
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
     if (event is LoadingCartEvent) {
-      _cartRepo.getCarts();
+      // _cartRepo.getCarts();
       yield RefreshableCart();
     }
 
@@ -34,7 +38,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       yield state.copyWith(formStatus: Submitting());
       print("Press DEL");
       try {
-        _cartRepo.deleteCart(cartId: event.cartId);
+        _cartRepo.deleteCart(cart: event.cart);
         yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
         yield state.copyWith(formStatus: SubmissionFailed(exception: e));
@@ -44,24 +48,20 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if (event is UpdateCartEvent) {
       print("Press UP");
       try {
-        final List<Cart> updateCarts = state.carts!.map((cart) {
-          return cart == event.cart
-              ? cart.copyWith(isDone: event.isDone)
-              : cart;
-        }).toList();
-        yield ListCartSuccess(carts: updateCarts);
+        _cartRepo.updateCart(cart: event.cart);
+        yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
-        yield ListCartFailure(exception: e);
+        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
       }
     }
 
     if (event is InsertCartEvent) {
       print('Press INS');
       try {
-        state.carts!.insert(event.index, event.deletedCart);
-        yield ListCartSuccess(carts: state.carts!);
+        _cartRepo.recoverCart(cart: event.cart);
+        yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
-        yield ListCartFailure(exception: e);
+        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
       }
     }
 

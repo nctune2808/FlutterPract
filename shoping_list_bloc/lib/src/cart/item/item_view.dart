@@ -1,14 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoping_list_bloc/model/cart.dart';
 import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
 
-class ItemView extends StatelessWidget {
-  QueryDocumentSnapshot cart;
-  ItemView({Key? key, required this.cart}) : super(key: key);
+class ItemView extends StatefulWidget {
+  Cart cart;
+  ItemView({required this.cart});
+
+  @override
+  _ItemViewState createState() => _ItemViewState();
+}
+
+class _ItemViewState extends State<ItemView> {
+  // @override
+  // void dispose() {
+  //   BlocProvider.of<CartBloc>(context).dispose();
+  //   super.dispose();
+  // }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    Cart deleteCart;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       child: Dismissible(
@@ -26,25 +44,30 @@ class ItemView extends StatelessWidget {
             ),
           ),
         ),
-        direction: cart['isDone']
+        direction: widget.cart.isDone
             ? DismissDirection.endToStart
             : DismissDirection.none,
         onDismissed: (direction) {
-          print(cart.id);
-          // BlocProvider.of<CartBloc>(context)..add(event)
-          context.read<CartBloc>().add(DeleteCartEvent(cartId: cart.id));
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-              'Cart \'${cart['title'].toUpperCase()}\' is Deleted',
-              textAlign: TextAlign.start,
-            ),
-            action: SnackBarAction(
-                label: "UNDO",
-                onPressed: () {
-                  // context.read<CartBloc>().add(InsertCartEvent(
-                  //     index: index, deletedCart: deteledCart));
-                }),
-          ));
+          deleteCart = widget.cart;
+
+          context.read<CartBloc>().add(DeleteCartEvent(cart: widget.cart));
+
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+              content: Text(
+                'Cart \'${widget.cart.title.toUpperCase()}\' is Deleted',
+                textAlign: TextAlign.start,
+              ),
+              action: SnackBarAction(
+                  label: "UNDO",
+                  onPressed: () {
+                    print("test: ${deleteCart.id}");
+                    // context
+                    //     .read<CartBloc>()
+                    //     .add(AddCartEvent(cart: deleteCart));
+                  }),
+            ));
         },
         child: _buildItem(context),
       ),
@@ -62,8 +85,8 @@ class ItemView extends StatelessWidget {
           children: [
             SizedBox(),
             Text(
-              cart['title'],
-              style: cart['isDone']
+              widget.cart.title,
+              style: widget.cart.isDone
                   ? TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.black45)
@@ -75,7 +98,7 @@ class ItemView extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Icons.edit,
-                color: cart['isDone'] ? Colors.black45 : Colors.blue,
+                color: widget.cart.isDone ? Colors.black45 : Colors.blue,
               ),
               onPressed: () {
                 // if (!cart['isDone'])
@@ -87,11 +110,10 @@ class ItemView extends StatelessWidget {
             ),
           ],
         ),
-        value: cart['isDone'],
+        value: widget.cart.isDone,
         onChanged: (value) {
-          // context
-          //     .read<CartBloc>()
-          //     .add(UpdateCartEvent(cart: cart, isDone: value!));
+          Cart updateCart = widget.cart.copyWith(isDone: value!);
+          context.read<CartBloc>().add(UpdateCartEvent(cart: updateCart));
         },
       ),
     );
