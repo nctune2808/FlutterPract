@@ -15,27 +15,33 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
     if (event is LoadingCartEvent) {
-      // _cartRepo.getCarts();
+      _cartRepo.getCarts();
       yield RefreshableCart();
-    } else if (event is AddCartEvent) {
-      yield state.copyWith(formStatus: FormSubmitting());
+    }
+
+    if (event is AddCartEvent) {
+      yield state.copyWith(formStatus: Submitting());
       print("Press ADD");
       try {
-        _cartRepo.addCartToCarts(cart: event.cart);
+        _cartRepo.addCart(cart: event.cart);
         yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
         yield state.copyWith(formStatus: SubmissionFailed(exception: e));
       }
-    } else if (event is DeleteCartEvent) {
+    }
+
+    if (event is DeleteCartEvent) {
+      yield state.copyWith(formStatus: Submitting());
       print("Press DEL");
       try {
-        state.carts!.remove(event.cart);
-        _cartRepo.delCartToCarts(cart: event.cart);
-        yield ListCartSuccess(carts: state.carts!);
+        _cartRepo.deleteCart(cartId: event.cartId);
+        yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
-        yield ListCartFailure(exception: e);
+        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
       }
-    } else if (event is UpdateCartEvent) {
+    }
+
+    if (event is UpdateCartEvent) {
       print("Press UP");
       try {
         final List<Cart> updateCarts = state.carts!.map((cart) {
@@ -47,7 +53,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
-    } else if (event is InsertCartEvent) {
+    }
+
+    if (event is InsertCartEvent) {
       print('Press INS');
       try {
         state.carts!.insert(event.index, event.deletedCart);
@@ -55,7 +63,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       } catch (e) {
         yield ListCartFailure(exception: e);
       }
-    } else if (event is SaveCartEvent) {
+    }
+
+    if (event is SaveCartEvent) {
       print('Press SAV');
       try {
         final List<Cart> saveCarts = state.carts!.map((cart) {

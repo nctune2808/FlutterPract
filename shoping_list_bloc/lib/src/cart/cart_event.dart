@@ -13,9 +13,9 @@ class AddCartEvent extends CartEvent {
 }
 
 class DeleteCartEvent extends CartEvent {
-  Cart cart;
+  String cartId;
   DeleteCartEvent({
-    required this.cart,
+    required this.cartId,
   });
 }
 

@@ -6,6 +6,7 @@ import 'package:shoping_list_bloc/model/item.dart';
 import 'package:shoping_list_bloc/src/cart/cartList_view.dart';
 import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
 import 'package:shoping_list_bloc/src/cart/cart_repository.dart';
+import 'package:shoping_list_bloc/src/cart/item/item_view.dart';
 import 'package:shoping_list_bloc/src/home/loading_view.dart';
 import 'package:shoping_list_bloc/utility/state/form_submission_status.dart';
 
@@ -27,7 +28,7 @@ class _CartViewState extends State<CartView> {
           final formStatus = state.formStatus;
           if (state is RefreshableCart || formStatus is SubmissionSucess) {
             // return state.carts.isEmpty ? _emptyForm() : _cartForm(state.carts);
-            return _cartForm();
+            return _sceneBuilder();
           } else if (formStatus is SubmissionFailed) {
             return Center(
                 child: Text('Error: ${formStatus.exception.toString()}'));
@@ -36,8 +37,6 @@ class _CartViewState extends State<CartView> {
           }
         },
       ),
-      // body: _cartForm(),
-
       floatingActionButton: _floatingButton(),
     );
   }
@@ -58,12 +57,9 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget _cartForm() {
+  Widget _sceneBuilder() {
     return Form(
       key: _formKey,
-      // child: CartListView(
-      //   carts: carts,
-      // ),
       child: Column(
         children: [
           StreamBuilder<QuerySnapshot>(
@@ -73,15 +69,13 @@ class _CartViewState extends State<CartView> {
                 return _emptyForm();
               }
               final carts = snapshot.data!.docs;
-              // snapshot.data!.docs.forEach((element) {
-              //   print('zxc ${element.id}');
-              // });
+
               return Expanded(
                 child: ListView.builder(
                   // reverse: true,
                   itemCount: carts.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Text(carts[index]['title']);
+                    return ItemView(cart: carts[index]);
                   },
                 ),
               );

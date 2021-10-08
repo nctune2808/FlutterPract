@@ -89,7 +89,7 @@ class SignInView extends StatelessWidget {
       // for android test
       child: BlocBuilder<SigninBloc, SigninState>(
         builder: (context, state) {
-          return state.formStatus is FormSubmitting
+          return state.formStatus is Submitting
               ? CircularProgressIndicator()
               : ElevatedButton(
                   onPressed: () {

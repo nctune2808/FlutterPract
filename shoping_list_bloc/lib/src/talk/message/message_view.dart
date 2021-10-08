@@ -44,7 +44,7 @@ class MessageView extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color:
                             _isMe() ? Colors.lightBlue[100] : Color(0xFFFFEFEE),
-                        child: _buildMessage(message),
+                        child: _buildMessage(),
                       ),
                     ),
 
@@ -68,7 +68,7 @@ class MessageView extends StatelessWidget {
     );
   }
 
-  Widget _buildMessage(QueryDocumentSnapshot message) {
+  Widget _buildMessage() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 7.5),
       child: Column(

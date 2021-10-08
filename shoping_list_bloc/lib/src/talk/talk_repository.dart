@@ -7,9 +7,14 @@ class TalkRepository {
   AuthRepository _authRepo = AuthRepository();
 
   Future<void> getMessages() async {
-    final messages = await _firestore.collection('messages').get();
-    for (var message in messages.docs) {
-      print(message.data());
+    try {
+      final messages = await _firestore.collection('messages').get();
+      for (var message in messages.docs) {
+        Message _message = Message.fromMap(message.data());
+        print(_message.toMap());
+      }
+    } catch (e) {
+      throw e;
     }
   }
 

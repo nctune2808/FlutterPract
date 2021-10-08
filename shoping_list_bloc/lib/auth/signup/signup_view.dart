@@ -101,7 +101,7 @@ class SignUpView extends StatelessWidget {
       },
       child: BlocBuilder<SignupBloc, SignupState>(
         builder: (context, state) {
-          return state.formStatus is FormSubmitting
+          return state.formStatus is Submitting
               ? CircularProgressIndicator()
               : ElevatedButton(
                   onPressed: () {

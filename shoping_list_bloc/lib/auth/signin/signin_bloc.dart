@@ -16,7 +16,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
     } else if (event is SigninPassword) {
       yield state.copyWith(password: event.password);
     } else if (event is SigninSubmitted) {
-      yield state.copyWith(formStatus: FormSubmitting());
+      yield state.copyWith(formStatus: Submitting());
       try {
         await _authRepo.signInEmail(
             email: state.email, password: state.password);
@@ -40,7 +40,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
       //   yield state.copyWith(formStatus: SubmissionFailed(exception: e));
       // }
     } else if (event is FastTrackSubmitted) {
-      yield state.copyWith(formStatus: FormSubmitting());
+      yield state.copyWith(formStatus: Submitting());
       try {
         await _authRepo.signInAnon();
         yield state.copyWith(formStatus: SubmissionSucess());

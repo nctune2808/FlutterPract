@@ -6,7 +6,7 @@ class InitialFormStatus extends FormSubmissionStatus {
   const InitialFormStatus();
 }
 
-class FormSubmitting extends FormSubmissionStatus {}
+class Submitting extends FormSubmissionStatus {}
 
 class AdminSubmitting extends FormSubmissionStatus {}
 

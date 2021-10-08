@@ -19,7 +19,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     } else if (event is SignupEmail) {
       yield state.copyWith(email: event.email);
     } else if (event is SignupSubmitted) {
-      yield state.copyWith(formStatus: FormSubmitting());
+      yield state.copyWith(formStatus: Submitting());
       try {
         final newUser = await _authRepo.signUpEmail(
             email: state.email,
