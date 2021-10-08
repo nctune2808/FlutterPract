@@ -41,7 +41,7 @@ class CartListView extends StatelessWidget {
               context.read<CartBloc>().add(DeleteCartEvent(cart: carts[index]));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
-                  'Cart \'${carts[index].item.name.toUpperCase()}\' is Deleted',
+                  'Cart \'${carts[index].title.toUpperCase()}\' is Deleted',
                   textAlign: TextAlign.start,
                 ),
                 action: SnackBarAction(
@@ -70,7 +70,7 @@ class CartListView extends StatelessWidget {
           children: [
             SizedBox(),
             Text(
-              cart.item.name,
+              cart.title,
               style: cart.isDone
                   ? TextStyle(
                       decoration: TextDecoration.lineThrough,

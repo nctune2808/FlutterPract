@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:shoping_list_bloc/model/cart.dart';
 import 'package:shoping_list_bloc/model/cart.dart';
 import 'package:shoping_list_bloc/src/cart/cart_repository.dart';
+import 'package:shoping_list_bloc/utility/state/form_submission_status.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -14,22 +15,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
     if (event is LoadingCartEvent) {
-      yield ListCartInitial();
-      try {
-        final initCarts = await _cartRepo.getListCarts();
-        _cartRepo.getCarts();
-        yield ListCartSuccess(carts: initCarts);
-      } catch (e) {
-        yield ListCartFailure(exception: e);
-      }
+      // _cartRepo.getCarts();
+      yield RefreshableCart();
     } else if (event is AddCartEvent) {
+      yield state.copyWith(formStatus: FormSubmitting());
       print("Press ADD");
       try {
-        // state.carts!.add(event.cart);
         _cartRepo.addCartToCarts(cart: event.cart);
-        yield ListCartSuccess(carts: state.carts!);
+        yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
-        yield ListCartFailure(exception: e);
+        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
       }
     } else if (event is DeleteCartEvent) {
       print("Press DEL");

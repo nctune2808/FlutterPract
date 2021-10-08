@@ -13,8 +13,6 @@ class TalkBloc extends Bloc<TalkEvent, TalkState> {
 
   @override
   Stream<TalkState> mapEventToState(TalkEvent event) async* {
-    print(event.toString());
-
     if (event is LoadingMessageEvent) {
       yield InitialMessage();
     } else if (event is SentMessageEvent) {

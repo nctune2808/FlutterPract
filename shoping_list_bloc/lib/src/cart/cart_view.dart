@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_list_bloc/model/cart.dart';
 import 'package:shoping_list_bloc/model/item.dart';
 import 'package:shoping_list_bloc/src/cart/cartList_view.dart';
 import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
+import 'package:shoping_list_bloc/src/cart/cart_repository.dart';
 import 'package:shoping_list_bloc/src/home/loading_view.dart';
+import 'package:shoping_list_bloc/utility/state/form_submission_status.dart';
 
 class CartView extends StatefulWidget {
   @override
@@ -19,18 +22,22 @@ class _CartViewState extends State<CartView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _navBar(),
-      // Daclare state for all CART ITEMS here
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
-          if (state is ListCartSuccess) {
-            return state.carts.isEmpty ? _emptyForm() : _cartForm(state.carts);
-          } else if (state is ListCartFailure) {
-            return Center(child: Text('Error: ${state.exception}'));
+          final formStatus = state.formStatus;
+          if (state is RefreshableCart || formStatus is SubmissionSucess) {
+            // return state.carts.isEmpty ? _emptyForm() : _cartForm(state.carts);
+            return _cartForm();
+          } else if (formStatus is SubmissionFailed) {
+            return Center(
+                child: Text('Error: ${formStatus.exception.toString()}'));
           } else {
             return LoadingView();
           }
         },
       ),
+      // body: _cartForm(),
+
       floatingActionButton: _floatingButton(),
     );
   }
@@ -51,11 +58,36 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget _cartForm(List<Cart> carts) {
+  Widget _cartForm() {
     return Form(
       key: _formKey,
-      child: CartListView(
-        carts: carts,
+      // child: CartListView(
+      //   carts: carts,
+      // ),
+      child: Column(
+        children: [
+          StreamBuilder<QuerySnapshot>(
+            stream: CartRepository().getSnapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return _emptyForm();
+              }
+              final carts = snapshot.data!.docs;
+              // snapshot.data!.docs.forEach((element) {
+              //   print('zxc ${element.id}');
+              // });
+              return Expanded(
+                child: ListView.builder(
+                  // reverse: true,
+                  itemCount: carts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Text(carts[index]['title']);
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -80,7 +112,7 @@ class _CartViewState extends State<CartView> {
       onPressed: () {
         context.read<CartBloc>().add(AddCartEvent(
               cart: Cart(
-                item: Item(name: _titleController.text),
+                title: _titleController.text,
                 note: _noteController.text,
                 isDone: false,
               ),

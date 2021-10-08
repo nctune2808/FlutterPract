@@ -16,7 +16,7 @@ class CartDetailsView extends StatelessWidget {
     final _noteController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: Text(cart.item.name), actions: [
+      appBar: AppBar(title: Text(cart.title), actions: [
         IconButton(
           icon: Icon(Icons.check, size: 30),
           onPressed: () {

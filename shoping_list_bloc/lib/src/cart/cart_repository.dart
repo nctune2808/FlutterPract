@@ -29,12 +29,27 @@ class CartRepository {
     }
   }
 
-  Future<void> addItem() async {}
+  Stream<QuerySnapshot> getSnapshots() {
+    return _firestore.collection("carts").snapshots();
+  }
+
+  Future<void> streamCarts() async {
+    print("---------------------------------------------");
+    try {
+      await for (var snapshot in _firestore.collection('carts').snapshots()) {
+        for (var cart in snapshot.docs) {
+          print(cart.data());
+        }
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
 
   Future<void> addCartToCarts({required Cart cart}) async {
     try {
       await _firestore.collection('carts').add({
-        'item': cart.item.name,
+        'title': cart.title,
         'note': cart.note,
         'isDone': cart.isDone,
       });
