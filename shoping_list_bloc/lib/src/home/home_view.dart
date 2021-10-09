@@ -55,9 +55,9 @@ class HomeView extends StatelessWidget {
           ElevatedButton(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [Icon(Icons.view_carousel, size: 60), Text("PHOTO")],
+              children: [Icon(Icons.view_carousel, size: 60), Text("GALLERY")],
             ),
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, GALLERY_ROUTE),
           ),
         ],
       ),

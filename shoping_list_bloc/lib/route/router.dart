@@ -6,6 +6,7 @@ import 'package:shoping_list_bloc/auth/signup/signup_bloc.dart';
 import 'package:shoping_list_bloc/auth/signup/signup_view.dart';
 import 'package:shoping_list_bloc/src/cart/cart_bloc.dart';
 import 'package:shoping_list_bloc/src/cart/cart_view.dart';
+import 'package:shoping_list_bloc/src/gallery/gallery_view.dart';
 import 'package:shoping_list_bloc/src/home/home_view.dart';
 import 'package:shoping_list_bloc/src/home/loading_view.dart';
 import 'package:shoping_list_bloc/src/home/welcome_view.dart';
@@ -19,6 +20,7 @@ const HOME_ROUTE = "/home";
 const CART_ROUTE = "/cart";
 const POST_ROUTE = "/post";
 const TALK_ROUTE = "/talk";
+const GALLERY_ROUTE = "/galerry";
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -42,6 +44,8 @@ class AppRouter {
                 child: CartView()));
       case POST_ROUTE:
         return MaterialPageRoute(builder: (_) => LoadingView());
+      case GALLERY_ROUTE:
+        return MaterialPageRoute(builder: (_) => GalleryView());
       case TALK_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
