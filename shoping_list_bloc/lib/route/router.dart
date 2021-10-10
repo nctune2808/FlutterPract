@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoping_list_bloc/auth/signin/signin_bloc.dart';
@@ -12,13 +14,14 @@ import 'package:shoping_list_bloc/src/home/loading_view.dart';
 import 'package:shoping_list_bloc/src/home/welcome_view.dart';
 import 'package:shoping_list_bloc/src/talk/talk_bloc.dart';
 import 'package:shoping_list_bloc/src/talk/talk_view.dart';
+import 'package:shoping_list_bloc/src/timeline/timeline_view.dart';
 
 const WELCOME_ROUTE = "/";
 const SIGNIN_ROUTE = "/signin";
 const SIGNUP_ROUTE = "/signup";
 const HOME_ROUTE = "/home";
 const CART_ROUTE = "/cart";
-const POST_ROUTE = "/post";
+const TIMELINE_ROUTE = "/timeline";
 const TALK_ROUTE = "/talk";
 const GALLERY_ROUTE = "/galerry";
 
@@ -42,8 +45,8 @@ class AppRouter {
             builder: (_) => BlocProvider(
                 create: (context) => CartBloc()..add(LoadingCartEvent()),
                 child: CartView()));
-      case POST_ROUTE:
-        return MaterialPageRoute(builder: (_) => LoadingView());
+      case TIMELINE_ROUTE:
+        return MaterialPageRoute(builder: (_) => TimelineView());
       case GALLERY_ROUTE:
         return MaterialPageRoute(builder: (_) => GalleryView());
       case TALK_ROUTE:

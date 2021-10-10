@@ -14,7 +14,7 @@ Element _ensureInitialized(String id) {
 }
 
 AnchorElement _createAnchorElement(String href, String suggestedName) {
-  return AnchorElement(href: href)..download = suggestedName ?? 'download';
+  return AnchorElement(href: href)..download = suggestedName;
 }
 
 /// Add an element to a container and click it

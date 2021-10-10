@@ -41,9 +41,9 @@ class HomeView extends StatelessWidget {
           ElevatedButton(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [Icon(Icons.list, size: 60), Text("POST")],
+              children: [Icon(Icons.list, size: 60), Text("TIMELINE")],
             ),
-            onPressed: () => Navigator.pushNamed(context, POST_ROUTE),
+            onPressed: () => Navigator.pushNamed(context, TIMELINE_ROUTE),
           ),
           ElevatedButton(
             child: Column(
