@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shoping_list_bloc/model/cart.dart';
+import 'package:shoping_list_bloc/service/firebase_service.dart';
 
 class CartRepository {
   final _firestore = FirebaseFirestore.instance;

@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shoping_list_bloc/service/firebase_service.dart';
 
-class AuthRepository implements FirebaseService {
+class AuthRepository {
   final _auth = FirebaseAuth.instance;
 
-  @override
   User getCurrentUser() {
     try {
       return _auth.currentUser!;
@@ -13,7 +12,6 @@ class AuthRepository implements FirebaseService {
     }
   }
 
-  @override
   Future signInAnon() async {
     try {
       await _auth.signInAnonymously();
@@ -22,7 +20,6 @@ class AuthRepository implements FirebaseService {
     }
   }
 
-  @override
   Future signInEmail({required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -31,7 +28,6 @@ class AuthRepository implements FirebaseService {
     }
   }
 
-  @override
   Future signUpEmail({
     required String username,
     required String email,
