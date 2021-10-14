@@ -30,6 +30,7 @@ dependencies:
   firebase_storage: ^10.0.5
   cloud_firestore: ^2.5.2
 
+  # http: ^0.13.4
   graphql_flutter: ^5.0.0
   hasura_connect: ^3.0.6
   

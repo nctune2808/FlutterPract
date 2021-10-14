@@ -14,6 +14,7 @@ import 'package:shoping_list_bloc/src/home/loading_view.dart';
 import 'package:shoping_list_bloc/src/home/welcome_view.dart';
 import 'package:shoping_list_bloc/src/talk/talk_bloc.dart';
 import 'package:shoping_list_bloc/src/talk/talk_view.dart';
+import 'package:shoping_list_bloc/src/timeline/timeline_bloc.dart';
 import 'package:shoping_list_bloc/src/timeline/timeline_view.dart';
 
 const WELCOME_ROUTE = "/";
@@ -46,7 +47,11 @@ class AppRouter {
                 create: (context) => CartBloc()..add(LoadingCartEvent()),
                 child: CartView()));
       case TIMELINE_ROUTE:
-        return MaterialPageRoute(builder: (_) => TimelineView());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                create: (context) =>
+                    TimelineBloc()..add(LoadingTimelineEvent()),
+                child: TimelineView()));
       case GALLERY_ROUTE:
         return MaterialPageRoute(builder: (_) => GalleryView());
       case TALK_ROUTE:

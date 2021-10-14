@@ -1,6 +1,6 @@
 part of 'cart_bloc.dart';
 
-abstract class CartEvent {}
+class CartEvent {}
 
 class LoadingCartEvent extends CartEvent {}
 
