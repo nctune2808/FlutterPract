@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tolo/service/firebase_service.dart';
 
 class AuthRepository {
   final _auth = FirebaseAuth.instance;

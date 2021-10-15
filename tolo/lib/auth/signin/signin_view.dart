@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tolo/auth/auth_repository.dart';
 import 'package:tolo/route/router.dart';
 import 'package:tolo/utility/state/form_submission_status.dart';
 

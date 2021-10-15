@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tolo/model/cart.dart';
-import 'package:tolo/service/firebase_service.dart';
 
 class CartRepository {
   final _firestore = FirebaseFirestore.instance;
