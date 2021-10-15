@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/model/post.dart';
+import 'package:tolo/src/timeline/post/post_bloc.dart';
 import 'package:tolo/src/timeline/post/post_view.dart';
 import 'package:tolo/src/timeline/timeline_bloc.dart';
 import 'package:tolo/utility/state/form_submission_status.dart';
@@ -76,7 +77,7 @@ class _TimelineViewState extends State<TimelineView> {
   Widget _addPostButton() {
     return ElevatedButton(
       onPressed: () {
-        context.read<TimelineBloc>().add(AddTimelineEvent(
+        context.read<PostBloc>().add(AddPostEvent(
             post: Post(
                 title: _titleController.text,
                 body: _bodyController.text,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/auth/signin/signin_bloc.dart';
@@ -14,6 +12,7 @@ import 'package:tolo/src/home/loading_view.dart';
 import 'package:tolo/src/home/welcome_view.dart';
 import 'package:tolo/src/talk/talk_bloc.dart';
 import 'package:tolo/src/talk/talk_view.dart';
+import 'package:tolo/src/timeline/post/post_bloc.dart';
 import 'package:tolo/src/timeline/timeline_bloc.dart';
 import 'package:tolo/src/timeline/timeline_view.dart';
 
@@ -48,10 +47,14 @@ class AppRouter {
                 child: CartView()));
       case TIMELINE_ROUTE:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
+          builder: (_) => MultiBlocProvider(providers: [
+            BlocProvider(
                 create: (context) =>
-                    TimelineBloc()..add(LoadingTimelineEvent()),
-                child: TimelineView()));
+                    TimelineBloc()..add(LoadingTimelineEvent())),
+            BlocProvider(create: (context) => PostBloc()..add(InitPostEvent()))
+          ], child: TimelineView()),
+        );
+
       case GALLERY_ROUTE:
         return MaterialPageRoute(builder: (_) => GalleryView());
       case TALK_ROUTE:

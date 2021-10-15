@@ -4,7 +4,6 @@ import 'package:tolo/service/graphql/graphql_service.dart';
 
 class TimelineRepository {
   TimelineRepository._();
-
   static final TimelineRepository instance = TimelineRepository._();
 
   String FETCH_POSTS() {
@@ -40,60 +39,5 @@ class TimelineRepository {
       return postList;
     }
     return [];
-  }
-
-  String INSERT_POST() {
-    return """
-    mutation insertPosts(\$object: posts_insert_input!) {
-      insert_posts_one(object: \$object) {
-        title,
-        body,
-      }
-    }
-    """;
-  }
-
-  Future<void> insertPost({required Post post}) async {
-    try {
-      QueryResult result = await GraphQlService.client.mutate(
-        MutationOptions(
-            document: gql(INSERT_POST()), variables: {"object": post.toMap()}),
-      );
-
-      // print(result.data!.isNotEmpty);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  String UPDATE_POST() {
-    return """
-      mutation updatePosts(\$id: Int! ,\$data: posts_set_input) {
-        update_posts_by_pk(pk_columns: {id: \$id}, _set: \$data){
-          id
-        }
-      }
-    """;
-  }
-
-  Future<void> updatePost({required Post post}) async {
-    try {
-      QueryResult result = await GraphQlService.client.mutate(MutationOptions(
-          document: gql(UPDATE_POST()),
-          variables: {"id": post.id, "data": post.toMap()}));
-      print(result.data);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  String DELETE_POST() {
-    return """
-      mutation deletePosts(\$id: Int!) {
-        delete_posts_by_pk(id: \$id){
-          id
-        }
-      }
-    """;
   }
 }

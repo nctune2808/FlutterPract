@@ -6,23 +6,23 @@ class LoadingTimelineEvent extends TimelineEvent {}
 
 class PullToRefreshEvent extends TimelineEvent {}
 
-class AddTimelineEvent extends TimelineEvent {
-  Post post;
-  AddTimelineEvent({
-    required this.post,
-  });
-}
+// class AddTimelineEvent extends TimelineEvent {
+//   Post post;
+//   AddTimelineEvent({
+//     required this.post,
+//   });
+// }
 
-class DeleteTimelineEvent extends TimelineEvent {
-  Post post;
-  DeleteTimelineEvent({
-    required this.post,
-  });
-}
+// class DeleteTimelineEvent extends TimelineEvent {
+//   Post post;
+//   DeleteTimelineEvent({
+//     required this.post,
+//   });
+// }
 
-class UpdateTimelineEvent extends TimelineEvent {
-  Post post;
-  UpdateTimelineEvent({
-    required this.post,
-  });
-}
+// class UpdateTimelineEvent extends TimelineEvent {
+//   Post post;
+//   UpdateTimelineEvent({
+//     required this.post,
+//   });
+// }
