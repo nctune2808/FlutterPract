@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "768109040765",
+    "project_id": "tolo-1a943",
+    "storage_bucket": "tolo-1a943.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768109040765:android:2cc53b7121f82be2124d14",
+        "android_client_info": {
+          "package_name": "com.tolo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "768109040765-7eb7c2amra3cqmdiira5054k69ksoaap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBF_7eQap7-YfqqUlc5tfQqz9qKPyzzD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "768109040765-7eb7c2amra3cqmdiira5054k69ksoaap.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "768109040765-nd0pq4ullbn1rva944ip5fg64g35v4cm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tolo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
