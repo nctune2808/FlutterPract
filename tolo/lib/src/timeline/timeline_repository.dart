@@ -1,20 +1,11 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
-import 'package:tolo/service/graphql_service.dart';
+import 'package:tolo/service/graphql/graphql_service.dart';
 
 class TimelineRepository {
   TimelineRepository._();
 
   static final TimelineRepository instance = TimelineRepository._();
-
-  GraphQLClient _client = GraphQLClient(
-    defaultPolicies: DefaultPolicies(
-      query: Policies(fetch: FetchPolicy.networkOnly),
-      mutate: Policies(fetch: FetchPolicy.networkOnly),
-    ),
-    cache: GraphQLCache(store: InMemoryStore()),
-    link: GraphQlService.httpLink,
-  );
 
   String FETCH_POSTS() {
     return """
@@ -23,7 +14,8 @@ class TimelineRepository {
           id,
           title,
           body,
-          created_at
+          created_at,
+          read,
         }
       }
     """;
@@ -31,7 +23,7 @@ class TimelineRepository {
 
   Future<List<Post>> getPosts() async {
     List<Post> postList = [];
-    final QueryResult result = await _client.query(
+    final QueryResult result = await GraphQlService.client.query(
       QueryOptions(
         document: gql(FETCH_POSTS()),
       ),
@@ -55,7 +47,7 @@ class TimelineRepository {
     mutation insertPosts(\$object: posts_insert_input!) {
       insert_posts_one(object: \$object) {
         title,
-        body
+        body,
       }
     }
     """;
@@ -63,7 +55,7 @@ class TimelineRepository {
 
   Future<void> insertPost({required Post post}) async {
     try {
-      QueryResult result = await _client.mutate(
+      QueryResult result = await GraphQlService.client.mutate(
         MutationOptions(
             document: gql(INSERT_POST()), variables: {"object": post.toMap()}),
       );
@@ -72,5 +64,36 @@ class TimelineRepository {
     } catch (e) {
       throw e;
     }
+  }
+
+  String UPDATE_POST() {
+    return """
+      mutation updatePosts(\$id: Int! ,\$data: posts_set_input) {
+        update_posts_by_pk(pk_columns: {id: \$id}, _set: \$data){
+          id
+        }
+      }
+    """;
+  }
+
+  Future<void> updatePost({required Post post}) async {
+    try {
+      QueryResult result = await GraphQlService.client.mutate(MutationOptions(
+          document: gql(UPDATE_POST()),
+          variables: {"id": post.id, "data": post.toMap()}));
+      print(result.data);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  String DELETE_POST() {
+    return """
+      mutation deletePosts(\$id: Int!) {
+        delete_posts_by_pk(id: \$id){
+          id
+        }
+      }
+    """;
   }
 }

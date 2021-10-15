@@ -19,3 +19,10 @@ class DeleteTimelineEvent extends TimelineEvent {
     required this.post,
   });
 }
+
+class UpdateTimelineEvent extends TimelineEvent {
+  Post post;
+  UpdateTimelineEvent({
+    required this.post,
+  });
+}

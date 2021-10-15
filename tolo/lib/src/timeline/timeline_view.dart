@@ -14,6 +14,7 @@ class TimelineView extends StatefulWidget {
 }
 
 class _TimelineViewState extends State<TimelineView> {
+  List<Post> posts = [];
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
 
@@ -23,9 +24,11 @@ class _TimelineViewState extends State<TimelineView> {
       appBar: AppBar(title: Text("Timeline")),
       body: BlocBuilder<TimelineBloc, TimelineState>(
         builder: (context, state) {
+          print("currently: ${state}");
           final formStatus = state.formStatus;
           if (state is TimelineStateSuccess || formStatus is SubmissionSucess) {
-            return _sceneBuilder(state.posts!);
+            posts = state.posts!;
+            return _sceneBuilder(posts);
           } else if (formStatus is SubmissionFailed) {
             return Center(
                 child: Text('Error: ${formStatus.exception.toString()}'));
@@ -42,7 +45,7 @@ class _TimelineViewState extends State<TimelineView> {
     return RefreshIndicator(
       onRefresh: () async {
         context.read<TimelineBloc>().add(PullToRefreshEvent());
-        return Future.delayed(Duration(seconds: 1));
+        await Future.delayed(Duration(seconds: 1));
       },
       child: ListView.builder(
         reverse: true,
@@ -75,7 +78,9 @@ class _TimelineViewState extends State<TimelineView> {
       onPressed: () {
         context.read<TimelineBloc>().add(AddTimelineEvent(
             post: Post(
-                title: _titleController.text, body: _bodyController.text)));
+                title: _titleController.text,
+                body: _bodyController.text,
+                read: false)));
         context.read<TimelineBloc>().add(LoadingTimelineEvent());
         Navigator.of(context).pop();
         _titleController.clear();

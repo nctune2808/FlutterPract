@@ -20,6 +20,8 @@ class TimelineState {
   }
 }
 
+class TimelineInitial extends TimelineState {}
+
 class TimelineStateSuccess extends TimelineState {
   final List<Post> posts;
   TimelineStateSuccess({

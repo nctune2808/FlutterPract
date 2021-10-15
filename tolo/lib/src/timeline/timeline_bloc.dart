@@ -8,23 +8,30 @@ part 'timeline_state.dart';
 
 class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   TimelineRepository _tlRepo = TimelineRepository.instance;
-  TimelineBloc() : super(TimelineState());
+  TimelineBloc() : super(TimelineInitial());
+  List<Post> posts = [];
 
   @override
   Stream<TimelineState> mapEventToState(TimelineEvent event) async* {
     if (event is LoadingTimelineEvent || event is PullToRefreshEvent) {
-      try {
-        List<Post> posts = await _tlRepo.getPosts();
-        yield TimelineStateSuccess(posts: posts);
-      } catch (e) {
-        yield TimelineStateFailure(exception: e);
-      }
+      posts = await _tlRepo.getPosts();
+      yield TimelineStateSuccess(posts: posts);
     }
 
     if (event is AddTimelineEvent) {
       yield state.copyWith(formStatus: Submitting());
       try {
         await _tlRepo.insertPost(post: event.post);
+        yield state.copyWith(formStatus: SubmissionSucess());
+      } catch (e) {
+        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
+      }
+    }
+
+    if (event is UpdateTimelineEvent) {
+      yield state.copyWith(formStatus: Submitting());
+      try {
+        await _tlRepo.updatePost(post: event.post);
         yield state.copyWith(formStatus: SubmissionSucess());
       } catch (e) {
         yield state.copyWith(formStatus: SubmissionFailed(exception: e));

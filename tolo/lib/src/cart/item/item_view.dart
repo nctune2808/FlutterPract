@@ -13,17 +13,6 @@ class ItemView extends StatefulWidget {
 }
 
 class _ItemViewState extends State<ItemView> {
-  // @override
-  // void dispose() {
-  //   BlocProvider.of<CartBloc>(context).dispose();
-  //   super.dispose();
-  // }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  // }
-
   @override
   Widget build(BuildContext context) {
     Cart deleteCart;

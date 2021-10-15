@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:tolo/model/item.dart';
-
 class Cart {
   String? id;
   String title;

@@ -10,7 +10,17 @@ class GraphQlService {
           'VtgetVrtGuNnnZVvruqBNHdEYq1z5I5RMuL2cl9h7RNUQnL0NIvvSdQQPxxGl6Xs',
     },
   );
-  static ValueNotifier<GraphQLClient> client = ValueNotifier<GraphQLClient>(
+  static ValueNotifier<GraphQLClient> clientValue =
+      ValueNotifier<GraphQLClient>(
     GraphQLClient(link: httpLink, cache: GraphQLCache(store: InMemoryStore())),
+  );
+
+  static GraphQLClient client = GraphQLClient(
+    defaultPolicies: DefaultPolicies(
+      query: Policies(fetch: FetchPolicy.networkOnly),
+      mutate: Policies(fetch: FetchPolicy.networkOnly),
+    ),
+    cache: GraphQLCache(store: InMemoryStore()),
+    link: httpLink,
   );
 }
