@@ -13,9 +13,22 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   @override
   Stream<TimelineState> mapEventToState(TimelineEvent event) async* {
     if (event is LoadingTimelineEvent || event is PullToRefreshEvent) {
-      List<Post> posts = await _tlRepo.getPosts();
-      // print(posts);
-      yield TimelineStateSuccess(posts: posts);
+      try {
+        List<Post> posts = await _tlRepo.getPosts();
+        yield TimelineStateSuccess(posts: posts);
+      } catch (e) {
+        yield TimelineStateFailure(exception: e);
+      }
+    }
+
+    if (event is AddTimelineEvent) {
+      yield state.copyWith(formStatus: Submitting());
+      try {
+        await _tlRepo.insertPost(post: event.post);
+        yield state.copyWith(formStatus: SubmissionSucess());
+      } catch (e) {
+        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
+      }
     }
   }
 }
