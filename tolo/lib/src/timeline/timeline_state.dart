@@ -2,36 +2,22 @@ part of 'timeline_bloc.dart';
 
 class TimelineState {
   final List<Post>? posts;
-  final FormSubmissionStatus formStatus;
+  final Status? status;
 
   TimelineState({
     this.posts,
-    this.formStatus = const InitialFormStatus(),
+    this.status,
   });
 
   TimelineState copyWith({
     List<Post>? posts,
-    FormSubmissionStatus? formStatus,
+    Status? status,
   }) {
     return TimelineState(
       posts: posts ?? this.posts,
-      formStatus: formStatus ?? this.formStatus,
+      status: status ?? this.status,
     );
   }
 }
 
 class TimelineInitial extends TimelineState {}
-
-class TimelineStateSuccess extends TimelineState {
-  final List<Post> posts;
-  TimelineStateSuccess({
-    required this.posts,
-  });
-}
-
-class TimelineStateFailure extends TimelineState {
-  final dynamic exception;
-  TimelineStateFailure({
-    required this.exception,
-  });
-}

@@ -4,14 +4,14 @@ class Post {
   int? id;
   String title;
   String body;
-  bool read;
+  bool? read;
   DateTime? created_at;
 
   Post({
     this.id,
     required this.title,
     required this.body,
-    required this.read,
+    this.read = false,
     this.created_at,
   });
 

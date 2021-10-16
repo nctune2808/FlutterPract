@@ -6,7 +6,9 @@ import 'package:tolo/model/post.dart';
 import 'package:tolo/src/timeline/post/post_bloc.dart';
 import 'package:tolo/src/timeline/post/post_view.dart';
 import 'package:tolo/src/timeline/timeline_bloc.dart';
+import 'package:tolo/src/timeline/timeline_bloc.dart';
 import 'package:tolo/src/timeline/timeline_repository.dart';
+import 'package:tolo/utility/state/Status.dart';
 import 'package:tolo/utility/state/form_submission_status.dart';
 
 class TimelineView extends StatefulWidget {
@@ -22,19 +24,19 @@ class _TimelineViewState extends State<TimelineView> {
   final _bodyController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Timeline")),
       body: BlocBuilder<TimelineBloc, TimelineState>(
         builder: (context, state) {
-          print("currently: ${state}");
-          final formStatus = state.formStatus;
-          if (state is TimelineStateSuccess || formStatus is SubmissionSucess) {
+          if (state.status is StatusSucess) {
             posts = state.posts!;
             return _sceneBuilder(posts);
-          } else if (formStatus is SubmissionFailed) {
-            return Center(
-                child: Text('Error: ${formStatus.exception.toString()}'));
           } else {
             return Center(child: CircularProgressIndicator());
           }
@@ -47,7 +49,7 @@ class _TimelineViewState extends State<TimelineView> {
   Widget _sceneBuilder(List<Post> posts) {
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<TimelineBloc>().add(PullToRefreshEvent());
+        context.read<TimelineBloc>().add(RefreshTimelineEvent());
         await Future.delayed(Duration(seconds: 1));
       },
       child: ListView.builder(
@@ -81,11 +83,12 @@ class _TimelineViewState extends State<TimelineView> {
       onPressed: () {
         context.read<PostBloc>().add(AddPostEvent(
             post: Post(
-                title: _titleController.text,
-                body: _bodyController.text,
-                read: false)));
+                title: _titleController.text, body: _bodyController.text)));
+
         context.read<TimelineBloc>().add(LoadingTimelineEvent());
-        Navigator.of(context).pop();
+
+        // Navigator.pop(context);
+
         _titleController.clear();
         _bodyController.clear();
       },

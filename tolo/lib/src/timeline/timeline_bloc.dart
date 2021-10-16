@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:tolo/model/post.dart';
 import 'package:tolo/src/timeline/timeline_repository.dart';
-import 'package:tolo/utility/state/form_submission_status.dart';
+import 'package:tolo/utility/state/Status.dart';
 
 part 'timeline_event.dart';
 part 'timeline_state.dart';
@@ -13,9 +13,16 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
 
   @override
   Stream<TimelineState> mapEventToState(TimelineEvent event) async* {
-    if (event is LoadingTimelineEvent || event is PullToRefreshEvent) {
+    if (event is LoadingTimelineEvent) {
+      // blur when StatusLoading(), test can be StatusSucess()
+      yield state.copyWith(status: StatusLoading());
       posts = await _tlRepo.getPosts();
-      yield TimelineStateSuccess(posts: posts);
+      yield state.copyWith(status: StatusSucess(), posts: posts);
+    }
+
+    if (event is RefreshTimelineEvent) {
+      posts = await _tlRepo.getPosts();
+      yield state.copyWith(status: StatusSucess(), posts: posts);
     }
 
     // if (event is AddTimelineEvent) {

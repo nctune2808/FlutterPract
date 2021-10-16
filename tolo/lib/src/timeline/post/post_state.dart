@@ -1,10 +1,8 @@
 part of 'post_bloc.dart';
 
-enum PostStatus { initial, loading, success, failure }
-
 class PostState {
   final Post? post;
-  final PostStatus? status;
+  final Status? status;
 
   PostState({
     this.post,
@@ -13,7 +11,7 @@ class PostState {
 
   PostState copyWith({
     Post? post,
-    PostStatus? status,
+    Status? status,
   }) {
     return PostState(
       post: post ?? this.post,

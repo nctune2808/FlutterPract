@@ -4,7 +4,9 @@ class TimelineEvent {}
 
 class LoadingTimelineEvent extends TimelineEvent {}
 
-class PullToRefreshEvent extends TimelineEvent {}
+class RefreshTimelineEvent extends TimelineEvent {}
+
+class InitTimelineEvent extends TimelineEvent {}
 
 // class AddTimelineEvent extends TimelineEvent {
 //   Post post;

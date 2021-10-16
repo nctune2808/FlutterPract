@@ -51,7 +51,10 @@ class AppRouter {
             BlocProvider(
                 create: (context) =>
                     TimelineBloc()..add(LoadingTimelineEvent())),
-            BlocProvider(create: (context) => PostBloc()..add(InitPostEvent()))
+            BlocProvider(
+              create: (context) => PostBloc()..add(InitPostEvent()),
+              lazy: true,
+            )
           ], child: TimelineView()),
         );
 

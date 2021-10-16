@@ -8,25 +8,25 @@ class PostRepository {
 
   String INSERT_POST() {
     return '''
-    mutation insertPosts(\$object: posts_insert_input!) {
-      insert_posts_one(object: \$object) {
+    mutation insertPosts(\$data: posts_insert_input!) {
+      insert_posts_one(object: \$data) {
         title,
         body,
+        read,
       }
     }
     ''';
   }
 
-  Future<void> insertPost({required Post post}) async {
+  Future<Post> insertPost({required Post post}) async {
     try {
       QueryResult result = await GraphQlService.client.mutate(
         MutationOptions(
-            document: gql(INSERT_POST()), variables: {"object": post.toMap()}),
+            document: gql(INSERT_POST()), variables: {"data": post.toMap()}),
       );
-      final insertedPost = result.data?['object'];
+      final insertedPost = result.data?['insert_posts_one'];
       print(insertedPost);
-
-      // print(result.data!.isNotEmpty);
+      return insertedPost;
     } catch (e) {
       throw e;
     }
