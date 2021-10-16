@@ -40,4 +40,35 @@ class TimelineRepository {
     }
     return [];
   }
+
+  String STREAM_POSTS() {
+    return '''
+      subscription subPosts{
+        posts(order_by: {created_at: desc}) {
+          id,
+          title,
+          body,
+          created_at,
+          read,
+        }
+      }
+    ''';
+  }
+
+  Stream<QueryResult> streamPosts() {
+    Stream<QueryResult> subscription = GraphQlService.client.subscribe(
+      SubscriptionOptions(
+        document: gql(STREAM_POSTS()),
+      ),
+    );
+
+    subscription.listen((result) {
+      // print('New Review: ${result.data?['posts']}');
+      (result.data?['posts'] as List)
+          .map((post) => Post.fromMap(post))
+          .toList();
+    });
+
+    return subscription;
+  }
 }

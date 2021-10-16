@@ -1,10 +1,12 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
 import 'package:tolo/src/timeline/post/post_bloc.dart';
 import 'package:tolo/src/timeline/post/post_view.dart';
 import 'package:tolo/src/timeline/timeline_bloc.dart';
+import 'package:tolo/src/timeline/timeline_repository.dart';
 import 'package:tolo/utility/state/form_submission_status.dart';
 
 class TimelineView extends StatefulWidget {

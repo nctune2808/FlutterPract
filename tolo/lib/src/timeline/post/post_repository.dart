@@ -7,14 +7,14 @@ class PostRepository {
   static final PostRepository instance = PostRepository._();
 
   String INSERT_POST() {
-    return """
+    return '''
     mutation insertPosts(\$object: posts_insert_input!) {
       insert_posts_one(object: \$object) {
         title,
         body,
       }
     }
-    """;
+    ''';
   }
 
   Future<void> insertPost({required Post post}) async {
@@ -23,15 +23,19 @@ class PostRepository {
         MutationOptions(
             document: gql(INSERT_POST()), variables: {"object": post.toMap()}),
       );
+      final insertedPost = result.data?['object'];
+      print(insertedPost);
 
       // print(result.data!.isNotEmpty);
     } catch (e) {
       throw e;
     }
+
+    // GraphQlService.client.subscribe(options)
   }
 
   String UPDATE_POST() {
-    return """
+    return '''
       mutation updatePosts(\$id: Int! ,\$data: posts_set_input) {
         update_posts_by_pk(pk_columns: {id: \$id}, _set: \$data){
           id,
@@ -41,7 +45,7 @@ class PostRepository {
           created_at, 
         }
       }
-    """;
+    ''';
   }
 
   Future<Post> updatePost({required Post post}) async {
@@ -59,12 +63,12 @@ class PostRepository {
   }
 
   String DELETE_POST() {
-    return """
+    return '''
       mutation deletePosts(\$id: Int!) {
         delete_posts_by_pk(id: \$id){
           id
         }
       }
-    """;
+    ''';
   }
 }

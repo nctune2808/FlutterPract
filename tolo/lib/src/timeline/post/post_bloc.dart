@@ -14,6 +14,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (event is AddPostEvent) {
       yield state.copyWith(status: PostStatus.loading);
       try {
+        // Post post = await postRepo.insertPost(post: event.post);
         await postRepo.insertPost(post: event.post);
         yield state.copyWith(status: PostStatus.success);
       } catch (e) {
