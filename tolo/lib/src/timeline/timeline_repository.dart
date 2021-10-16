@@ -6,18 +6,25 @@ class TimelineRepository {
   TimelineRepository._();
   static final TimelineRepository instance = TimelineRepository._();
 
+  String FRAGMENT_POST = '''
+      fragment PostFragment on posts{
+        id,
+        title,
+        body,
+        read,
+        created_at,
+      }
+    ''';
+
   String FETCH_POSTS() {
-    return """
-      query{
+    return '''
+      $FRAGMENT_POST
+      query AllPost{
         posts(order_by: {created_at: desc}) {
-          id,
-          title,
-          body,
-          created_at,
-          read,
+          ...PostFragment
         }
       }
-    """;
+    ''';
   }
 
   Future<List<Post>> getPosts() async {
