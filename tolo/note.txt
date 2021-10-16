@@ -1,0 +1,24 @@
+GRAPHQL
+
+mutation insertPosts($object: posts_insert_input!) {
+	insert_posts_one(object: $object) {
+    title,
+    body
+  }
+}
+
+mutation updatePosts($id: Int! ,$data: posts_set_input) {
+  update_posts_by_pk(pk_columns: {id: $id}, _set: $data){
+    id,
+    title,
+    body,
+    read,
+    created_at, 
+  }
+}
+
+mutation deletePosts($id: Int!) {
+  delete_posts_by_pk(id: $id){
+    id
+  }
+}

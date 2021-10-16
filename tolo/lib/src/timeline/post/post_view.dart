@@ -15,10 +15,11 @@ class PostView extends StatefulWidget {
 }
 
 class _PostViewState extends State<PostView> {
-  bool _read = false;
+  Post? _post;
+
   @override
   void initState() {
-    _read = widget.post.read;
+    _post = widget.post;
     super.initState();
   }
 
@@ -42,45 +43,40 @@ class _PostViewState extends State<PostView> {
     //   ),
     // );
 
-    return BlocProvider(
-      create: (context) => PostBloc()..add(InitPostEvent()),
-      child: Card(
-        child: CheckboxListTile(
-          checkColor: Colors.black45,
-          activeColor: Colors.white,
-          controlAffinity: ListTileControlAffinity.leading,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(),
-              Text(
-                widget.post.title,
-                style: _read
-                    ? TextStyle(
-                        decoration: TextDecoration.lineThrough,
-                        color: Colors.black45)
-                    : TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+    return Card(
+      child: CheckboxListTile(
+        checkColor: Colors.black45,
+        activeColor: Colors.white,
+        controlAffinity: ListTileControlAffinity.leading,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(),
+            Text(
+              widget.post.title,
+              style: _post!.read
+                  ? TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: Colors.black45)
+                  : TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.edit,
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.edit,
-                ),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          value: _read,
-          onChanged: (value) {
-            Post updatePost = widget.post.copyWith(read: value!);
-            context.read<PostBloc>().add(UpdatePostEvent(post: updatePost));
-            setState(() {
-              _read = value;
-            });
-          },
+              onPressed: () {},
+            ),
+          ],
         ),
+        value: _post!.read,
+        onChanged: (value) {
+          Post updatePost = widget.post.copyWith(read: value!);
+          context.read<PostBloc>().add(UpdatePostEvent(post: updatePost));
+          setState(() => _post = updatePost);
+        },
       ),
     );
   }
