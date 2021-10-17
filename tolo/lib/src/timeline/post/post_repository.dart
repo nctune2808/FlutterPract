@@ -6,13 +6,29 @@ class PostRepository {
   PostRepository._();
   static final PostRepository instance = PostRepository._();
 
+  String FETCH_POST() {
+    return '''
+      query getPostById(\$id: Int!){
+        posts_by_pk(id: \$id) {
+          id,
+          title,
+          body,
+          read,
+          created_at, 
+        }
+      }
+    ''';
+  }
+
   String INSERT_POST() {
     return '''
     mutation insertPosts(\$data: posts_insert_input!) {
       insert_posts_one(object: \$data) {
+        id,
         title,
         body,
         read,
+        created_at
       }
     }
     ''';

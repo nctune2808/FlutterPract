@@ -24,11 +24,6 @@ class _TimelineViewState extends State<TimelineView> {
   final _bodyController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Timeline")),
@@ -53,7 +48,7 @@ class _TimelineViewState extends State<TimelineView> {
   Widget _sceneBuilder(List<Post> posts) {
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<TimelineBloc>().add(RefreshTimelineEvent());
+        context.read<TimelineBloc>().add(FetchTimelineEvent());
         await Future.delayed(Duration(seconds: 1));
       },
       child: ListView.builder(
@@ -85,13 +80,15 @@ class _TimelineViewState extends State<TimelineView> {
   Widget _addPostButton() {
     return ElevatedButton(
       onPressed: () {
-        context.read<PostBloc>().add(AddPostEvent(
-            post: Post(
-                title: _titleController.text, body: _bodyController.text)));
+        Post addPost = Post(
+          title: _titleController.text,
+          body: _bodyController.text,
+        );
+        context.read<PostBloc>().add(AddPostEvent(post: addPost));
 
-        context.read<TimelineBloc>().add(LoadingTimelineEvent());
+        context.read<TimelineBloc>().add(FetchTimelineEvent());
 
-        // Navigator.pop(context);
+        Navigator.pop(context);
 
         _titleController.clear();
         _bodyController.clear();

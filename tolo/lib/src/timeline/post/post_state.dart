@@ -6,7 +6,7 @@ class PostState {
 
   PostState({
     this.post,
-    this.status,
+    this.status = const StatusInitial(),
   });
 
   PostState copyWith({

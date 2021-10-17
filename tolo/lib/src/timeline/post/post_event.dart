@@ -4,6 +4,13 @@ class PostEvent {}
 
 class InitPostEvent extends PostEvent {}
 
+// class FetchPostEvent extends PostEvent {
+//   Post post;
+//   FetchPostEvent({
+//     required this.post,
+//   });
+// }
+
 class AddPostEvent extends PostEvent {
   Post post;
   AddPostEvent({

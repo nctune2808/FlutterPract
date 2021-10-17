@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tolo/model/post.dart';
 import 'package:tolo/src/timeline/post/post_bloc.dart';
+import 'package:tolo/utility/state/Status.dart';
 
 class PostView extends StatefulWidget {
   Post post;
@@ -13,16 +14,22 @@ class PostView extends StatefulWidget {
 }
 
 class _PostViewState extends State<PostView> {
-  Post? _post;
-
   @override
   void initState() {
-    _post = widget.post;
+    widget.post;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<PostBloc, PostState>(
+      builder: (context, state) {
+        return _postBuilder();
+      },
+    );
+  }
+
+  Widget _postBuilder() {
     return Card(
       child: CheckboxListTile(
         checkColor: Colors.black45,
@@ -34,7 +41,7 @@ class _PostViewState extends State<PostView> {
             SizedBox(),
             Text(
               widget.post.title,
-              style: _post!.read!
+              style: widget.post.read!
                   ? TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.black45)
@@ -51,13 +58,13 @@ class _PostViewState extends State<PostView> {
             ),
           ],
         ),
-        value: _post!.read!,
+        value: widget.post.read!,
         onChanged: (value) {
-          Post updatePost = widget.post.copyWith(read: value!);
+          // Post updatePost = widget.post.copyWith(read: value!);
 
-          setState(() => _post = updatePost);
+          setState(() => widget.post.read = value!);
 
-          context.read<PostBloc>().add(UpdatePostEvent(post: updatePost));
+          context.read<PostBloc>().add(UpdatePostEvent(post: widget.post));
         },
       ),
     );

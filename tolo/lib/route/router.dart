@@ -49,8 +49,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(providers: [
             BlocProvider(
-                create: (context) =>
-                    TimelineBloc()..add(LoadingTimelineEvent())),
+                create: (context) => TimelineBloc()..add(FetchTimelineEvent())),
             BlocProvider(
               create: (context) => PostBloc()..add(InitPostEvent()),
               lazy: true,
