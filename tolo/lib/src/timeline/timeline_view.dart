@@ -34,12 +34,16 @@ class _TimelineViewState extends State<TimelineView> {
       appBar: AppBar(title: Text("Timeline")),
       body: BlocBuilder<TimelineBloc, TimelineState>(
         builder: (context, state) {
-          if (state.status is StatusSucess) {
-            posts = state.posts!;
-            return _sceneBuilder(posts);
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
+          return BlocBuilder<PostBloc, PostState>(
+            builder: (context, pState) {
+              if (state.status is StatusSucess) {
+                posts = state.posts!;
+                return _sceneBuilder(posts);
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          );
         },
       ),
       floatingActionButton: _floatingButton(),
