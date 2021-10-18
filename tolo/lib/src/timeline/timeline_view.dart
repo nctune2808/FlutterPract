@@ -1,4 +1,5 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -31,6 +32,8 @@ class _TimelineViewState extends State<TimelineView> {
         builder: (context, state) {
           return BlocBuilder<PostBloc, PostState>(
             builder: (context, pState) {
+              // if (state is TimelineStreaming) {
+              //   return _streamBuilder(state.stream!);
               if (state.status is StatusSucess) {
                 posts = state.posts!;
                 return _sceneBuilder(posts);
@@ -89,7 +92,6 @@ class _TimelineViewState extends State<TimelineView> {
         context.read<TimelineBloc>().add(FetchTimelineEvent());
 
         Navigator.pop(context);
-
         _titleController.clear();
         _bodyController.clear();
       },
@@ -115,5 +117,12 @@ class _TimelineViewState extends State<TimelineView> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _bodyController.dispose();
+    super.dispose();
   }
 }

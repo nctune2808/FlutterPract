@@ -4,4 +4,6 @@ class TimelineEvent {}
 
 class FetchTimelineEvent extends TimelineEvent {}
 
+class StreamTimelineEvent extends TimelineEvent {}
+
 class RefreshTimelineEvent extends TimelineEvent {}

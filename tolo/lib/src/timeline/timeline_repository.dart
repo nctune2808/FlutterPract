@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
 import 'package:tolo/service/graphql/graphql_service.dart';
@@ -42,12 +44,13 @@ class TimelineRepository {
     final Stream<QueryResult> subscription = GraphQlService.performSubscribe(
       document: STREAM_POSTS,
     );
+
     subscription.listen((result) {
-      // print('New Review: ${result.data?['posts']}');
       (result.data?['posts'] as List)
           .map((post) => Post.fromMap(post))
           .toList();
     });
+
     return subscription;
   }
 }
