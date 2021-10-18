@@ -37,4 +37,19 @@ class GraphQlService {
       },
     ),
   );
+
+  static Future<QueryResult> performQuery({
+    required String query,
+    Map<String, dynamic>? variables,
+  }) async {
+    QueryOptions options;
+    if (variables == null) {
+      options = QueryOptions(document: gql(query));
+    } else {
+      options = QueryOptions(document: gql(query), variables: variables);
+    }
+
+    final result = await client.query(options);
+    return result;
+  }
 }

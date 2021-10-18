@@ -1,6 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
 import 'package:tolo/service/graphql/graphql_service.dart';
+import 'package:tolo/utility/fragment/post_fragments.dart';
 
 class PostRepository {
   PostRepository._();
@@ -8,13 +9,10 @@ class PostRepository {
 
   String FETCH_POST() {
     return '''
+    ${PostFragment.POST_DATA}
       query getPostById(\$id: Int!){
         posts_by_pk(id: \$id) {
-          id,
-          title,
-          body,
-          read,
-          created_at, 
+          ...PostData 
         }
       }
     ''';
@@ -22,15 +20,12 @@ class PostRepository {
 
   String INSERT_POST() {
     return '''
-    mutation insertPosts(\$data: posts_insert_input!) {
-      insert_posts_one(object: \$data) {
-        id,
-        title,
-        body,
-        read,
-        created_at
+      ${PostFragment.POST_DATA}
+      mutation insertPosts(\$data: posts_insert_input!) {
+        insert_posts_one(object: \$data) {
+          ...PostData
+        }
       }
-    }
     ''';
   }
 
@@ -52,13 +47,10 @@ class PostRepository {
 
   String UPDATE_POST() {
     return '''
+      ${PostFragment.POST_DATA}
       mutation updatePosts(\$id: Int! ,\$data: posts_set_input) {
         update_posts_by_pk(pk_columns: {id: \$id}, _set: \$data){
-          id,
-          title,
-          body,
-          read,
-          created_at, 
+          ...PostData
         }
       }
     ''';
@@ -80,9 +72,10 @@ class PostRepository {
 
   String DELETE_POST() {
     return '''
+      ${PostFragment.POST_DATA}
       mutation deletePosts(\$id: Int!) {
         delete_posts_by_pk(id: \$id){
-          id
+          ...PostData
         }
       }
     ''';

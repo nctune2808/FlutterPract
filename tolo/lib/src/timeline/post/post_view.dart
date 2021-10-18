@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tolo/model/post.dart';
 import 'package:tolo/src/timeline/post/post_bloc.dart';
-import 'package:tolo/utility/state/Status.dart';
 
 class PostView extends StatefulWidget {
   Post post;
@@ -60,10 +59,7 @@ class _PostViewState extends State<PostView> {
         ),
         value: widget.post.read!,
         onChanged: (value) {
-          // Post updatePost = widget.post.copyWith(read: value!);
-
           setState(() => widget.post.read = value!);
-
           context.read<PostBloc>().add(UpdatePostEvent(post: widget.post));
         },
       ),

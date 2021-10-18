@@ -6,7 +6,7 @@ class TimelineState {
 
   TimelineState({
     this.posts,
-    this.status,
+    this.status = const StatusInitial(),
   });
 
   TimelineState copyWith({

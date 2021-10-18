@@ -1,62 +1,41 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
 import 'package:tolo/service/graphql/graphql_service.dart';
+import 'package:tolo/utility/fragment/post_fragments.dart';
 
 class TimelineRepository {
   TimelineRepository._();
   static final TimelineRepository instance = TimelineRepository._();
 
-  String FRAGMENT_POST = '''
-      fragment PostFragment on posts{
-        id,
-        title,
-        body,
-        read,
-        created_at,
-      }
-    ''';
-
   String FETCH_POSTS() {
     return '''
-      $FRAGMENT_POST
+      ${PostFragment.POST_DATA}
       query AllPost{
         posts(order_by: {created_at: desc}) {
-          ...PostFragment
+          ...PostData
         }
       }
     ''';
   }
 
   Future<List<Post>> getPosts() async {
-    List<Post> postList = [];
-    final QueryResult result = await GraphQlService.client.query(
-      QueryOptions(
-        document: gql(FETCH_POSTS()),
-      ),
-    );
-
+    // return QueryResult from Future<>
+    final QueryResult result =
+        await GraphQlService.performQuery(query: FETCH_POSTS());
     final posts = result.data?['posts'];
-
+    // Assign model
     if (posts.isNotEmpty) {
-      for (var post in posts) {
-        Post _post = Post.fromMap(post);
-        postList.add(_post);
-        // print(_post.toMap());
-      }
-      return postList;
+      return (posts as List).map((post) => Post.fromMap(post)).toList();
     }
     return [];
   }
 
   String STREAM_POSTS() {
     return '''
+      ${PostFragment.POST_DATA}
       subscription subPosts{
         posts(order_by: {created_at: desc}) {
-          id,
-          title,
-          body,
-          created_at,
-          read,
+          ...PostData
         }
       }
     ''';

@@ -11,19 +11,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc() : super(PostInitial());
   PostRepository postRepo = PostRepository.instance;
 
-  // Stream<PostState> mapFetchPostToState(FetchPostEvent event) async* {
-  //   Post post = await postRepo.getPostById(post: event.post);
-  //   yield state.copyWith(status: StatusInitial(), post: post);
-  // }
-
   @override
   Stream<PostState> mapEventToState(PostEvent event) async* {
-    // if (event is FetchPostEvent) {
-    //   yield* mapFetchPostToState(event);
-    // }
-
     if (event is AddPostEvent) {
-      // yield state.copyWith(status: StatusLoading());
       try {
         Post post = await postRepo.insertPost(post: event.post);
         print("added");
@@ -34,7 +24,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
 
     if (event is UpdatePostEvent) {
-      // yield state.copyWith(status: StatusLoading());
       try {
         Post post = await postRepo.updatePost(post: event.post);
         yield state.copyWith(status: StatusSucess(), post: post);
