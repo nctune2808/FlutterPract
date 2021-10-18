@@ -7,8 +7,7 @@ class PostRepository {
   PostRepository._();
   static final PostRepository instance = PostRepository._();
 
-  String FETCH_POST() {
-    return '''
+  static const String FETCH_POST = '''
     ${PostFragment.POST_DATA}
       query getPostById(\$id: Int!){
         posts_by_pk(id: \$id) {
@@ -16,10 +15,8 @@ class PostRepository {
         }
       }
     ''';
-  }
 
-  String INSERT_POST() {
-    return '''
+  static const String INSERT_POST = '''
       ${PostFragment.POST_DATA}
       mutation insertPosts(\$data: posts_insert_input!) {
         insert_posts_one(object: \$data) {
@@ -27,13 +24,12 @@ class PostRepository {
         }
       }
     ''';
-  }
 
   Future<Post> insertPost({required Post post}) async {
     try {
-      QueryResult result = await GraphQlService.client.mutate(
-        MutationOptions(
-            document: gql(INSERT_POST()), variables: {"data": post.toMap()}),
+      final QueryResult result = await GraphQlService.performMutate(
+        document: INSERT_POST,
+        variables: {"data": post.toMap()},
       );
       final insertedPost = result.data?['insert_posts_one'];
       print(insertedPost);
@@ -41,12 +37,9 @@ class PostRepository {
     } catch (e) {
       throw e;
     }
-
-    // GraphQlService.client.subscribe(options)
   }
 
-  String UPDATE_POST() {
-    return '''
+  static const String UPDATE_POST = '''
       ${PostFragment.POST_DATA}
       mutation updatePosts(\$id: Int! ,\$data: posts_set_input) {
         update_posts_by_pk(pk_columns: {id: \$id}, _set: \$data){
@@ -54,15 +47,15 @@ class PostRepository {
         }
       }
     ''';
-  }
 
   Future<Post> updatePost({required Post post}) async {
     try {
-      QueryResult result = await GraphQlService.client.mutate(MutationOptions(
-          document: gql(UPDATE_POST()),
-          variables: {"id": post.id, "data": post.toMap()}));
-
+      final QueryResult result = await GraphQlService.performMutate(
+        document: UPDATE_POST,
+        variables: {"id": post.id, "data": post.toMap()},
+      );
       final updatedPost = result.data?['update_posts_by_pk'];
+
       print(updatedPost);
       return Post.fromMap(updatedPost);
     } catch (e) {
@@ -70,8 +63,7 @@ class PostRepository {
     }
   }
 
-  String DELETE_POST() {
-    return '''
+  String DELETE_POST = '''
       ${PostFragment.POST_DATA}
       mutation deletePosts(\$id: Int!) {
         delete_posts_by_pk(id: \$id){
@@ -79,5 +71,4 @@ class PostRepository {
         }
       }
     ''';
-  }
 }

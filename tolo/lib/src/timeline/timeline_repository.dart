@@ -7,8 +7,7 @@ class TimelineRepository {
   TimelineRepository._();
   static final TimelineRepository instance = TimelineRepository._();
 
-  String FETCH_POSTS() {
-    return '''
+  static const String FETCH_POSTS = '''
       ${PostFragment.POST_DATA}
       query AllPost{
         posts(order_by: {created_at: desc}) {
@@ -16,12 +15,12 @@ class TimelineRepository {
         }
       }
     ''';
-  }
 
   Future<List<Post>> getPosts() async {
     // return QueryResult from Future<>
-    final QueryResult result =
-        await GraphQlService.performQuery(query: FETCH_POSTS());
+    final QueryResult result = await GraphQlService.performQuery(
+      document: FETCH_POSTS,
+    );
     final posts = result.data?['posts'];
     // Assign model
     if (posts.isNotEmpty) {
@@ -30,8 +29,7 @@ class TimelineRepository {
     return [];
   }
 
-  String STREAM_POSTS() {
-    return '''
+  static const String STREAM_POSTS = '''
       ${PostFragment.POST_DATA}
       subscription subPosts{
         posts(order_by: {created_at: desc}) {
@@ -39,22 +37,17 @@ class TimelineRepository {
         }
       }
     ''';
-  }
 
   Stream<QueryResult> streamPosts() {
-    Stream<QueryResult> subscription = GraphQlService.client.subscribe(
-      SubscriptionOptions(
-        document: gql(STREAM_POSTS()),
-      ),
+    final Stream<QueryResult> subscription = GraphQlService.performSubscribe(
+      document: STREAM_POSTS,
     );
-
     subscription.listen((result) {
       // print('New Review: ${result.data?['posts']}');
       (result.data?['posts'] as List)
           .map((post) => Post.fromMap(post))
           .toList();
     });
-
     return subscription;
   }
 }
