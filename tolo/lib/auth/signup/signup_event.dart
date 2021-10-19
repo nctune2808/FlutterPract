@@ -1,27 +1,26 @@
 part of 'signup_bloc.dart';
 
-@immutable
 abstract class SignupEvent {}
 
-class SignupUsername extends SignupEvent {
+class UsernameSignupEvent extends SignupEvent {
   final String username;
-  SignupUsername({
+  UsernameSignupEvent({
     required this.username,
   });
 }
 
-class SignupPassword extends SignupEvent {
+class PasswordSignupEvent extends SignupEvent {
   final String password;
-  SignupPassword({
+  PasswordSignupEvent({
     required this.password,
   });
 }
 
-class SignupEmail extends SignupEvent {
+class EmailSignupEvent extends SignupEvent {
   final String email;
-  SignupEmail({
+  EmailSignupEvent({
     required this.email,
   });
 }
 
-class SignupSubmitted extends SignupEvent {}
+class SubmissionSignupEvent extends SignupEvent {}

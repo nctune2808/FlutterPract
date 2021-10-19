@@ -11,11 +11,11 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
 
   @override
   Stream<SigninState> mapEventToState(SigninEvent event) async* {
-    if (event is SigninEmail) {
+    if (event is EmailSigninEvent) {
       yield state.copyWith(email: event.email);
-    } else if (event is SigninPassword) {
+    } else if (event is PasswordSigninEvent) {
       yield state.copyWith(password: event.password);
-    } else if (event is SigninSubmitted) {
+    } else if (event is SubmissionSigninEvent) {
       yield state.copyWith(formStatus: Submitting());
       try {
         await _authRepo.signInEmail(
@@ -39,7 +39,7 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
       //   print(e);
       //   yield state.copyWith(formStatus: SubmissionFailed(exception: e));
       // }
-    } else if (event is FastTrackSubmitted) {
+    } else if (event is FastTrackSignInEvent) {
       yield state.copyWith(formStatus: Submitting());
       try {
         await _authRepo.signInAnon();

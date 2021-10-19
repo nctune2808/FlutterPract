@@ -1,29 +1,28 @@
 part of 'signin_bloc.dart';
 
-@immutable
 abstract class SigninEvent {}
 
-class SigninUsername extends SigninEvent {
+class UsernameSigninEvent extends SigninEvent {
   final String username;
-  SigninUsername({
+  UsernameSigninEvent({
     required this.username,
   });
 }
 
-class SigninEmail extends SigninEvent {
+class EmailSigninEvent extends SigninEvent {
   final String email;
-  SigninEmail({
+  EmailSigninEvent({
     required this.email,
   });
 }
 
-class SigninPassword extends SigninEvent {
+class PasswordSigninEvent extends SigninEvent {
   final String password;
-  SigninPassword({
+  PasswordSigninEvent({
     required this.password,
   });
 }
 
-class SigninSubmitted extends SigninEvent {}
+class SubmissionSigninEvent extends SigninEvent {}
 
-class FastTrackSubmitted extends SigninEvent {}
+class FastTrackSignInEvent extends SigninEvent {}

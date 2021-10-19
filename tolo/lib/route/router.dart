@@ -6,12 +6,13 @@ import 'package:tolo/auth/signup/signup_bloc.dart';
 import 'package:tolo/auth/signup/signup_view.dart';
 import 'package:tolo/src/cart/cart_bloc.dart';
 import 'package:tolo/src/cart/cart_view.dart';
+import 'package:tolo/src/chat/chat_bloc.dart';
+import 'package:tolo/src/chat/chat_view.dart';
+import 'package:tolo/src/chat/message/message_bloc.dart';
 import 'package:tolo/src/gallery/gallery_view.dart';
 import 'package:tolo/src/home/home_view.dart';
 import 'package:tolo/src/home/loading_view.dart';
 import 'package:tolo/src/home/welcome_view.dart';
-import 'package:tolo/src/talk/talk_bloc.dart';
-import 'package:tolo/src/talk/talk_view.dart';
 import 'package:tolo/src/timeline/post/post_bloc.dart';
 import 'package:tolo/src/timeline/timeline_bloc.dart';
 import 'package:tolo/src/timeline/timeline_view.dart';
@@ -22,7 +23,7 @@ const SIGNUP_ROUTE = "/signup";
 const HOME_ROUTE = "/home";
 const CART_ROUTE = "/cart";
 const TIMELINE_ROUTE = "/timeline";
-const TALK_ROUTE = "/talk";
+const CHAT_ROUTE = "/chat";
 const GALLERY_ROUTE = "/galerry";
 
 class AppRouter {
@@ -61,11 +62,20 @@ class AppRouter {
 
       case GALLERY_ROUTE:
         return MaterialPageRoute(builder: (_) => GalleryView());
-      case TALK_ROUTE:
+      case CHAT_ROUTE:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                create: (context) => TalkBloc()..add(LoadingMessageEvent()),
-                child: TalkView()));
+          builder: (_) => MultiBlocProvider(providers: [
+            BlocProvider(
+              create: (context) => ChatBloc()..add(InitChatEvent()),
+              lazy: true,
+            ),
+            BlocProvider(
+              create: (context) => MessageBloc()..add(InitMessageEvent()),
+              lazy: true,
+            )
+          ], child: ChatView()),
+        );
+
       default:
         return null;
     }

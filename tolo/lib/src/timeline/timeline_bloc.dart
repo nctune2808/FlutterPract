@@ -11,7 +11,7 @@ part 'timeline_state.dart';
 
 class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   TimelineRepository _tlRepo = TimelineRepository.instance;
-  TimelineBloc() : super(TimelineInitial());
+  TimelineBloc() : super(TimelineInitState());
   List<Post> posts = [];
 
   Stream<TimelineState> mapFetchEventToState(FetchTimelineEvent event) async* {

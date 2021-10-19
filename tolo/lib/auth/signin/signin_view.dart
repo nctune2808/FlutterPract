@@ -28,7 +28,7 @@ class SignInView extends StatelessWidget {
           validator: (value) {},
           onChanged: (value) {
             // context.read<SigninBloc>().add(SigninUsername(username: value)),
-            context.read<SigninBloc>().add(SigninEmail(email: value));
+            context.read<SigninBloc>().add(EmailSigninEvent(email: value));
           },
         );
       },
@@ -43,8 +43,9 @@ class SignInView extends StatelessWidget {
           decoration:
               InputDecoration(icon: Icon(Icons.security), hintText: "Password"),
           validator: (value) {},
-          onChanged: (value) =>
-              context.read<SigninBloc>().add(SigninPassword(password: value)),
+          onChanged: (value) => context
+              .read<SigninBloc>()
+              .add(PasswordSigninEvent(password: value)),
         );
       },
     );
@@ -93,7 +94,7 @@ class SignInView extends StatelessWidget {
               : ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      context.read<SigninBloc>().add(SigninSubmitted());
+                      context.read<SigninBloc>().add(SubmissionSigninEvent());
                     }
                   },
                   child: Text('Login'));
@@ -109,7 +110,7 @@ class SignInView extends StatelessWidget {
             ? CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () {
-                  context.read<SigninBloc>().add(FastTrackSubmitted());
+                  context.read<SigninBloc>().add(FastTrackSignInEvent());
                 },
                 child: Text('Fast Track'));
       },

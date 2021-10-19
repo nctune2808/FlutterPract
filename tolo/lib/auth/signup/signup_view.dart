@@ -50,8 +50,9 @@ class SignUpView extends StatelessWidget {
           decoration:
               InputDecoration(icon: Icon(Icons.person), hintText: "Username"),
           validator: (value) {},
-          onChanged: (value) =>
-              context.read<SignupBloc>().add(SignupUsername(username: value)),
+          onChanged: (value) => context
+              .read<SignupBloc>()
+              .add(UsernameSignupEvent(username: value)),
         );
       },
     );
@@ -65,8 +66,9 @@ class SignUpView extends StatelessWidget {
           decoration:
               InputDecoration(icon: Icon(Icons.security), hintText: "Password"),
           validator: (value) {},
-          onChanged: (value) =>
-              context.read<SignupBloc>().add(SignupPassword(password: value)),
+          onChanged: (value) => context
+              .read<SignupBloc>()
+              .add(PasswordSignupEvent(password: value)),
         );
       },
     );
@@ -81,7 +83,7 @@ class SignUpView extends StatelessWidget {
               InputDecoration(icon: Icon(Icons.mail), hintText: "Email"),
           validator: (value) {},
           onChanged: (value) =>
-              context.read<SignupBloc>().add(SignupEmail(email: value)),
+              context.read<SignupBloc>().add(EmailSignupEvent(email: value)),
         );
       },
     );
@@ -106,7 +108,7 @@ class SignUpView extends StatelessWidget {
               : ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      context.read<SignupBloc>().add(SignupSubmitted());
+                      context.read<SignupBloc>().add(SubmissionSignupEvent());
                     }
                   },
                   child: Text('Register'),

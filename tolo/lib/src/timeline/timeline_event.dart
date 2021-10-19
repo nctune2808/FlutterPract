@@ -1,6 +1,6 @@
 part of 'timeline_bloc.dart';
 
-class TimelineEvent {}
+abstract class TimelineEvent {}
 
 class FetchTimelineEvent extends TimelineEvent {}
 

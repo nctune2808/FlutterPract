@@ -12,13 +12,13 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
   @override
   Stream<SignupState> mapEventToState(SignupEvent event) async* {
-    if (event is SignupUsername) {
+    if (event is UsernameSignupEvent) {
       yield state.copyWith(username: event.username);
-    } else if (event is SignupPassword) {
+    } else if (event is PasswordSignupEvent) {
       yield state.copyWith(password: event.password);
-    } else if (event is SignupEmail) {
+    } else if (event is EmailSignupEvent) {
       yield state.copyWith(email: event.email);
-    } else if (event is SignupSubmitted) {
+    } else if (event is SubmissionSignupEvent) {
       yield state.copyWith(formStatus: Submitting());
       try {
         final newUser = await _authRepo.signUpEmail(

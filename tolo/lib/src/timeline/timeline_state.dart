@@ -20,11 +20,11 @@ class TimelineState {
   }
 }
 
-class TimelineInitial extends TimelineState {}
+class TimelineInitState extends TimelineState {}
 
-class TimelineStreaming extends TimelineState {
+class TimelineStreamState extends TimelineState {
   Stream<QueryResult>? stream;
   Status? status;
 
-  TimelineStreaming({this.stream, this.status});
+  TimelineStreamState({this.stream, this.status});
 }

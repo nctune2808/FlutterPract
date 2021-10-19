@@ -19,8 +19,9 @@ class HomeView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              icon: Icon(Icons.logout, size: 30),
-              onPressed: () => Navigator.pop(context))
+            icon: Icon(Icons.logout, size: 30),
+            onPressed: () {},
+          )
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -49,9 +50,9 @@ class HomeView extends StatelessWidget {
           ElevatedButton(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [Icon(Icons.messenger, size: 60), Text("TALK")],
+              children: [Icon(Icons.messenger, size: 60), Text("CHAT")],
             ),
-            onPressed: () => Navigator.pushNamed(context, TALK_ROUTE),
+            onPressed: () => Navigator.pushNamed(context, CHAT_ROUTE),
           ),
           ElevatedButton(
             child: Column(

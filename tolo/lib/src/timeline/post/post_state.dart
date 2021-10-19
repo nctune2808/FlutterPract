@@ -20,4 +20,4 @@ class PostState {
   }
 }
 
-class PostInitial extends PostState {}
+class PostInitState extends PostState {}
