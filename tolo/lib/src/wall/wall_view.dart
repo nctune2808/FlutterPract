@@ -4,7 +4,7 @@ import 'package:tolo/model/post.dart';
 import 'package:tolo/src/wall/post/post_bloc.dart';
 import 'package:tolo/src/wall/post/post_view.dart';
 import 'package:tolo/src/wall/wall_bloc.dart';
-import 'package:tolo/utility/state/Status.dart';
+import 'package:tolo/utility/state/status.dart';
 
 class WallView extends StatefulWidget {
   const WallView({Key? key}) : super(key: key);

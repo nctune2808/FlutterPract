@@ -4,8 +4,6 @@ abstract class SessionEvent {}
 
 class InitSessionEvent extends SessionEvent {}
 
-class SignInSessionEvent extends SessionEvent {}
+class UnauthSessionEvent extends SessionEvent {}
 
-class SignUpSessionEvent extends SessionEvent {}
-
-class ConfirmSessionEvent extends SessionEvent {}
+class AuthenSessionEvent extends SessionEvent {}

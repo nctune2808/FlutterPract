@@ -10,7 +10,7 @@ class MessageRepository {
     try {
       await _firestore.collection('messages').add({
         'text': message.text,
-        'sender': _authRepo.getCurrentUser().displayName,
+        // 'sender': _authRepo.getCurrentUser().displayName,
         'time': Timestamp.fromDate(DateTime.now()),
         'isLiked': false,
         'seen': false,

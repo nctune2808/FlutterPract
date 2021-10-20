@@ -16,3 +16,7 @@ class StatusFailed extends Status {
     required this.e,
   });
 }
+
+class StatusUnauthenticated extends Status {}
+
+class StatusAuthenticated extends Status {}

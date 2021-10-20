@@ -25,20 +25,6 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
         yield state.copyWith(formStatus: SubmissionFailed(exception: e));
         yield state.copyWith(formStatus: InitialFormStatus());
       }
-      // try {
-      //   final userId = await authRepo.signin(
-      //     username: state.username,
-      //     password: state.password,
-      //   );
-      //   yield state.copyWith(formStatus: SubmissionSucess());
-
-      //   authCubit.launchSession(
-      //     AuthCredential(username: state.username, userId: userId),
-      //   );
-      // } catch (e) {
-      //   print(e);
-      //   yield state.copyWith(formStatus: SubmissionFailed(exception: e));
-      // }
     } else if (event is FastTrackSignInEvent) {
       yield state.copyWith(formStatus: Submitting());
       try {

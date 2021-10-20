@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthRepository {
   final _auth = FirebaseAuth.instance;
 
-  User getCurrentUser() {
+  Future<User> getCurrentUser() async {
     try {
       return _auth.currentUser!;
     } catch (e) {
@@ -41,5 +41,9 @@ class AuthRepository {
     } catch (e) {
       throw e;
     }
+  }
+
+  Future signOut() async {
+    await _auth.signOut();
   }
 }

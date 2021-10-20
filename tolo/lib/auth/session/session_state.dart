@@ -1,9 +1,23 @@
 part of 'session_bloc.dart';
 
-abstract class SessionState {}
+class SessionState {
+  User? user;
+  Status? status;
+
+  SessionState({
+    this.user,
+    this.status = const StatusInitial(),
+  });
+
+  SessionState copyWith({
+    User? user,
+    Status? status,
+  }) {
+    return SessionState(
+      user: user ?? this.user,
+      status: status ?? this.status,
+    );
+  }
+}
 
 class SessionInitState extends SessionState {}
-
-class UnauthSessionState extends SessionState {}
-
-class AuthenSessionState extends SessionState {}

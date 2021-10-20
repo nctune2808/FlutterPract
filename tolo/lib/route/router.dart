@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/auth/signin/signin_bloc.dart';
 import 'package:tolo/auth/signin/signin_view.dart';
 import 'package:tolo/auth/signup/signup_bloc.dart';
@@ -29,7 +30,11 @@ class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case WELCOME_ROUTE:
-        return MaterialPageRoute(builder: (_) => WelcomeView());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => SessionBloc()..add(InitSessionEvent()),
+                  child: WelcomeView(),
+                ));
       case SIGNIN_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
@@ -39,7 +44,11 @@ class AppRouter {
             builder: (_) => BlocProvider(
                 create: (context) => SignupBloc(), child: SignUpView()));
       case HOME_ROUTE:
-        return MaterialPageRoute(builder: (_) => HomeView());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+                  child: HomeView(),
+                ));
       case CART_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
@@ -69,6 +78,7 @@ class AppRouter {
               lazy: true,
             ),
             BlocProvider(
+              // combine session bloc provider???
               create: (context) => MessageBloc()..add(InitMessageEvent()),
               lazy: true,
             )
