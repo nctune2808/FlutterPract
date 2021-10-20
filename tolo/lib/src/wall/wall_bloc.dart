@@ -3,26 +3,26 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
-import 'package:tolo/src/timeline/timeline_repository.dart';
+import 'package:tolo/src/wall/wall_repository.dart';
 import 'package:tolo/utility/state/Status.dart';
 
-part 'timeline_event.dart';
-part 'timeline_state.dart';
+part 'wall_event.dart';
+part 'wall_state.dart';
 
-class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
-  TimelineRepository _tlRepo = TimelineRepository.instance;
-  TimelineBloc() : super(TimelineInitState());
+class WallBloc extends Bloc<WallEvent, WallState> {
+  WallRepository _tlRepo = WallRepository.instance;
+  WallBloc() : super(WallInitState());
   List<Post> posts = [];
 
-  Stream<TimelineState> mapFetchEventToState(FetchTimelineEvent event) async* {
+  Stream<WallState> mapFetchEventToState(FetchWallEvent event) async* {
     posts = await _tlRepo.getPosts();
     // _tlRepo.streamPosts();
     yield state.copyWith(status: StatusSucess(), posts: posts);
   }
 
   @override
-  Stream<TimelineState> mapEventToState(TimelineEvent event) async* {
-    if (event is FetchTimelineEvent) {
+  Stream<WallState> mapEventToState(WallEvent event) async* {
+    if (event is FetchWallEvent) {
       yield* mapFetchEventToState(event);
     }
 

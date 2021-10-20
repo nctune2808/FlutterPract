@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/model/post.dart';
-import 'package:tolo/src/timeline/post/post_repository.dart';
+import 'package:tolo/src/wall/post/post_repository.dart';
 import 'package:tolo/utility/state/Status.dart';
-import 'package:tolo/utility/state/form_submission_status.dart';
 
 part 'post_event.dart';
 part 'post_state.dart';

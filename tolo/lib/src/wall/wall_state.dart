@@ -1,30 +1,30 @@
-part of 'timeline_bloc.dart';
+part of 'wall_bloc.dart';
 
-class TimelineState {
+class WallState {
   final List<Post>? posts;
   final Status? status;
 
-  TimelineState({
+  WallState({
     this.posts,
     this.status = const StatusInitial(),
   });
 
-  TimelineState copyWith({
+  WallState copyWith({
     List<Post>? posts,
     Status? status,
   }) {
-    return TimelineState(
+    return WallState(
       posts: posts ?? this.posts,
       status: status ?? this.status,
     );
   }
 }
 
-class TimelineInitState extends TimelineState {}
+class WallInitState extends WallState {}
 
-class TimelineStreamState extends TimelineState {
+class WallStreamState extends WallState {
   Stream<QueryResult>? stream;
   Status? status;
 
-  TimelineStreamState({this.stream, this.status});
+  WallStreamState({this.stream, this.status});
 }

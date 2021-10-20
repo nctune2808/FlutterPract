@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tolo/model/post.dart';
-import 'package:tolo/src/timeline/post/post_bloc.dart';
+import 'package:tolo/src/wall/post/post_bloc.dart';
 
 class PostView extends StatefulWidget {
   Post post;

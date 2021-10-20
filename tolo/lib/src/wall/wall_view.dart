@@ -1,25 +1,19 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
-import 'package:tolo/src/timeline/post/post_bloc.dart';
-import 'package:tolo/src/timeline/post/post_view.dart';
-import 'package:tolo/src/timeline/timeline_bloc.dart';
-import 'package:tolo/src/timeline/timeline_bloc.dart';
-import 'package:tolo/src/timeline/timeline_repository.dart';
+import 'package:tolo/src/wall/post/post_bloc.dart';
+import 'package:tolo/src/wall/post/post_view.dart';
+import 'package:tolo/src/wall/wall_bloc.dart';
 import 'package:tolo/utility/state/Status.dart';
-import 'package:tolo/utility/state/form_submission_status.dart';
 
-class TimelineView extends StatefulWidget {
-  const TimelineView({Key? key}) : super(key: key);
+class WallView extends StatefulWidget {
+  const WallView({Key? key}) : super(key: key);
 
   @override
-  _TimelineViewState createState() => _TimelineViewState();
+  _WallViewState createState() => _WallViewState();
 }
 
-class _TimelineViewState extends State<TimelineView> {
+class _WallViewState extends State<WallView> {
   List<Post> posts = [];
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
@@ -27,8 +21,8 @@ class _TimelineViewState extends State<TimelineView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Timeline")),
-      body: BlocBuilder<TimelineBloc, TimelineState>(
+      appBar: AppBar(title: Text("Wall")),
+      body: BlocBuilder<WallBloc, WallState>(
         builder: (context, state) {
           return BlocBuilder<PostBloc, PostState>(
             builder: (context, pState) {
@@ -51,7 +45,7 @@ class _TimelineViewState extends State<TimelineView> {
   Widget _sceneBuilder(List<Post> posts) {
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<TimelineBloc>().add(FetchTimelineEvent());
+        context.read<WallBloc>().add(FetchWallEvent());
         await Future.delayed(Duration(seconds: 1));
       },
       child: ListView.builder(
@@ -89,7 +83,7 @@ class _TimelineViewState extends State<TimelineView> {
         );
         context.read<PostBloc>().add(AddPostEvent(post: addPost));
 
-        context.read<TimelineBloc>().add(FetchTimelineEvent());
+        context.read<WallBloc>().add(FetchWallEvent());
 
         Navigator.pop(context);
         _titleController.clear();

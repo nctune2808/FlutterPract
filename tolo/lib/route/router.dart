@@ -11,18 +11,17 @@ import 'package:tolo/src/chat/chat_view.dart';
 import 'package:tolo/src/chat/message/message_bloc.dart';
 import 'package:tolo/src/gallery/gallery_view.dart';
 import 'package:tolo/src/home/home_view.dart';
-import 'package:tolo/src/home/loading_view.dart';
 import 'package:tolo/src/home/welcome_view.dart';
-import 'package:tolo/src/timeline/post/post_bloc.dart';
-import 'package:tolo/src/timeline/timeline_bloc.dart';
-import 'package:tolo/src/timeline/timeline_view.dart';
+import 'package:tolo/src/wall/post/post_bloc.dart';
+import 'package:tolo/src/wall/wall_bloc.dart';
+import 'package:tolo/src/wall/wall_view.dart';
 
 const WELCOME_ROUTE = "/";
 const SIGNIN_ROUTE = "/signin";
 const SIGNUP_ROUTE = "/signup";
 const HOME_ROUTE = "/home";
 const CART_ROUTE = "/cart";
-const TIMELINE_ROUTE = "/timeline";
+const WALL_ROUTE = "/wall";
 const CHAT_ROUTE = "/chat";
 const GALLERY_ROUTE = "/galerry";
 
@@ -46,18 +45,18 @@ class AppRouter {
             builder: (_) => BlocProvider(
                 create: (context) => CartBloc()..add(LoadingCartEvent()),
                 child: CartView()));
-      case TIMELINE_ROUTE:
+      case WALL_ROUTE:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(providers: [
             BlocProvider(
-              create: (context) => TimelineBloc()..add(FetchTimelineEvent()),
+              create: (context) => WallBloc()..add(FetchWallEvent()),
               lazy: true,
             ),
             BlocProvider(
               create: (context) => PostBloc()..add(InitPostEvent()),
               lazy: true,
             )
-          ], child: TimelineView()),
+          ], child: WallView()),
         );
 
       case GALLERY_ROUTE:

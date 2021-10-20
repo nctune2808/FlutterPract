@@ -5,9 +5,9 @@ import 'package:tolo/model/post.dart';
 import 'package:tolo/service/graphql/graphql_service.dart';
 import 'package:tolo/utility/fragment/post_fragments.dart';
 
-class TimelineRepository {
-  TimelineRepository._();
-  static final TimelineRepository instance = TimelineRepository._();
+class WallRepository {
+  WallRepository._();
+  static final WallRepository instance = WallRepository._();
 
   static const String FETCH_POSTS = '''
       ${PostFragment.POST_DATA}
