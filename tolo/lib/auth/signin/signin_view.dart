@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/route/router.dart';
-import 'package:tolo/utility/state/form_submission_status.dart';
+import 'package:tolo/utility/state/status.dart';
 
 import 'signin_bloc.dart';
 
@@ -55,11 +55,10 @@ class SignInView extends StatelessWidget {
   Widget _loginForm() {
     return BlocListener<SigninBloc, SigninState>(
       listener: (context, state) {
-        final formStatus = state.formStatus;
-        if (formStatus is SubmissionSucess) {
+        if (state.status is StatusSucess) {
           _showSnackBar(context, "Signed In Successfully");
           Navigator.popAndPushNamed(context, HOME_ROUTE);
-        } else if (formStatus is SubmissionFailed) {
+        } else if (state.status is StatusFailed) {
           // _showSnackBar(context, formStatus.exception.toString());
           _showSnackBar(
               context, 'Invalid User!!!\nPlease create account first');
@@ -90,7 +89,7 @@ class SignInView extends StatelessWidget {
       // for android test
       child: BlocBuilder<SigninBloc, SigninState>(
         builder: (context, state) {
-          return state.formStatus is Submitting
+          return state.status is StatusSucess
               ? CircularProgressIndicator()
               : ElevatedButton(
                   onPressed: () {
@@ -107,7 +106,7 @@ class SignInView extends StatelessWidget {
   Widget _adminButton() {
     return BlocBuilder<SigninBloc, SigninState>(
       builder: (context, state) {
-        return state.formStatus is AdminSubmitting
+        return state.status is StatusSucess
             ? CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () {

@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/route/router.dart';
-import 'package:tolo/utility/state/form_submission_status.dart';
+import 'package:tolo/utility/state/status.dart';
 
 import 'signup_bloc.dart';
 
@@ -92,18 +91,17 @@ class SignUpView extends StatelessWidget {
   Widget _registerButton() {
     return BlocListener<SignupBloc, SignupState>(
       listener: (context, state) {
-        final formStatus = state.formStatus;
-        if (formStatus is SubmissionSucess) {
+        if (state.status is StatusSucess) {
           _showSnackBar(context, 'Signed Up Successfully');
           Navigator.popAndPushNamed(context, SIGNIN_ROUTE);
-        } else if (formStatus is SubmissionFailed) {
+        } else if (state.status is StatusFailed) {
           // _showSnackBar(context, formStatus.exception.toString());
           _showSnackBar(context, 'Invalid Email / Weak Password');
         }
       },
       child: BlocBuilder<SignupBloc, SignupState>(
         builder: (context, state) {
-          return state.formStatus is Submitting
+          return state.status is StatusLoading
               ? CircularProgressIndicator()
               : ElevatedButton(
                   onPressed: () {

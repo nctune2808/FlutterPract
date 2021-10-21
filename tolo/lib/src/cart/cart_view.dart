@@ -6,7 +6,7 @@ import 'package:tolo/src/cart/cart_bloc.dart';
 import 'package:tolo/src/cart/cart_repository.dart';
 import 'package:tolo/src/cart/item/item_view.dart';
 import 'package:tolo/src/home/loading_view.dart';
-import 'package:tolo/utility/state/form_submission_status.dart';
+import 'package:tolo/utility/state/status.dart';
 
 class CartView extends StatefulWidget {
   @override
@@ -25,13 +25,9 @@ class _CartViewState extends State<CartView> {
       appBar: _navBar(),
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
-          final formStatus = state.formStatus;
-          if (state is RefreshableCart || formStatus is SubmissionSucess) {
+          if (state is RefreshableCart || state.status is StatusSucess) {
             // return state.carts.isEmpty ? _emptyForm() : _cartForm(state.carts);
             return _sceneBuilder();
-          } else if (formStatus is SubmissionFailed) {
-            return Center(
-                child: Text('Error: ${formStatus.exception.toString()}'));
           } else {
             return LoadingView();
           }

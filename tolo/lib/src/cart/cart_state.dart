@@ -2,20 +2,20 @@ part of 'cart_bloc.dart';
 
 class CartState {
   final List<Cart>? carts;
-  final FormSubmissionStatus formStatus;
+  final Status status;
 
   CartState({
     this.carts,
-    this.formStatus = const InitialFormStatus(),
+    this.status = const StatusInitial(),
   });
 
   CartState copyWith({
     List<Cart>? carts,
-    FormSubmissionStatus? formStatus,
+    Status? status,
   }) {
     return CartState(
       carts: carts ?? this.carts,
-      formStatus: formStatus ?? this.formStatus,
+      status: status ?? this.status,
     );
   }
 }

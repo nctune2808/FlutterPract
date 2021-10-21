@@ -3,22 +3,22 @@ part of 'signin_bloc.dart';
 class SigninState {
   final String email;
   final String password;
-  final FormSubmissionStatus formStatus;
+  final Status status;
 
   SigninState(
       {this.email = '',
       this.password = '',
-      this.formStatus = const InitialFormStatus()});
+      this.status = const StatusInitial()});
 
   SigninState copyWith({
     String? email,
     String? password,
-    FormSubmissionStatus? formStatus,
+    Status? status,
   }) {
     return SigninState(
       email: email ?? this.email,
       password: password ?? this.password,
-      formStatus: formStatus ?? this.formStatus,
+      status: status ?? this.status,
     );
   }
 }

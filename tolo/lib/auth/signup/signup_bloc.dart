@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:tolo/auth/auth_repository.dart';
-import 'package:tolo/utility/state/form_submission_status.dart';
+import 'package:tolo/utility/state/status.dart';
 
 part 'signup_event.dart';
 part 'signup_state.dart';
@@ -19,16 +18,16 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     } else if (event is EmailSignupEvent) {
       yield state.copyWith(email: event.email);
     } else if (event is SubmissionSignupEvent) {
-      yield state.copyWith(formStatus: Submitting());
+      yield state.copyWith(status: StatusLoading());
       try {
         final newUser = await _authRepo.signUpEmail(
             email: state.email,
             password: state.password,
             username: state.username);
-        yield state.copyWith(formStatus: SubmissionSucess());
+        yield state.copyWith(status: StatusSucess());
       } catch (e) {
-        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
-        yield state.copyWith(formStatus: InitialFormStatus());
+        yield state.copyWith(status: StatusFailed(e: e));
+        yield state.copyWith(status: StatusInitial());
       }
       // try {
       //   await authRepo.signUp(

@@ -7,26 +7,26 @@ class SignupState {
 
   final String email;
 
-  final FormSubmissionStatus formStatus;
+  final Status status;
 
   SignupState({
     this.username = '',
     this.password = '',
     this.email = '',
-    this.formStatus = const InitialFormStatus(),
+    this.status = const StatusInitial(),
   });
 
   SignupState copyWith({
     String? username,
     String? password,
     String? email,
-    FormSubmissionStatus? formStatus,
+    Status? status,
   }) {
     return SignupState(
       username: username ?? this.username,
       password: password ?? this.password,
       email: email ?? this.email,
-      formStatus: formStatus ?? this.formStatus,
+      status: status ?? this.status,
     );
   }
 }

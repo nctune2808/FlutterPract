@@ -1,9 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:tolo/model/cart.dart';
 import 'package:tolo/model/cart.dart';
 import 'package:tolo/src/cart/cart_repository.dart';
-import 'package:tolo/utility/state/form_submission_status.dart';
+import 'package:tolo/utility/state/status.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -24,24 +22,24 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
 
     if (event is AddCartEvent) {
-      yield state.copyWith(formStatus: Submitting());
+      yield state.copyWith(status: StatusLoading());
       print("Press ADD");
       try {
         _cartRepo.addCart(cart: event.cart);
-        yield state.copyWith(formStatus: SubmissionSucess());
+        yield state.copyWith(status: StatusSucess());
       } catch (e) {
-        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
+        yield state.copyWith(status: StatusFailed(e: e));
       }
     }
 
     if (event is DeleteCartEvent) {
-      yield state.copyWith(formStatus: Submitting());
+      yield state.copyWith(status: StatusLoading());
       print("Press DEL");
       try {
         _cartRepo.deleteCart(cart: event.cart);
-        yield state.copyWith(formStatus: SubmissionSucess());
+        yield state.copyWith(status: StatusSucess());
       } catch (e) {
-        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
+        yield state.copyWith(status: StatusFailed(e: e));
       }
     }
 
@@ -49,9 +47,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       print("Press UP");
       try {
         _cartRepo.updateCart(cart: event.cart);
-        yield state.copyWith(formStatus: SubmissionSucess());
+        yield state.copyWith(status: StatusSucess());
       } catch (e) {
-        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
+        yield state.copyWith(status: StatusFailed(e: e));
       }
     }
 
@@ -59,9 +57,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       print('Press INS');
       try {
         _cartRepo.recoverCart(cart: event.cart);
-        yield state.copyWith(formStatus: SubmissionSucess());
+        yield state.copyWith(status: StatusSucess());
       } catch (e) {
-        yield state.copyWith(formStatus: SubmissionFailed(exception: e));
+        yield state.copyWith(status: StatusFailed(e: e));
       }
     }
 
