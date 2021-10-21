@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/route/router.dart';
+import 'package:tolo/src/chat/chat_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return BlocBuilder<SessionBloc, SessionState>(
       builder: (context, state) {
+        print("Home ${state.status}");
         return Scaffold(
           appBar: _appBar(user: state.user),
           bottomNavigationBar: BottomAppBar(

@@ -11,7 +11,12 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
 
   @override
   Stream<SessionState> mapEventToState(SessionEvent event) async* {
-    String token = "";
+    // String token = "";
+
+    if (event is InitSessionEvent) {
+      yield SessionInitState();
+    }
+
     if (event is UnauthSessionEvent) {
       // need condition
       await _authRepo.signOut();
@@ -23,7 +28,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
 
     if (event is AuthenSessionEvent) {
       User user = await _authRepo.getCurrentUser();
-      token = await user.getIdToken();
+      // token = await user.getIdToken();
       yield state.copyWith(status: StatusAuthenticated(), user: user);
     }
   }

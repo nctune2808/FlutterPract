@@ -30,11 +30,7 @@ class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case WELCOME_ROUTE:
-        return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                  create: (context) => SessionBloc()..add(InitSessionEvent()),
-                  child: WelcomeView(),
-                ));
+        return MaterialPageRoute(builder: (_) => WelcomeView());
       case SIGNIN_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
@@ -44,11 +40,7 @@ class AppRouter {
             builder: (_) => BlocProvider(
                 create: (context) => SignupBloc(), child: SignUpView()));
       case HOME_ROUTE:
-        return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                  create: (context) => SessionBloc()..add(AuthenSessionEvent()),
-                  child: HomeView(),
-                ));
+        return MaterialPageRoute(builder: (_) => HomeView());
       case CART_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
@@ -73,9 +65,6 @@ class AppRouter {
       case CHAT_ROUTE:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(providers: [
-            BlocProvider(
-              create: (context) => SessionBloc()..add(AuthenSessionEvent()),
-            ),
             BlocProvider(
               create: (context) => ChatBloc()..add(InitChatEvent()),
               lazy: true,
