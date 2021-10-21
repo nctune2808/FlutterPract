@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/model/message.dart';
 import 'package:tolo/src/chat/message/message_bloc.dart';
 import 'package:tolo/src/chat/message/message_view.dart';
 import 'package:tolo/src/chat/chat_bloc.dart';
 import 'package:tolo/src/chat/chat_repository.dart';
+import 'package:tolo/utility/state/status.dart';
 
 class ChatView extends StatefulWidget {
   @override
@@ -21,7 +24,7 @@ class _ChatViewState extends State<ChatView> {
         appBar: _appBar(),
         body: BlocBuilder<ChatBloc, ChatState>(
           builder: (context, state) {
-            if (state is ChatInitState) {
+            if (state.status is StatusSucess) {
               return _sceneBuilder();
             } else {
               return Center(child: CircularProgressIndicator());
@@ -57,7 +60,7 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget _boxChat() {
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: ChatRepository().getSnapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -65,9 +68,12 @@ class _ChatViewState extends State<ChatView> {
             child: CircularProgressIndicator(),
           );
         }
-        final messages = snapshot.data!.docs;
+        List<Message> messages = (snapshot.data!.docs)
+            .map((message) => Message.fromMap(message.data()))
+            .toList();
+
         // snapshot.data!.docs.forEach((element) {
-        //   print(element.id);
+        //   print(element);
         // });
         return Expanded(
           child: ListView.builder(
@@ -83,35 +89,44 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget _composeForm() {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: TextFormField(
-                autocorrect: false,
-                autofocus: true,
-                decoration: InputDecoration(hintText: "Send something?"),
-                controller: _textController,
-                onEditingComplete: () => _onSubmission(),
+    return BlocProvider(
+      create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+      child: BlocBuilder<SessionBloc, SessionState>(
+        builder: (context, state) {
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      autocorrect: false,
+                      autofocus: true,
+                      decoration: InputDecoration(hintText: "Send something?"),
+                      controller: _textController,
+                      onEditingComplete: () => _onSubmission(user: state.user!),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _onSubmission(user: state.user!),
+                    icon: Icon(Icons.send),
+                  ),
+                ],
               ),
             ),
-            IconButton(
-              onPressed: () => _onSubmission(),
-              icon: Icon(Icons.send),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  void _onSubmission() {
-    context
-        .read<MessageBloc>()
-        .add(SentMessageEvent(message: Message(text: _textController.text)));
+  void _onSubmission({required User user}) {
+    context.read<MessageBloc>().add(SentMessageEvent(
+            message: Message(
+          text: _textController.text,
+          sender: user.displayName,
+        )));
     _textController.clear();
   }
 

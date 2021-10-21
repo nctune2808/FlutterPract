@@ -4,17 +4,10 @@ import 'package:tolo/model/message.dart';
 
 class MessageRepository {
   final _firestore = FirebaseFirestore.instance;
-  AuthRepository _authRepo = AuthRepository();
 
   Future<void> enterMessage({required Message message}) async {
     try {
-      await _firestore.collection('messages').add({
-        'text': message.text,
-        // 'sender': _authRepo.getCurrentUser().displayName,
-        'time': Timestamp.fromDate(DateTime.now()),
-        'isLiked': false,
-        'seen': false,
-      });
+      await _firestore.collection('messages').add(message.toMap());
     } catch (e) {
       print(e);
       throw e;

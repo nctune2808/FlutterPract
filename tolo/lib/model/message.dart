@@ -21,8 +21,8 @@ class Message {
     return {
       'sender': sender,
       'text': text,
-      'isLiked': isLiked,
-      'seen': seen,
+      'isLiked': false,
+      'seen': false,
       'time': Timestamp.fromDate(DateTime.now()),
     };
   }
@@ -41,4 +41,25 @@ class Message {
 
   factory Message.fromJson(String source) =>
       Message.fromMap(json.decode(source));
+
+  Message copyWith({
+    String? sender,
+    String? text,
+    bool? isLiked,
+    bool? seen,
+    Timestamp? time,
+  }) {
+    return Message(
+      sender: sender ?? this.sender,
+      text: text ?? this.text,
+      isLiked: isLiked ?? this.isLiked,
+      seen: seen ?? this.seen,
+      time: time ?? this.time,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Message(sender: $sender, text: $text, isLiked: $isLiked, seen: $seen, time: $time)';
+  }
 }

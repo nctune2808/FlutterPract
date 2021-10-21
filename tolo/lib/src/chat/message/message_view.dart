@@ -1,11 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tolo/auth/auth_repository.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
+import 'package:tolo/model/message.dart';
+import 'package:tolo/src/chat/message/message_bloc.dart';
+import 'package:tolo/utility/state/status.dart';
 
 class MessageView extends StatefulWidget {
-  QueryDocumentSnapshot message;
+  Message message;
   MessageView({
     Key? key,
     required this.message,
@@ -17,22 +19,30 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   bool isTap = false;
-  String uid = "";
+  bool isMy = false;
+  String username = "";
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+      create: (context) =>
+          MessageBloc()..add(LoadMessageEvent(message: widget.message)),
       child: BlocBuilder<SessionBloc, SessionState>(
         builder: (context, state) {
-          if (state.user != null) {
-            // do graphql user stuff
-            // not finished !!!
-            print(state.user!.uid);
-            return _sceneBuilder();
-          } else {
-            return Text("Not Authenticate");
-          }
+          return BlocBuilder<MessageBloc, MessageState>(
+            builder: (context, mState) {
+              if (mState.status is StatusSucess) {
+                if (state.user != null) {
+                  isMy = (state.user!.displayName == widget.message.sender);
+                  return _sceneBuilder();
+                } else {
+                  return Text("Unauth");
+                }
+              } else {
+                return Center(child: LinearProgressIndicator(minHeight: 0.5));
+              }
+            },
+          );
         },
       ),
     );
@@ -41,10 +51,10 @@ class _MessageViewState extends State<MessageView> {
   Widget _sceneBuilder() {
     return Column(
       crossAxisAlignment:
-          _isMe() ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          isMy ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: _isMe()
+          padding: isMy
               ? EdgeInsets.only(top: 5, bottom: 5, left: 150, right: 10)
               : EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 150),
           child: GestureDetector(
@@ -53,7 +63,7 @@ class _MessageViewState extends State<MessageView> {
               },
               onTap: () {
                 isTap = true;
-                print(widget.message['time']);
+                print(widget.message.time);
               },
               child: _messageBuilder()),
         )
@@ -66,19 +76,19 @@ class _MessageViewState extends State<MessageView> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Stack(
-          alignment: _isMe() ? Alignment.bottomLeft : Alignment.bottomRight,
+          alignment: isMy ? Alignment.bottomLeft : Alignment.bottomRight,
           children: [
             Container(
               padding: EdgeInsets.only(bottom: 2.5),
               child: Material(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
-                color: _isMe() ? Colors.lightBlue[100] : Color(0xFFFFEFEE),
+                color: isMy ? Colors.lightBlue[100] : Color(0xFFFFEFEE),
                 child: _messageStyle(),
               ),
             ),
 
             //-----------------------------
-            if (widget.message['isLiked'])
+            if (widget.message.isLiked!)
               Icon(
                 Icons.favorite,
                 color: Colors.redAccent[100],
@@ -98,7 +108,7 @@ class _MessageViewState extends State<MessageView> {
       padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 7.5),
       child: Column(
         crossAxisAlignment:
-            _isMe() ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            isMy ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           // Text(
           //   readTime((message['time'] as Timestamp).toDate()),
@@ -108,7 +118,7 @@ class _MessageViewState extends State<MessageView> {
           //   ),
           // ),
           Text(
-            widget.message['text'],
+            widget.message.text,
             style: TextStyle(
               color: Colors.black87,
               fontSize: 15.0,

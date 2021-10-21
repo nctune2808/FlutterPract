@@ -16,7 +16,7 @@ class ChatRepository {
     }
   }
 
-  Stream<QuerySnapshot> getSnapshots() {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots() {
     return _firestore
         .collection("messages")
         .orderBy("time", descending: true)

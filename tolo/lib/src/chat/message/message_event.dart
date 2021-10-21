@@ -9,4 +9,18 @@ class SentMessageEvent extends MessageEvent {
   });
 }
 
+class AuthMessageEvent extends MessageEvent {
+  User user;
+  AuthMessageEvent({
+    required this.user,
+  });
+}
+
 class InitMessageEvent extends MessageEvent {}
+
+class LoadMessageEvent extends MessageEvent {
+  Message message;
+  LoadMessageEvent({
+    required this.message,
+  });
+}

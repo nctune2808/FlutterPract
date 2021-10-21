@@ -74,6 +74,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(providers: [
             BlocProvider(
+              create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+            ),
+            BlocProvider(
               create: (context) => ChatBloc()..add(InitChatEvent()),
               lazy: true,
             ),

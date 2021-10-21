@@ -1,25 +1,21 @@
 part of 'message_bloc.dart';
 
 class MessageState {
-  final String sender;
-  final String text;
-  final FormSubmissionStatus formStatus;
+  final Message? message;
+  final Status? status;
 
   MessageState({
-    this.sender = '',
-    this.text = '',
-    this.formStatus = const InitialFormStatus(),
+    this.message,
+    this.status = const StatusInitial(),
   });
 
   MessageState copyWith({
-    String? sender,
-    String? text,
-    FormSubmissionStatus? formStatus,
+    Message? message,
+    Status? status,
   }) {
     return MessageState(
-      sender: sender ?? this.sender,
-      text: text ?? this.text,
-      formStatus: formStatus ?? this.formStatus,
+      message: message ?? this.message,
+      status: status ?? this.status,
     );
   }
 }
