@@ -24,18 +24,12 @@ class _WallViewState extends State<WallView> {
       appBar: AppBar(title: Text("Wall")),
       body: BlocBuilder<WallBloc, WallState>(
         builder: (context, state) {
-          return BlocBuilder<PostBloc, PostState>(
-            builder: (context, pState) {
-              // if (state is TimelineStreaming) {
-              //   return _streamBuilder(state.stream!);
-              if (state.status is StatusSucess) {
-                posts = state.posts!;
-                return _sceneBuilder(posts);
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
-          );
+          if (state.status is StatusSucess) {
+            posts = state.posts!;
+            return _sceneBuilder(posts);
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         },
       ),
       floatingActionButton: _floatingButton(),
@@ -82,7 +76,6 @@ class _WallViewState extends State<WallView> {
           body: _bodyController.text,
         );
         context.read<PostBloc>().add(AddPostEvent(post: addPost));
-
         context.read<WallBloc>().add(FetchWallEvent());
 
         Navigator.pop(context);

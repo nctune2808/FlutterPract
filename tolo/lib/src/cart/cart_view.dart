@@ -70,7 +70,6 @@ class _CartViewState extends State<CartView> {
                   .map(
                       (cart) => Cart.fromMap(cart.data()).copyWith(id: cart.id))
                   .toList();
-              print(carts.first.id);
               return Expanded(
                 child: ListView.builder(
                   // reverse: true,

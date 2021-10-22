@@ -23,26 +23,17 @@ class _SignInViewState extends State<SignInView> {
       listener: (context, state) {
         if (state.status is StatusSucess) {
           _showSnackBar(context, "Signed In Successfully");
+          Navigator.pushNamed(context, HOME_ROUTE);
         } else if (state.status is StatusFailed) {
           _showSnackBar(
               context, 'Invalid User!!!\nPlease create account first');
         }
       },
-      child: BlocBuilder<SigninBloc, SigninState>(
-        builder: (context, state) {
-          if (state.status is StatusSucess) {
-            // verified
-            return BlocProvider(
-                create: (context) => SessionBloc()..add(AuthenSessionEvent()),
-                child: HomeView());
-          }
-          return Scaffold(
-            body: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [_loginForm(), _showSignUpButton()],
-            ),
-          );
-        },
+      child: Scaffold(
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [_loginForm(), _showSignUpButton()],
+        ),
       ),
     );
   }

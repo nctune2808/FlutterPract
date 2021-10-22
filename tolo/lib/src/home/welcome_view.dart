@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tolo/auth/auth_bloc.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/route/router.dart';
 // import 'package:tolo/route/router.dart';
@@ -14,16 +13,10 @@ class WelcomeView extends StatefulWidget {
 
 class _WelcomeViewState extends State<WelcomeView> {
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<SessionBloc, SessionState>(
       builder: (context, state) {
-        print("Welcome ${state.status}");
+        print("--WelcomeSession:-- ${state.status}");
         return _sceneBuilder();
       },
     );
@@ -46,7 +39,6 @@ class _WelcomeViewState extends State<WelcomeView> {
               child: Text("Login"),
               onPressed: () {
                 Navigator.pushNamed(context, SIGNIN_ROUTE);
-                context.read<SessionBloc>().add(UnauthSessionEvent());
               },
             ),
             MaterialButton(
@@ -55,7 +47,6 @@ class _WelcomeViewState extends State<WelcomeView> {
               child: Text("Register"),
               onPressed: () {
                 Navigator.pushNamed(context, SIGNUP_ROUTE);
-                context.read<SessionBloc>().add(UnauthSessionEvent());
               },
             ),
           ],

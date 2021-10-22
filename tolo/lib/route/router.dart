@@ -13,6 +13,8 @@ import 'package:tolo/src/chat/message/message_bloc.dart';
 import 'package:tolo/src/gallery/gallery_view.dart';
 import 'package:tolo/src/home/home_view.dart';
 import 'package:tolo/src/home/welcome_view.dart';
+import 'package:tolo/src/profile/profile_bloc.dart';
+import 'package:tolo/src/profile/profile_view.dart';
 import 'package:tolo/src/wall/post/post_bloc.dart';
 import 'package:tolo/src/wall/wall_bloc.dart';
 import 'package:tolo/src/wall/wall_view.dart';
@@ -24,13 +26,19 @@ const HOME_ROUTE = "/home";
 const CART_ROUTE = "/cart";
 const WALL_ROUTE = "/wall";
 const CHAT_ROUTE = "/chat";
-const GALLERY_ROUTE = "/galerry";
+const GALLERY_ROUTE = "/gallery";
+const PROFILE_ROUTE = "/profile";
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case WELCOME_ROUTE:
-        return MaterialPageRoute(builder: (_) => WelcomeView());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => SessionBloc(),
+            child: WelcomeView(),
+          ),
+        );
       case SIGNIN_ROUTE:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
@@ -40,20 +48,33 @@ class AppRouter {
             builder: (_) => BlocProvider(
                 create: (context) => SignupBloc(), child: SignUpView()));
       case HOME_ROUTE:
-        return MaterialPageRoute(builder: (_) => HomeView());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+            child: HomeView(),
+          ),
+        );
+
+      //-----------------------------------------
       case CART_ROUTE:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                create: (context) => CartBloc(), child: CartView()));
+          builder: (_) => BlocProvider(
+              // not split yet!
+              create: (context) => CartBloc(),
+              child: CartView()),
+        );
       case WALL_ROUTE:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(providers: [
+            BlocProvider(
+              create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+            ),
             BlocProvider(
               create: (context) => WallBloc()..add(FetchWallEvent()),
               lazy: true,
             ),
             BlocProvider(
-              create: (context) => PostBloc()..add(InitPostEvent()),
+              create: (context) => PostBloc(),
               lazy: true,
             )
           ], child: WallView()),
@@ -63,19 +84,26 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => GalleryView());
       case CHAT_ROUTE:
         return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(providers: [
-            BlocProvider(
-              create: (context) => ChatBloc()..add(InitChatEvent()),
-              lazy: true,
-            ),
-            BlocProvider(
-              // combine session bloc provider???
-              create: (context) => MessageBloc()..add(InitMessageEvent()),
-              lazy: true,
-            )
-          ], child: ChatView()),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+              ),
+              BlocProvider(
+                create: (context) => ChatBloc()..add(InitChatEvent()),
+                lazy: true,
+              ),
+            ],
+            child: ChatView(),
+          ),
         );
 
+      case PROFILE_ROUTE:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => ProfileBloc(),
+                  child: ProfileView(),
+                ));
       default:
         return null;
     }

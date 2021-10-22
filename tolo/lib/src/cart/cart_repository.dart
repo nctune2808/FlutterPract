@@ -5,12 +5,12 @@ class CartRepository {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> getCarts() async {
+    // not stream
     try {
       final carts = await _firestore.collection('carts').get();
       for (var cart in carts.docs) {
         Cart _cart = Cart.fromMap(cart.data()).copyWith(id: cart.id);
-
-        print("alo ${_cart.toMap()}");
+        // print("alo ${_cart.toMap()}");
       }
     } catch (e) {
       throw e;
@@ -18,6 +18,7 @@ class CartRepository {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots() {
+    // stream
     return _firestore.collection("carts").orderBy("title").snapshots();
   }
 

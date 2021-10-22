@@ -22,13 +22,18 @@ class _ChatViewState extends State<ChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: _appBar(),
-        body: BlocBuilder<ChatBloc, ChatState>(
+        body: BlocBuilder<SessionBloc, SessionState>(
           builder: (context, state) {
-            if (state.status is StatusSucess) {
-              return _sceneBuilder();
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
+            print("--ChatSession:-- ${state.status}");
+            return BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state) {
+                if (state.status is StatusSucess) {
+                  return _sceneBuilder();
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            );
           },
         ));
   }
@@ -89,44 +94,41 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget _composeForm() {
-    return BlocProvider(
-      create: (context) => SessionBloc()..add(AuthenSessionEvent()),
-      child: BlocBuilder<SessionBloc, SessionState>(
-        builder: (context, state) {
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      autocorrect: false,
-                      autofocus: true,
-                      decoration: InputDecoration(hintText: "Send something?"),
-                      controller: _textController,
-                      onEditingComplete: () => _onSubmission(user: state.user!),
-                    ),
+    return BlocBuilder<SessionBloc, SessionState>(
+      builder: (context, state) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    autocorrect: false,
+                    autofocus: true,
+                    decoration: InputDecoration(hintText: "Send something?"),
+                    controller: _textController,
+                    onEditingComplete: () => _onSubmission(user: state.user!),
                   ),
-                  IconButton(
-                    onPressed: () => _onSubmission(user: state.user!),
-                    icon: Icon(Icons.send),
-                  ),
-                ],
-              ),
+                ),
+                IconButton(
+                  onPressed: () => _onSubmission(user: state.user!),
+                  icon: Icon(Icons.send),
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
   void _onSubmission({required User user}) {
-    context.read<MessageBloc>().add(SentMessageEvent(
-            message: Message(
-          text: _textController.text,
-          sender: user.displayName,
-        )));
+    BlocProvider.of<MessageBloc>(context).add(SentMessageEvent(
+        message: Message(
+      text: _textController.text,
+      sender: user.displayName,
+    )));
     _textController.clear();
   }
 

@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/route/router.dart';
 import 'package:tolo/service/graphql/graphql_service.dart';
 
@@ -25,13 +23,10 @@ class MyApp extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SessionBloc(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: router!.generateRoute,
-        initialRoute: "/",
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: router!.generateRoute,
+      initialRoute: "/",
     );
   }
 }

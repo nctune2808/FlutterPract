@@ -25,21 +25,21 @@ class _MessageViewState extends State<MessageView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
+      // because stream message depend on fetched data to pass
       create: (context) =>
           MessageBloc()..add(LoadMessageEvent(message: widget.message)),
       child: BlocBuilder<SessionBloc, SessionState>(
         builder: (context, state) {
+          print("--MessageSession:-- ${state.status}");
           return BlocBuilder<MessageBloc, MessageState>(
             builder: (context, mState) {
               if (mState.status is StatusSucess) {
                 if (state.user != null) {
                   isMy = (state.user!.displayName == widget.message.sender);
-                  return _sceneBuilder();
-                } else {
-                  return Text("Unauth");
                 }
+                return _sceneBuilder();
               } else {
-                return Center(child: LinearProgressIndicator(minHeight: 0.5));
+                return Center(child: LinearProgressIndicator(minHeight: 0.2));
               }
             },
           );
