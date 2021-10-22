@@ -8,9 +8,9 @@ class CartRepository {
     try {
       final carts = await _firestore.collection('carts').get();
       for (var cart in carts.docs) {
-        Cart _cart = Cart.fromMap(cart.data());
+        Cart _cart = Cart.fromMap(cart.data()).copyWith(id: cart.id);
 
-        print(_cart.toMap());
+        print("alo ${_cart.toMap()}");
       }
     } catch (e) {
       throw e;

@@ -35,6 +35,8 @@ class Cart {
     };
   }
 
+// because id of its collection not a results id
+// expect id inside results ( not for firebase if any stream resource found)
   factory Cart.fromMap(Map<String, dynamic> map) {
     return Cart(
       title: map['title'],

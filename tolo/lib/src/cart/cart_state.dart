@@ -20,9 +20,9 @@ class CartState {
   }
 }
 
-class InitialCart extends CartState {}
+class CartInitState extends CartState {}
 
-class RefreshableCart extends CartState {}
+// class CartRefreshState extends CartState {}
 
 class ListCartSuccess extends CartState {
   final List<Cart> carts;

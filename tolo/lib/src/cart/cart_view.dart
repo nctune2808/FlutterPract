@@ -25,8 +25,9 @@ class _CartViewState extends State<CartView> {
       appBar: _navBar(),
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
-          if (state is RefreshableCart || state.status is StatusSucess) {
-            // return state.carts.isEmpty ? _emptyForm() : _cartForm(state.carts);
+          if (state is CartInitState ||
+              // state is CartRefreshState ||
+              state.status is StatusSucess) {
             return _sceneBuilder();
           } else {
             return LoadingView();
@@ -64,20 +65,20 @@ class _CartViewState extends State<CartView> {
               if (!snapshot.hasData) {
                 return _emptyForm();
               }
-              final carts = snapshot.data!.docs;
-
+              // final carts = snapshot.data!.docs;
+              List<Cart> carts = (snapshot.data!.docs)
+                  .map(
+                      (cart) => Cart.fromMap(cart.data()).copyWith(id: cart.id))
+                  .toList();
+              print(carts.first.id);
               return Expanded(
                 child: ListView.builder(
                   // reverse: true,
                   itemCount: carts.length,
                   itemBuilder: (BuildContext context, int index) {
-                    Cart _cart = Cart.fromMap(carts[index].data())
-                        .copyWith(id: carts[index].id);
-
-                    // print(_cart.toMap());
-                    // print(_cart.id);
-
-                    return ItemView(cart: _cart);
+                    // Cart _cart = Cart.fromMap(carts[index].data())
+                    //     .copyWith(id: carts[index].id);
+                    return ItemView(cart: carts[index]);
                   },
                 ),
               );

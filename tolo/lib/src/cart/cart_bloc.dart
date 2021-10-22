@@ -8,7 +8,7 @@ part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   final _cartRepo = CartRepository();
-  CartBloc() : super(CartState());
+  CartBloc() : super(CartInitState());
 
   void dispose() {
     super.close();
@@ -16,10 +16,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
-    if (event is LoadingCartEvent) {
-      // _cartRepo.getCarts();
-      yield RefreshableCart();
-    }
+    // if (event is LoadingCartEvent) {
+    //   // _cartRepo.getCarts();
+    //   yield CartRefreshState();
+    // }
 
     if (event is AddCartEvent) {
       yield state.copyWith(status: StatusLoading());

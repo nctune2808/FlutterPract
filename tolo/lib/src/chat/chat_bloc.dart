@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:tolo/src/chat/chat_repository.dart';
 import 'package:tolo/utility/state/status.dart';
