@@ -100,10 +100,18 @@ class AppRouter {
 
       case PROFILE_ROUTE:
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                  create: (context) => ProfileBloc(),
-                  child: ProfileView(),
-                ));
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+              ),
+              BlocProvider(
+                create: (context) => ProfileBloc(),
+              ),
+            ],
+            child: ProfileView(),
+          ),
+        );
       default:
         return null;
     }
