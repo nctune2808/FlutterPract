@@ -17,15 +17,10 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SessionBloc, SessionState>(
-      builder: (context, state) {
-        print("--ProfileSession:-- ${state.status}");
-        return Scaffold(
-          backgroundColor: Color(0xFFF2F2F7),
-          appBar: _appBar(),
-          body: _profilePage(),
-        );
-      },
+    return Scaffold(
+      backgroundColor: Color(0xFFF2F2F7),
+      appBar: _appBar(),
+      body: _profilePage(),
     );
   }
 
@@ -39,24 +34,30 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _profilePage() {
-    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-      return SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 30),
-              _avatar(),
-              _changeAvatarButton(),
-              SizedBox(height: 30),
-              _usernameTile(),
-              _emailTile(),
-              // _descriptionTile(),
-              // _saveProfileChangesButton(),
-            ],
-          ),
-        ),
-      );
-    });
+    return BlocBuilder<SessionBloc, SessionState>(
+      builder: (context, state) {
+        print("--ProfileSession:-- ${state.status}");
+        return BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+          return SafeArea(
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  _avatar(),
+                  _changeAvatarButton(),
+                  SizedBox(height: 30),
+                  _usernameTile(),
+                  _emailTile(),
+                  // _descriptionTile(),
+                  // _saveProfileChangesButton(),
+                ],
+              ),
+            ),
+          );
+        });
+      },
+    );
   }
 
   Widget _avatar() {
@@ -170,7 +171,7 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       );
     } else {
-      showBottomSheet(
+      showModalBottomSheet(
         context: context,
         builder: (context) => Wrap(
           children: [
