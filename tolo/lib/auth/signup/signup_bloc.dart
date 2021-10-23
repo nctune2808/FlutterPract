@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:tolo/auth/auth_repository.dart';
+import 'package:tolo/auth/session/session_repository.dart';
+import 'package:tolo/model/user.dart';
 import 'package:tolo/utility/state/status.dart';
 
 part 'signup_event.dart';
@@ -8,7 +10,7 @@ part 'signup_state.dart';
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(SignupState());
   AuthRepository _authRepo = AuthRepository();
-
+  final _ssRepo = SessionRepository.instance;
   @override
   Stream<SignupState> mapEventToState(SignupEvent event) async* {
     if (event is UsernameSignupEvent) {
@@ -21,31 +23,16 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       yield state.copyWith(status: StatusLoading());
       try {
         final newUser = await _authRepo.signUpEmail(
-            email: state.email,
-            password: state.password,
-            username: state.username);
+            user: User(email: state.email, username: state.username),
+            password: state.password);
+
+        _ssRepo.insertUser(user: newUser);
+
         yield state.copyWith(status: StatusSucess());
       } catch (e) {
         yield state.copyWith(status: StatusFailed(e: e));
         yield state.copyWith(status: StatusInitial());
       }
-      // try {
-      //   await authRepo.signUp(
-      //     username: state.username,
-      //     password: state.password,
-      //     email: state.email,
-      //   );
-      //   yield state.copyWith(formStatus: SubmissionSucess());
-
-      //   authCubit.showConfirmSignUp(
-      //     username: state.username,
-      //     password: state.password,
-      //     email: state.email,
-      //   );
-      // } catch (e) {
-      //   print(e);
-      //   yield state.copyWith(formStatus: SubmissionFailed(exception: e));
-      // }
     }
   }
 }

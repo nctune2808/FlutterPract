@@ -23,7 +23,7 @@ class _SignInViewState extends State<SignInView> {
       listener: (context, state) {
         if (state.status is StatusSucess) {
           _showSnackBar(context, "Signed In Successfully");
-          Navigator.pushNamed(context, HOME_ROUTE);
+          Navigator.popAndPushNamed(context, HOME_ROUTE);
         } else if (state.status is StatusFailed) {
           _showSnackBar(
               context, 'Invalid User!!!\nPlease create account first');
@@ -93,34 +93,23 @@ class _SignInViewState extends State<SignInView> {
 
   Widget _loginButton() {
     return Flexible(
-      // for android test
-      child: BlocBuilder<SigninBloc, SigninState>(
-        builder: (context, state) {
-          return state.status is StatusSucess
-              ? CircularProgressIndicator()
-              : ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      context.read<SigninBloc>().add(SubmissionSigninEvent());
-                    }
-                  },
-                  child: Text('Login'));
+      child: ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            context.read<SigninBloc>().add(SubmissionSigninEvent());
+          }
         },
+        child: Text('Login'),
       ),
     );
   }
 
   Widget _adminButton() {
-    return BlocBuilder<SigninBloc, SigninState>(
-      builder: (context, state) {
-        return state.status is StatusSucess
-            ? CircularProgressIndicator()
-            : ElevatedButton(
-                onPressed: () {
-                  context.read<SigninBloc>().add(FastTrackSignInEvent());
-                },
-                child: Text('Fast Track'));
+    return ElevatedButton(
+      onPressed: () {
+        context.read<SigninBloc>().add(FastTrackSignInEvent());
       },
+      child: Text('Fast Track'),
     );
   }
 

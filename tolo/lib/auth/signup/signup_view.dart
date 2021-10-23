@@ -95,7 +95,6 @@ class SignUpView extends StatelessWidget {
           _showSnackBar(context, 'Signed Up Successfully');
           Navigator.popAndPushNamed(context, SIGNIN_ROUTE);
         } else if (state.status is StatusFailed) {
-          // _showSnackBar(context, formStatus.exception.toString());
           _showSnackBar(context, 'Invalid Email / Weak Password');
         }
       },

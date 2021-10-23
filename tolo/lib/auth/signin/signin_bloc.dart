@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tolo/auth/auth_repository.dart';
+import 'package:tolo/auth/session/session_repository.dart';
+import 'package:tolo/model/user.dart';
 import 'package:tolo/utility/state/status.dart';
 part 'signin_event.dart';
 part 'signin_state.dart';
@@ -8,6 +9,7 @@ part 'signin_state.dart';
 class SigninBloc extends Bloc<SigninEvent, SigninState> {
   SigninBloc() : super(SigninState());
   AuthRepository _authRepo = AuthRepository();
+  final _ssRepo = SessionRepository.instance;
 
   @override
   Stream<SigninState> mapEventToState(SigninEvent event) async* {
@@ -18,9 +20,10 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
     } else if (event is SubmissionSigninEvent) {
       yield state.copyWith(status: StatusLoading());
       try {
-        User user = await _authRepo.signInEmail(
-            email: state.email, password: state.password);
-        print(user);
+        await _authRepo.signInEmail(
+          user: User(email: state.email),
+          password: state.password,
+        );
         yield state.copyWith(status: StatusSucess());
       } catch (e) {
         yield state.copyWith(status: StatusFailed(e: e));
@@ -29,11 +32,16 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
     } else if (event is FastTrackSignInEvent) {
       yield state.copyWith(status: StatusLoading());
       try {
-        User user = await _authRepo.signInEmail(
-            email: "admin@tolo.com", password: "zxcvbnm");
+        await _ssRepo.retrieveUserById(
+          user: await _authRepo.signInEmail(
+            user: User(email: "admin@tolo.com"),
+            password: "zxcvbnm",
+          ),
+        );
         yield state.copyWith(status: StatusSucess());
       } catch (e) {
         yield state.copyWith(status: StatusFailed(e: e));
+        yield state.copyWith(status: StatusInitial());
       }
     }
   }

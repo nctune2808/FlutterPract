@@ -38,7 +38,7 @@ class _WelcomeViewState extends State<WelcomeView> {
               color: Colors.lightBlueAccent,
               child: Text("Login"),
               onPressed: () {
-                Navigator.pushNamed(context, SIGNIN_ROUTE);
+                Navigator.popAndPushNamed(context, SIGNIN_ROUTE);
               },
             ),
             MaterialButton(
@@ -46,7 +46,7 @@ class _WelcomeViewState extends State<WelcomeView> {
               color: Colors.lightBlueAccent,
               child: Text("Register"),
               onPressed: () {
-                Navigator.pushNamed(context, SIGNUP_ROUTE);
+                Navigator.popAndPushNamed(context, SIGNUP_ROUTE);
               },
             ),
           ],
