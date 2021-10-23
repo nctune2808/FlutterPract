@@ -11,13 +11,13 @@ class AuthRepository {
     }
   }
 
-  Future signInAnon() async {
-    try {
-      await _auth.signInAnonymously();
-    } catch (e) {
-      throw e;
-    }
-  }
+  // Future signInAnon() async {
+  //   try {
+  //     await _auth.signInAnonymously();
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 
   Future<User> signInEmail(
       {required String email, required String password}) async {

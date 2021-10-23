@@ -29,7 +29,8 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
     } else if (event is FastTrackSignInEvent) {
       yield state.copyWith(status: StatusLoading());
       try {
-        await _authRepo.signInAnon();
+        User user = await _authRepo.signInEmail(
+            email: "admin@tolo.com", password: "zxcvbnm");
         yield state.copyWith(status: StatusSucess());
       } catch (e) {
         yield state.copyWith(status: StatusFailed(e: e));
