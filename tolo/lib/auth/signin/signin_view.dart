@@ -22,11 +22,10 @@ class _SignInViewState extends State<SignInView> {
     return BlocListener<SigninBloc, SigninState>(
       listener: (context, state) {
         if (state.status is StatusSucess) {
-          _showSnackBar(context, "Signed In Successfully");
           Navigator.popAndPushNamed(context, HOME_ROUTE);
-        } else if (state.status is StatusFailed) {
-          _showSnackBar(
-              context, 'Invalid User!!!\nPlease create account first');
+        }
+        if (state.status is StatusFailed) {
+          _showSnackBar(context, 'Invalid User\nPlease create account first');
         }
       },
       child: Scaffold(
@@ -39,35 +38,24 @@ class _SignInViewState extends State<SignInView> {
   }
 
   Widget _emailField() {
-    return BlocBuilder<SigninBloc, SigninState>(
-      builder: (context, state) {
-        return TextFormField(
-          keyboardType: TextInputType.emailAddress,
-          decoration:
-              InputDecoration(icon: Icon(Icons.email), hintText: "Email"),
-          validator: (value) {},
-          onChanged: (value) {
-            // context.read<SigninBloc>().add(SigninUsername(username: value)),
-            context.read<SigninBloc>().add(EmailSigninEvent(email: value));
-          },
-        );
+    return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(icon: Icon(Icons.email), hintText: "Email"),
+      validator: (value) {},
+      onChanged: (value) {
+        context.read<SigninBloc>().add(EmailSigninEvent(email: value));
       },
     );
   }
 
   Widget _passwordField() {
-    return BlocBuilder<SigninBloc, SigninState>(
-      builder: (context, state) {
-        return TextFormField(
-          obscureText: true,
-          decoration:
-              InputDecoration(icon: Icon(Icons.security), hintText: "Password"),
-          validator: (value) {},
-          onChanged: (value) => context
-              .read<SigninBloc>()
-              .add(PasswordSigninEvent(password: value)),
-        );
-      },
+    return TextFormField(
+      obscureText: true,
+      decoration:
+          InputDecoration(icon: Icon(Icons.security), hintText: "Password"),
+      validator: (value) {},
+      onChanged: (value) =>
+          context.read<SigninBloc>().add(PasswordSigninEvent(password: value)),
     );
   }
 
@@ -125,7 +113,10 @@ class _SignInViewState extends State<SignInView> {
   }
 
   void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
+    final snackBar = SnackBar(
+      content: Text(message, textAlign: TextAlign.center),
+      duration: Duration(milliseconds: 1000),
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

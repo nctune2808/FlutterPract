@@ -16,6 +16,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       yield state.copyWith(status: StatusSucess(), message: event.message);
     }
     if (event is SentMessageEvent) {
+      print(event.message);
       yield state.copyWith(status: StatusLoading());
       try {
         await _msgRepo.enterMessage(message: event.message);

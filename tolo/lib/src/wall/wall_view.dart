@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/model/post.dart';
+import 'package:tolo/src/home/loading_view.dart';
 import 'package:tolo/src/wall/post/post_bloc.dart';
 import 'package:tolo/src/wall/post/post_view.dart';
 import 'package:tolo/src/wall/wall_bloc.dart';
@@ -28,7 +29,7 @@ class _WallViewState extends State<WallView> {
             posts = state.posts!;
             return _sceneBuilder(posts);
           } else {
-            return Center(child: CircularProgressIndicator());
+            return LoadingView();
           }
         },
       ),

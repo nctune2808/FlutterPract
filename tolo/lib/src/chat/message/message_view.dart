@@ -1,6 +1,8 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/model/message.dart';
 import 'package:tolo/src/chat/message/message_bloc.dart';
@@ -8,9 +10,11 @@ import 'package:tolo/utility/state/status.dart';
 
 class MessageView extends StatefulWidget {
   Message message;
+  bool isMe;
   MessageView({
     Key? key,
     required this.message,
+    required this.isMe,
   }) : super(key: key);
 
   @override
@@ -19,8 +23,6 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   bool isTap = false;
-  bool isMy = false;
-  String username = "";
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +30,13 @@ class _MessageViewState extends State<MessageView> {
       // because stream message depend on fetched data to pass
       create: (context) =>
           MessageBloc()..add(LoadMessageEvent(message: widget.message)),
-      child: BlocBuilder<SessionBloc, SessionState>(
-        builder: (context, state) {
-          print("--MessageSession:-- ${state.status}");
-          return BlocBuilder<MessageBloc, MessageState>(
-            builder: (context, mState) {
-              if (mState.status is StatusSucess) {
-                if (state.user != null) {
-                  isMy = (state.user!.displayName == widget.message.sender);
-                }
-                return _sceneBuilder();
-              } else {
-                return Center(child: LinearProgressIndicator(minHeight: 0.2));
-              }
-            },
-          );
+      child: BlocBuilder<MessageBloc, MessageState>(
+        builder: (context, mState) {
+          if (mState.status is StatusSucess) {
+            return _sceneBuilder();
+          } else {
+            return Center(child: LinearProgressIndicator(minHeight: 0.2));
+          }
         },
       ),
     );
@@ -51,10 +45,10 @@ class _MessageViewState extends State<MessageView> {
   Widget _sceneBuilder() {
     return Column(
       crossAxisAlignment:
-          isMy ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          widget.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: isMy
+          padding: widget.isMe
               ? EdgeInsets.only(top: 5, bottom: 5, left: 150, right: 10)
               : EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 150),
           child: GestureDetector(
@@ -76,13 +70,13 @@ class _MessageViewState extends State<MessageView> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Stack(
-          alignment: isMy ? Alignment.bottomLeft : Alignment.bottomRight,
+          alignment: widget.isMe ? Alignment.bottomLeft : Alignment.bottomRight,
           children: [
             Container(
               padding: EdgeInsets.only(bottom: 2.5),
               child: Material(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
-                color: isMy ? Colors.lightBlue[100] : Color(0xFFFFEFEE),
+                color: widget.isMe ? Colors.lightBlue[100] : Color(0xFFFFEFEE),
                 child: _messageStyle(),
               ),
             ),
@@ -108,7 +102,7 @@ class _MessageViewState extends State<MessageView> {
       padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 7.5),
       child: Column(
         crossAxisAlignment:
-            isMy ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            widget.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           // Text(
           //   readTime((message['time'] as Timestamp).toDate()),
@@ -127,10 +121,5 @@ class _MessageViewState extends State<MessageView> {
         ],
       ),
     );
-  }
-
-  bool _isMe() {
-    return false;
-    // return message['sender'] == AuthRepository().getCurrentUser().displayName;
   }
 }

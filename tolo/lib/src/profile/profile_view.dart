@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
+import 'package:tolo/src/home/loading_view.dart';
 import 'package:tolo/src/profile/profile_bloc.dart';
+import 'package:tolo/utility/state/status.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -19,21 +21,19 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF2F2F7),
-      appBar: _appBar(),
-      body: _profilePage(),
+      appBar: AppBar(title: Text('Profile')),
+      body: BlocBuilder<SessionBloc, SessionState>(
+        builder: (context, state) {
+          if (state.status is StatusAuthenticated) {
+            return _profileBuilder();
+          }
+          return LoadingView();
+        },
+      ),
     );
   }
 
-  AppBar _appBar() {
-    return AppBar(
-      title: Text('Profile'),
-      actions: [
-        // if (state.isCurrentUser)
-      ],
-    );
-  }
-
-  Widget _profilePage() {
+  Widget _profileBuilder() {
     return BlocBuilder<SessionBloc, SessionState>(
       builder: (context, state) {
         print("--ProfileSession:-- ${state.status}");
@@ -92,7 +92,7 @@ class _ProfileViewState extends State<ProfileView> {
       return ListTile(
         tileColor: Colors.white,
         leading: Icon(Icons.person),
-        title: Text(state.user != null ? state.user!.displayName! : "null"),
+        title: Text(state.user != null ? state.user!.username! : "null"),
       );
     });
   }

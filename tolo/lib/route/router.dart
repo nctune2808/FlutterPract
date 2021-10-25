@@ -93,6 +93,9 @@ class AppRouter {
                 create: (context) => ChatBloc()..add(InitChatEvent()),
                 lazy: true,
               ),
+              BlocProvider(
+                create: (context) => MessageBloc(),
+              ),
             ],
             child: ChatView(),
           ),

@@ -127,7 +127,10 @@ class SignUpView extends StatelessWidget {
   }
 
   void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
+    final snackBar = SnackBar(
+      content: Text(message, textAlign: TextAlign.center),
+      duration: Duration(milliseconds: 1000),
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

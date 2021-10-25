@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/model/message.dart';
+import 'package:tolo/model/user.dart';
 import 'package:tolo/src/chat/message/message_bloc.dart';
 import 'package:tolo/src/chat/message/message_view.dart';
 import 'package:tolo/src/chat/chat_bloc.dart';
 import 'package:tolo/src/chat/chat_repository.dart';
+import 'package:tolo/src/home/loading_view.dart';
 import 'package:tolo/utility/state/status.dart';
 
 class ChatView extends StatefulWidget {
@@ -17,25 +18,25 @@ class ChatView extends StatefulWidget {
 
 class _ChatViewState extends State<ChatView> {
   final _textController = TextEditingController();
-
+  bool isMe = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: _appBar(),
-        body: BlocBuilder<SessionBloc, SessionState>(
-          builder: (context, state) {
-            print("--ChatSession:-- ${state.status}");
-            return BlocBuilder<ChatBloc, ChatState>(
-              builder: (context, state) {
-                if (state.status is StatusSucess) {
-                  return _sceneBuilder();
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              },
-            );
+      appBar: _appBar(),
+      body: BlocBuilder<SessionBloc, SessionState>(builder: (context, state) {
+        return BlocBuilder<ChatBloc, ChatState>(
+          builder: (context, cState) {
+            // auth-ed and fetched done
+            if (cState.status is StatusSucess &&
+                state.status is StatusAuthenticated) {
+              return _sceneBuilder();
+            } else {
+              return LoadingView();
+            }
           },
-        ));
+        );
+      }),
+    );
   }
 
   AppBar _appBar() {
@@ -65,29 +66,36 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget _boxChat() {
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: ChatRepository().getSnapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        List<Message> messages = (snapshot.data!.docs)
-            .map((message) => Message.fromMap(message.data()))
-            .toList();
+    var who;
+    return BlocBuilder<SessionBloc, SessionState>(
+      builder: (context, state) {
+        if (state.user != null) who = (state.user!.username);
+        return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: ChatRepository().getSnapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: RefreshProgressIndicator(),
+              );
+            }
+            List<Message> messages = (snapshot.data!.docs)
+                .map((message) => Message.fromMap(message.data()))
+                .toList();
 
-        // snapshot.data!.docs.forEach((element) {
-        //   print(element);
-        // });
-        return Expanded(
-          child: ListView.builder(
-            reverse: true,
-            itemCount: messages.length,
-            itemBuilder: (BuildContext context, int index) {
-              return MessageView(message: messages[index]);
-            },
-          ),
+            // snapshot.data!.docs.forEach((element) {
+            //   print(element);
+            // });
+            return Expanded(
+              child: ListView.builder(
+                reverse: true,
+                itemCount: messages.length,
+                itemBuilder: (BuildContext context, int index) {
+                  isMe = (who == messages[index].sender);
+                  return MessageView(message: messages[index], isMe: isMe);
+                },
+              ),
+            );
+          },
         );
       },
     );
@@ -127,7 +135,7 @@ class _ChatViewState extends State<ChatView> {
     BlocProvider.of<MessageBloc>(context).add(SentMessageEvent(
         message: Message(
       text: _textController.text,
-      sender: user.displayName,
+      sender: user.username,
     )));
     _textController.clear();
   }

@@ -1,12 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tolo/model/user.dart' as tolo;
+// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tolo/model/user.dart';
+import 'package:tolo/service/flutter/firebase_service.dart';
 
 class AuthRepository {
-  final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseService.auth;
 
-  Future<User> getCurrentUser() async {
+  Future getUser() async {
     try {
-      return _auth.currentUser!;
+      return User.fromMap({
+        'UUID': _auth.currentUser!.uid,
+        'email': _auth.currentUser!.email,
+        'username': _auth.currentUser!.displayName,
+      });
     } catch (e) {
       throw e;
     }
@@ -21,33 +26,28 @@ class AuthRepository {
   // }
 
   Future signInEmail({
-    required tolo.User user,
+    required User user,
     required String password,
   }) async {
     try {
-      UserCredential credential = await _auth.signInWithEmailAndPassword(
+      // UserCredentical
+      await _auth.signInWithEmailAndPassword(
           email: user.email!, password: password);
-      return tolo.User.fromMap({
-        'UUID': credential.user!.uid,
-        'email': credential.user!.email,
-        'username': credential.user!.displayName,
-      });
     } catch (e) {
       throw e;
     }
   }
 
   Future signUpEmail({
-    required tolo.User user,
+    required User user,
     required String password,
   }) async {
     try {
-      UserCredential credential = await _auth.createUserWithEmailAndPassword(
+      final credential = await _auth.createUserWithEmailAndPassword(
           email: user.email!, password: password);
       await credential.user!.updateDisplayName(user.username);
 
-      return tolo.User.fromMap(user.toMap())
-          .copyWith(UUID: credential.user!.uid);
+      return User.fromMap(user.toMap()).copyWith(UUID: credential.user!.uid);
     } catch (e) {
       throw e;
     }

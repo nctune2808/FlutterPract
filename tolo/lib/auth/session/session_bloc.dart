@@ -1,13 +1,16 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tolo/auth/auth_repository.dart';
-import 'package:tolo/utility/state/Status.dart';
+import 'package:tolo/auth/session/session_repository.dart';
+import 'package:tolo/model/user.dart';
+import 'package:tolo/utility/state/status.dart';
 part 'session_event.dart';
 part 'session_state.dart';
 
 class SessionBloc extends Bloc<SessionEvent, SessionState> {
   SessionBloc() : super(SessionInitState());
   AuthRepository _authRepo = AuthRepository();
+  final _ssRepo = SessionRepository.instance;
 
   @override
   Stream<SessionState> mapEventToState(SessionEvent event) async* {
@@ -27,9 +30,16 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     }
 
     if (event is AuthenSessionEvent) {
-      User user = await _authRepo.getCurrentUser();
+      User user =
+          await _ssRepo.retrieveUserById(user: await _authRepo.getUser());
       // token = await user.getIdToken();
       yield state.copyWith(status: StatusAuthenticated(), user: user);
     }
+
+    // if (event is LaunchSessionEvent) {
+    //   tolo.User user =
+    //       await _ssRepo.retrieveUserById(user: await _authRepo.getUser());
+    //   yield state.copyWith(status: StatusAuthenticated(), toloUser: user);
+    // }
   }
 }
