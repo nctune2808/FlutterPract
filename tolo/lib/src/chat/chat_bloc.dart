@@ -16,7 +16,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (event is InitChatEvent) {
       yield state.copyWith(status: StatusLoading());
       try {
-        await _chatRepo.getMessages();
+        // await _chatRepo.getMessages();
         yield state.copyWith(status: StatusSucess());
       } catch (e) {
         yield state.copyWith(status: StatusFailed(e: e));

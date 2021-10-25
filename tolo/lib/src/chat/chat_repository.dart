@@ -8,7 +8,8 @@ class ChatRepository {
     try {
       final messages = await _firestore.collection('messages').get();
       for (var message in messages.docs) {
-        Message _message = Message.fromMap(message.data());
+        Message _message =
+            Message.fromMap(message.data()).copyWith(id: message.id);
         print(_message.toMap());
       }
     } catch (e) {

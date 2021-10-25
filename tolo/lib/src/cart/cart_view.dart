@@ -45,15 +45,6 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget _emptyForm() {
-    return Center(
-      child: Text(
-        'Empty Cart\nTap button to create new',
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-
   Widget _sceneBuilder() {
     return Form(
       key: _formKey,
@@ -63,7 +54,9 @@ class _CartViewState extends State<CartView> {
             stream: CartRepository().getSnapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return _emptyForm();
+                return Center(
+                  child: RefreshProgressIndicator(),
+                );
               }
               // final carts = snapshot.data!.docs;
               List<Cart> carts = (snapshot.data!.docs)

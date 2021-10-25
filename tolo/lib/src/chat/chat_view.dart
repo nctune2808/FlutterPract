@@ -79,8 +79,11 @@ class _ChatViewState extends State<ChatView> {
               );
             }
             List<Message> messages = (snapshot.data!.docs)
-                .map((message) => Message.fromMap(message.data()))
+                .map((message) =>
+                    Message.fromMap(message.data()).copyWith(id: message.id))
                 .toList();
+
+            print(messages);
 
             // snapshot.data!.docs.forEach((element) {
             //   print(element);
@@ -134,9 +137,11 @@ class _ChatViewState extends State<ChatView> {
   void _onSubmission({required User user}) {
     BlocProvider.of<MessageBloc>(context).add(SentMessageEvent(
         message: Message(
-      text: _textController.text,
-      sender: user.username,
-    )));
+            text: _textController.text,
+            sender: user.username,
+            isLiked: false,
+            seen: false,
+            time: Timestamp.fromDate(DateTime.now()))));
     _textController.clear();
   }
 

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/model/message.dart';
 import 'package:tolo/src/chat/message/message_bloc.dart';
+import 'package:tolo/utility/function/covert.dart';
 import 'package:tolo/utility/state/status.dart';
 
 class MessageView extends StatefulWidget {
@@ -22,7 +23,8 @@ class MessageView extends StatefulWidget {
 }
 
 class _MessageViewState extends State<MessageView> {
-  bool isTap = false;
+  bool isLongPress = false;
+  bool isDoubleTap = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +33,9 @@ class _MessageViewState extends State<MessageView> {
       create: (context) =>
           MessageBloc()..add(LoadMessageEvent(message: widget.message)),
       child: BlocBuilder<MessageBloc, MessageState>(
-        builder: (context, mState) {
-          if (mState.status is StatusSucess) {
+        builder: (context, state) {
+          // print("--Message Test: ${state.message}");
+          if (state.status is StatusSucess) {
             return _sceneBuilder();
           } else {
             return Center(child: LinearProgressIndicator(minHeight: 0.2));
@@ -52,14 +55,16 @@ class _MessageViewState extends State<MessageView> {
               ? EdgeInsets.only(top: 5, bottom: 5, left: 150, right: 10)
               : EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 150),
           child: GestureDetector(
-              onLongPress: () {
-                print(isTap);
-              },
-              onTap: () {
-                isTap = true;
-                print(widget.message.time);
-              },
-              child: _messageBuilder()),
+            onLongPress: () {
+              setState(() => isLongPress = !isLongPress);
+            },
+            onDoubleTap: () {
+              setState(() => isDoubleTap = !isDoubleTap);
+              context.read<MessageBloc>().add(UpdateMessageEvent(
+                  message: widget.message.copyWith(isLiked: isDoubleTap)));
+            },
+            child: _messageBuilder(),
+          ),
         )
       ],
     );
@@ -69,6 +74,7 @@ class _MessageViewState extends State<MessageView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        if (isLongPress) Text((readTime(widget.message.time!.toDate()))),
         Stack(
           alignment: widget.isMe ? Alignment.bottomLeft : Alignment.bottomRight,
           children: [
@@ -88,11 +94,9 @@ class _MessageViewState extends State<MessageView> {
                 color: Colors.redAccent[100],
                 size: 12.5,
               ),
-
             //-----------------------------
           ],
         ),
-        if (isTap) Icon(Icons.read_more)
       ],
     );
   }

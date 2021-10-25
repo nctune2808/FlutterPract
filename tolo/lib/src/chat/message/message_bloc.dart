@@ -15,12 +15,22 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     if (event is LoadMessageEvent) {
       yield state.copyWith(status: StatusSucess(), message: event.message);
     }
+
     if (event is SentMessageEvent) {
-      print(event.message);
+      print("Sent ${event.message}");
       yield state.copyWith(status: StatusLoading());
       try {
         await _msgRepo.enterMessage(message: event.message);
         yield state.copyWith(status: StatusSucess(), message: event.message);
+      } catch (e) {
+        yield state.copyWith(status: StatusFailed(e: e));
+      }
+    }
+
+    if (event is UpdateMessageEvent) {
+      yield state.copyWith(status: StatusLoading());
+      try {
+        await _msgRepo.updateMessage(message: event.message);
       } catch (e) {
         yield state.copyWith(status: StatusFailed(e: e));
       }

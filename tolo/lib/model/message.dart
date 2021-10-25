@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Message {
+  final String? id;
   final String? sender;
   final String text;
   final bool? isLiked;
@@ -10,20 +11,22 @@ class Message {
   final Timestamp? time;
 
   Message({
+    this.id,
     this.sender,
     required this.text,
-    this.time,
     this.isLiked,
     this.seen,
+    this.time,
   });
 
   Map<String, dynamic> toMap() {
     return {
+      // 'id': id,
       'sender': sender,
       'text': text,
-      'isLiked': false,
-      'seen': false,
-      'time': Timestamp.fromDate(DateTime.now()),
+      'isLiked': isLiked,
+      'seen': seen,
+      'time': time,
     };
   }
 
@@ -43,6 +46,7 @@ class Message {
       Message.fromMap(json.decode(source));
 
   Message copyWith({
+    String? id,
     String? sender,
     String? text,
     bool? isLiked,
@@ -50,6 +54,7 @@ class Message {
     Timestamp? time,
   }) {
     return Message(
+      id: id ?? this.id,
       sender: sender ?? this.sender,
       text: text ?? this.text,
       isLiked: isLiked ?? this.isLiked,
@@ -60,6 +65,6 @@ class Message {
 
   @override
   String toString() {
-    return 'Message(sender: $sender, text: $text, isLiked: $isLiked, seen: $seen, time: $time)';
+    return 'Message(id: $id, sender: $sender, text: $text, isLiked: $isLiked, seen: $seen, time: $time)';
   }
 }
