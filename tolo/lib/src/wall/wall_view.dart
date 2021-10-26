@@ -27,6 +27,9 @@ class _WallViewState extends State<WallView> {
         builder: (context, state) {
           if (state.status is StatusSucess) {
             posts = state.posts!;
+            if (posts.isEmpty) {
+              return Center(child: Text("No Post!"));
+            }
             return _sceneBuilder(posts);
           } else {
             return LoadingView();
@@ -76,6 +79,7 @@ class _WallViewState extends State<WallView> {
           title: _titleController.text,
           body: _bodyController.text,
         );
+        // change to wall event
         context.read<PostBloc>().add(AddPostEvent(post: addPost));
         context.read<WallBloc>().add(FetchWallEvent());
 

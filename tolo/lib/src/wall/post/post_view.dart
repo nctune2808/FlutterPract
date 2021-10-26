@@ -15,7 +15,6 @@ class PostView extends StatefulWidget {
 class _PostViewState extends State<PostView> {
   @override
   void initState() {
-    widget.post;
     super.initState();
   }
 

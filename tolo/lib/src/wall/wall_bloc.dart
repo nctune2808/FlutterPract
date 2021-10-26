@@ -10,13 +10,14 @@ part 'wall_event.dart';
 part 'wall_state.dart';
 
 class WallBloc extends Bloc<WallEvent, WallState> {
-  WallRepository _tlRepo = WallRepository.instance;
+  WallRepository _wallRepo = WallRepository.instance;
   WallBloc() : super(WallInitState());
   List<Post> posts = [];
 
   Stream<WallState> mapFetchEventToState(FetchWallEvent event) async* {
-    posts = await _tlRepo.getPosts();
-    // _tlRepo.streamPosts();
+    posts = await _wallRepo.getPosts();
+    await _wallRepo.getWalls();
+
     yield state.copyWith(status: StatusSucess(), posts: posts);
   }
 

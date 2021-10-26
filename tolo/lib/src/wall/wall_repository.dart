@@ -2,12 +2,49 @@ import 'dart:async';
 
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
+import 'package:tolo/model/wall.dart';
 import 'package:tolo/service/graphql/graphql_service.dart';
 import 'package:tolo/utility/fragment/post_fragments.dart';
+import 'package:tolo/utility/fragment/user_fragments.dart';
 
 class WallRepository {
   WallRepository._();
   static final WallRepository instance = WallRepository._();
+
+  //------------------------------NEW------------------------
+  static const String FETCH_WALLS = '''
+    ${PostFragment.POST_DATA}
+    ${UserFragment.USER_DATA}
+    query AllWalls{
+      walls(order_by: {created_at: desc}) {
+        id
+        created_at
+        post {
+          ...PostData
+        }
+        user {
+          ...UserData
+        }
+      }
+    }
+    ''';
+
+  Future<List<Wall>> getWalls() async {
+    List<Wall> listWall = [];
+    // return QueryResult from Future<>
+    final QueryResult result = await GraphQlService.performQuery(
+      document: FETCH_WALLS,
+    );
+    final walls = result.data?['walls'];
+    // Assign model
+    if (walls.isNotEmpty) {
+      listWall = (walls as List).map((wall) => Wall.fromMap(wall)).toList();
+    }
+    print(listWall[0]);
+    return listWall;
+  }
+
+  //------------------------------OLD------------------------
 
   static const String FETCH_POSTS = '''
       ${PostFragment.POST_DATA}

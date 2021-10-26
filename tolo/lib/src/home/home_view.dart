@@ -24,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
       },
       child: BlocBuilder<SessionBloc, SessionState>(
         builder: (context, state) {
-          print("--HomeSession:-- ${state.user}");
+          print("--HomeSession:-- ${state.status}");
           if (state.status is StatusAuthenticated) {
             return _scenBuilder(user: state.user!);
           } else {
