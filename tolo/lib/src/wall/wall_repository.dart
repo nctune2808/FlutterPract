@@ -40,7 +40,6 @@ class WallRepository {
     if (walls.isNotEmpty) {
       listWall = (walls as List).map((wall) => Wall.fromMap(wall)).toList();
     }
-    print(listWall[0]);
     return listWall;
   }
 

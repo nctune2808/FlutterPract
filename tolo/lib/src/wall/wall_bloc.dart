@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:tolo/model/post.dart';
+import 'package:tolo/model/wall.dart';
 import 'package:tolo/src/wall/wall_repository.dart';
 import 'package:tolo/utility/state/status.dart';
 
@@ -12,13 +13,12 @@ part 'wall_state.dart';
 class WallBloc extends Bloc<WallEvent, WallState> {
   WallRepository _wallRepo = WallRepository.instance;
   WallBloc() : super(WallInitState());
-  List<Post> posts = [];
 
   Stream<WallState> mapFetchEventToState(FetchWallEvent event) async* {
-    posts = await _wallRepo.getPosts();
-    await _wallRepo.getWalls();
+    // posts = await _wallRepo.getPosts();
+    List<Wall> walls = await _wallRepo.getWalls();
 
-    yield state.copyWith(status: StatusSucess(), posts: posts);
+    yield state.copyWith(status: StatusSucess(), walls: walls);
   }
 
   @override

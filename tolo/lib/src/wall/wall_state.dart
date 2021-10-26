@@ -1,20 +1,20 @@
 part of 'wall_bloc.dart';
 
 class WallState {
-  final List<Post>? posts;
+  final List<Wall>? walls;
   final Status? status;
 
   WallState({
-    this.posts,
+    this.walls,
     this.status = const StatusInitial(),
   });
 
   WallState copyWith({
-    List<Post>? posts,
+    List<Wall>? walls,
     Status? status,
   }) {
     return WallState(
-      posts: posts ?? this.posts,
+      walls: walls ?? this.walls,
       status: status ?? this.status,
     );
   }

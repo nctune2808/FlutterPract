@@ -28,40 +28,22 @@ class _PostViewState extends State<PostView> {
   }
 
   Widget _postBuilder() {
-    return Card(
-      child: CheckboxListTile(
-        checkColor: Colors.black45,
-        activeColor: Colors.white,
-        controlAffinity: ListTileControlAffinity.leading,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(),
-            Text(
-              widget.post.title,
-              style: widget.post.read!
-                  ? TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      color: Colors.black45)
-                  : TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.edit,
-              ),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        value: widget.post.read!,
-        onChanged: (value) {
-          setState(() => widget.post.read = value!);
-          context.read<PostBloc>().add(UpdatePostEvent(post: widget.post));
-        },
+    return CheckboxListTile(
+      checkColor: Colors.black45,
+      activeColor: Colors.white,
+      controlAffinity: ListTileControlAffinity.leading,
+      title: Text(
+        widget.post.title,
+        style: widget.post.read!
+            ? TextStyle(
+                decoration: TextDecoration.lineThrough, color: Colors.black45)
+            : TextStyle(fontSize: 20, color: Colors.black),
       ),
+      value: widget.post.read!,
+      onChanged: (value) {
+        setState(() => widget.post.read = value!);
+        context.read<PostBloc>().add(UpdatePostEvent(post: widget.post));
+      },
     );
   }
 }
