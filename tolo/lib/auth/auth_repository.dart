@@ -5,7 +5,7 @@ import 'package:tolo/service/flutter/firebase_service.dart';
 class AuthRepository {
   final _auth = FirebaseService.auth;
 
-  Future getUser() async {
+  User getUser() {
     try {
       return User.fromMap({
         'UUID': _auth.currentUser!.uid,

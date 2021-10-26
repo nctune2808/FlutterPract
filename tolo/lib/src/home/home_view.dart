@@ -24,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
       },
       child: BlocBuilder<SessionBloc, SessionState>(
         builder: (context, state) {
-          print("--HomeSession:-- ${state.status}");
+          print("--HomeSession:-- ${state.user}");
           if (state.status is StatusAuthenticated) {
             return _scenBuilder(user: state.user!);
           } else {
@@ -52,6 +52,7 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: _appBar(user: user),
       bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
         child: Text("Bottom Bar"),
       ),
       body: _bodyBuilder(),

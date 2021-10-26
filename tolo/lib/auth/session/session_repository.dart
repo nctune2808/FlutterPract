@@ -9,40 +9,41 @@ class SessionRepository {
 
   //
 
-  static const String RETRIEVE_USER_BY_ID = '''
-    ${UserFragment.USER_DATA}
-    query userById(\$id: Int!) {
-      users_by_pk(id: \$id) {
-        ...UserData
-      }
-    }
-  ''';
-  Future retrieveUserById({required User user}) async {
-    User _user = await retrieveUserByUUID(user: user);
-    try {
-      final QueryResult result = await GraphQlService.performQuery(
-          document: RETRIEVE_USER_BY_ID, variables: {"id": _user.id});
-      return User.fromMap(result.data?['users_by_pk']);
-    } catch (e) {
-      throw e;
-    }
-  }
+  // static const String RETRIEVE_USER_BY_ID = '''
+  //   ${UserFragment.USER_DATA}
+  //   query userById(\$id: Int!) {
+  //     users_by_pk(id: \$id) {
+  //       ...UserData
+  //     }
+  //   }
+  // ''';
+  // Future retrieveUserById({required User user}) async {
+  //   User _user = await retrieveUserByUUID(user: user);
+  //   try {
+  //     final QueryResult result = await GraphQlService.performQuery(
+  //         document: RETRIEVE_USER_BY_ID, variables: {"id": _user.id});
+  //     return User.fromMap(result.data?['users_by_pk']);
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 
   //
 
   static const String RETRIEVE_USER_BY_UUID = '''
     ${UserFragment.USER_DATA}
-    query userByUUID(\$UUID: String!) {
-      users(where: {UUID: {_eq: \$UUID}}) {
+    query userByUUID (\$UUID: String!){
+      users_by_pk(UUID: \$UUID) {
         ...UserData
       }
     }
   ''';
+
   Future retrieveUserByUUID({required User user}) async {
     try {
       final QueryResult result = await GraphQlService.performQuery(
           document: RETRIEVE_USER_BY_UUID, variables: {"UUID": user.UUID});
-      return User.fromMap(result.data?['users'][0]);
+      return User.fromMap(result.data?['users_by_pk']);
     } catch (e) {
       throw e;
     }

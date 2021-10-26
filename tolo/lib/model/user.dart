@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 class User {
-  int? id;
-  String? UUID;
+  int? id; // NOT primary
+  String? UUID; // <- PRIMARY KEY
   String? email;
   String? username;
   String? fullname;
@@ -17,7 +17,6 @@ class User {
 
   Map<String, dynamic> toMap() {
     return {
-      // 'id': id,
       'UUID': UUID,
       'email': email,
       'username': username,
@@ -27,10 +26,10 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] != null ? map['id'] : null,
-      UUID: map['UUID'] != null ? map['UUID'] : null,
-      email: map['email'] != null ? map['email'] : null,
-      username: map['username'] != null ? map['username'] : null,
+      id: map['id'],
+      UUID: map['UUID'],
+      email: map['email'],
+      username: map['username'],
       fullname: map['fullname'],
     );
   }
