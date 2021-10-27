@@ -24,6 +24,7 @@ class _ProfileViewState extends State<ProfileView> {
       appBar: AppBar(title: Text('Profile')),
       body: BlocBuilder<SessionBloc, SessionState>(
         builder: (context, state) {
+          print("--ProfileSession:-- ${state.status}");
           if (state.status is StatusAuthenticated) {
             return _profileBuilder();
           }
@@ -34,30 +35,24 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _profileBuilder() {
-    return BlocBuilder<SessionBloc, SessionState>(
-      builder: (context, state) {
-        print("--ProfileSession:-- ${state.status}");
-        return BlocBuilder<ProfileBloc, ProfileState>(
-            builder: (context, state) {
-          return SafeArea(
-            child: Center(
-              child: Column(
-                children: [
-                  SizedBox(height: 30),
-                  _avatar(),
-                  _changeAvatarButton(),
-                  SizedBox(height: 30),
-                  _usernameTile(),
-                  _emailTile(),
-                  // _descriptionTile(),
-                  // _saveProfileChangesButton(),
-                ],
-              ),
-            ),
-          );
-        });
-      },
-    );
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+      return SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(height: 30),
+              _avatar(),
+              _changeAvatarButton(),
+              SizedBox(height: 30),
+              _usernameTile(),
+              _emailTile(),
+              // _descriptionTile(),
+              // _saveProfileChangesButton(),
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   Widget _avatar() {

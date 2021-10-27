@@ -14,22 +14,21 @@ class WallBloc extends Bloc<WallEvent, WallState> {
   WallRepository _wallRepo = WallRepository.instance;
   WallBloc() : super(WallInitState());
 
-  Stream<WallState> mapFetchEventToState(FetchWallEvent event) async* {
-    // posts = await _wallRepo.getPosts();
+  Stream<WallState> mapFetchEventToState() async* {
     List<Wall> walls = await _wallRepo.getWalls();
-
     yield state.copyWith(status: StatusSucess(), walls: walls);
   }
 
   @override
   Stream<WallState> mapEventToState(WallEvent event) async* {
     if (event is FetchWallEvent) {
-      yield* mapFetchEventToState(event);
+      yield* mapFetchEventToState();
     }
 
-    // if (event is RefreshTimelineEvent) {
-    //   posts = await _tlRepo.getPosts();
-    //   yield state.copyWith(status: StatusSucess(), posts: posts);
-    // }
+    if (event is AddWallEvent) {
+      await _wallRepo.addWall(wall: event.wall);
+      yield state.copyWith(status: StatusSucess());
+      yield* mapFetchEventToState();
+    }
   }
 }

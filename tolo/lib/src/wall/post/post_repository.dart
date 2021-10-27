@@ -25,7 +25,7 @@ class PostRepository {
       }
     ''';
 
-  Future<Post> insertPost({required Post post}) async {
+  Future insertPost({required Post post}) async {
     try {
       final QueryResult result = await GraphQlService.performMutate(
         document: INSERT_POST,
@@ -33,7 +33,7 @@ class PostRepository {
       );
       final insertedPost = result.data?['insert_posts_one'];
       print(insertedPost);
-      return insertedPost;
+      return Post.fromMap(insertedPost);
     } catch (e) {
       throw e;
     }

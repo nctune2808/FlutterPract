@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/model/post.dart';
 import 'package:tolo/model/user.dart';
 import 'package:tolo/model/wall.dart';
@@ -26,16 +27,21 @@ class _WallViewState extends State<WallView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Wall")),
-      body: BlocBuilder<WallBloc, WallState>(
+      body: BlocBuilder<SessionBloc, SessionState>(
         builder: (context, state) {
-          if (state.status is StatusSucess) {
-            if (state.walls!.isEmpty) {
-              return Center(child: Text("No Post!"));
-            }
-            return _sceneBuilder(state.walls!);
-          } else {
-            return LoadingView();
-          }
+          print("--WallSession:-- ${state.status}");
+          return BlocBuilder<WallBloc, WallState>(
+            builder: (context, state) {
+              if (state.status is StatusSucess) {
+                if (state.walls!.isEmpty) {
+                  return Center(child: Text("No Post!"));
+                }
+                return _sceneBuilder(state.walls!);
+              } else {
+                return LoadingView();
+              }
+            },
+          );
         },
       ),
       floatingActionButton: _floatingButton(),
@@ -79,26 +85,6 @@ class _WallViewState extends State<WallView> {
     );
   }
 
-  Widget _footerBuilder({required Wall wall}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        IconButton(
-            iconSize: 18,
-            onPressed: () {},
-            icon: Icon(Icons.thumb_up_alt_outlined, color: Colors.black54)),
-        IconButton(
-            iconSize: 18,
-            onPressed: () {},
-            icon: Icon(Icons.mode_comment_outlined, color: Colors.black54)),
-        IconButton(
-            iconSize: 18,
-            onPressed: () {},
-            icon: Icon(Icons.ios_share_rounded, color: Colors.black54)),
-      ],
-    );
-  }
-
   Widget _headerBuilder({required Wall wall}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,15 +94,10 @@ class _WallViewState extends State<WallView> {
           style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12),
           textAlign: TextAlign.right,
         ),
-        // Text(
-        //   wall.user!.username!,
-        //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        // ),
         CupertinoContextMenu(actions: [
-          CupertinoContextMenuAction(
-              child: Center(child: Text(wall.user!.username!))),
-          CupertinoContextMenuAction(
-              child: Center(child: Text(wall.user!.email!))),
+          _contextAction(type: wall.user!.username!),
+          _contextAction(type: wall.user!.email!),
+          _contextAction(type: wall.user!.UUID!),
         ], child: Icon(Icons.person)),
         PopupMenuButton(
           itemBuilder: (BuildContext context) => [
@@ -126,6 +107,37 @@ class _WallViewState extends State<WallView> {
             // Navigator.pushNamed(context, route);
           },
         ),
+      ],
+    );
+  }
+
+  Widget _contextAction({required String type}) {
+    return CupertinoContextMenuAction(child: Center(child: Text(type)));
+  }
+
+  Widget _footerBuilder({required Wall wall}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        IconButton(
+            iconSize: 18,
+            onPressed: () {
+              // not sure on current view or refresh
+              context.read<PostBloc>().add(UpdatePostEvent(
+                  post: wall.post!.copyWith(isLiked: !wall.post!.isLiked!)));
+              context.read<WallBloc>().add(FetchWallEvent());
+            },
+            icon: wall.post!.isLiked!
+                ? Icon(Icons.thumb_up_alt_rounded, color: Colors.blue)
+                : Icon(Icons.thumb_up_alt_outlined, color: Colors.black54)),
+        IconButton(
+            iconSize: 18,
+            onPressed: () {},
+            icon: Icon(Icons.mode_comment_outlined, color: Colors.black54)),
+        IconButton(
+            iconSize: 18,
+            onPressed: () {},
+            icon: Icon(Icons.ios_share_rounded, color: Colors.black54)),
       ],
     );
   }
@@ -145,16 +157,17 @@ class _WallViewState extends State<WallView> {
     );
   }
 
-  Widget _addPostButton() {
+  Widget _addPostButton({required User user}) {
     return ElevatedButton(
       onPressed: () {
         Post addPost = Post(
           title: _titleController.text,
           body: _bodyController.text,
         );
-        // change to wall event
-        context.read<PostBloc>().add(AddPostEvent(post: addPost));
-        context.read<WallBloc>().add(FetchWallEvent());
+
+        context
+            .read<WallBloc>()
+            .add(AddWallEvent(wall: Wall(post: addPost, user: user)));
 
         Navigator.pop(context);
         _titleController.clear();
@@ -165,20 +178,24 @@ class _WallViewState extends State<WallView> {
   }
 
   Widget _floatingButton() {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (context) => Padding(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              children: [
-                _groupTextField(),
-                _addPostButton(),
-              ],
-            ),
-          ),
+    return BlocBuilder<SessionBloc, SessionState>(
+      builder: (context, state) {
+        return FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => Padding(
+                padding: const EdgeInsets.all(30),
+                child: Column(
+                  children: [
+                    _groupTextField(),
+                    _addPostButton(user: state.user!),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );

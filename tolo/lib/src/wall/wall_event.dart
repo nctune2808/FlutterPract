@@ -6,4 +6,9 @@ class FetchWallEvent extends WallEvent {}
 
 class StreamWallEvent extends WallEvent {}
 
-class RefreshWallEvent extends WallEvent {}
+class AddWallEvent extends WallEvent {
+  Wall wall;
+  AddWallEvent({
+    required this.wall,
+  });
+}

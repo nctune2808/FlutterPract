@@ -4,7 +4,7 @@ class PostFragment {
       id,
       title,
       body,
-      read,
+      isLiked,
       created_at,
     }
   ''';

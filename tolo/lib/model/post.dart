@@ -4,14 +4,14 @@ class Post {
   int? id;
   String title;
   String body;
-  bool? read;
+  bool? isLiked;
   DateTime? created_at;
 
   Post({
     this.id,
     required this.title,
     required this.body,
-    this.read = false,
+    this.isLiked = false,
     this.created_at,
   });
 
@@ -22,7 +22,7 @@ class Post {
       // 'id': id,
       'title': title,
       'body': body,
-      'read': read,
+      'isLiked': isLiked,
       // 'created_at': created_at,
     };
   }
@@ -32,7 +32,7 @@ class Post {
       id: map['id'],
       title: map['title'],
       body: map['body'],
-      read: map['read'],
+      isLiked: map['isLiked'],
       created_at: DateTime.parse(map['created_at']),
     );
   }
@@ -43,21 +43,21 @@ class Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, body: $body, read: $read, created_at: $created_at)';
+    return 'Post(id: $id, title: $title, body: $body, isLiked: $isLiked, created_at: $created_at)';
   }
 
   Post copyWith({
     int? id,
     String? title,
     String? body,
-    bool? read,
+    bool? isLiked,
     DateTime? created_at,
   }) {
     return Post(
       id: id ?? this.id,
       title: title ?? this.title,
       body: body ?? this.body,
-      read: read ?? this.read,
+      isLiked: isLiked ?? this.isLiked,
       created_at: created_at ?? this.created_at,
     );
   }

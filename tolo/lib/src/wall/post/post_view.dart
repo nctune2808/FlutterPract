@@ -28,22 +28,10 @@ class _PostViewState extends State<PostView> {
   }
 
   Widget _postBuilder() {
-    return CheckboxListTile(
-      checkColor: Colors.black45,
-      activeColor: Colors.white,
-      controlAffinity: ListTileControlAffinity.leading,
-      title: Text(
-        widget.post.title,
-        style: widget.post.read!
-            ? TextStyle(
-                decoration: TextDecoration.lineThrough, color: Colors.black45)
-            : TextStyle(fontSize: 20, color: Colors.black),
-      ),
-      value: widget.post.read!,
-      onChanged: (value) {
-        setState(() => widget.post.read = value!);
-        context.read<PostBloc>().add(UpdatePostEvent(post: widget.post));
-      },
+    return Text(
+      widget.post.title,
+      maxLines: 5,
+      style: TextStyle(fontSize: 20, color: Colors.black),
     );
   }
 }
