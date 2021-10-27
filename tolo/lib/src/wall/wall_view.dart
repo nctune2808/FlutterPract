@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/model/post.dart';
@@ -55,7 +56,7 @@ class _WallViewState extends State<WallView> {
         await Future.delayed(Duration(seconds: 1));
       },
       child: ListView.builder(
-        reverse: false,
+        reverse: true,
         shrinkWrap: true,
         itemCount: walls.length,
         itemBuilder: (BuildContext context, int index) {
@@ -94,11 +95,16 @@ class _WallViewState extends State<WallView> {
           style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12),
           textAlign: TextAlign.right,
         ),
-        CupertinoContextMenu(actions: [
-          _contextAction(type: wall.user!.username!),
-          _contextAction(type: wall.user!.email!),
-          _contextAction(type: wall.user!.UUID!),
-        ], child: Icon(Icons.person)),
+        CupertinoContextMenu(
+            previewBuilder: (context, animation, child) {
+              return Container(color: Colors.lightBlueAccent);
+            },
+            actions: [
+              _contextAction(type: wall.user!.username!),
+              _contextAction(type: wall.user!.email!),
+              _contextAction(type: wall.user!.UUID!),
+            ],
+            child: Icon(Icons.person)),
         PopupMenuButton(
           itemBuilder: (BuildContext context) => [
             PopupMenuItem(child: Text("Delete"), value: "/delete"),
@@ -112,7 +118,24 @@ class _WallViewState extends State<WallView> {
   }
 
   Widget _contextAction({required String type}) {
-    return CupertinoContextMenuAction(child: Center(child: Text(type)));
+    return CupertinoContextMenuAction(
+      child: Center(
+        child: Text(
+          type,
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 15),
+        ),
+      ),
+      onPressed: () {
+        Clipboard.setData(ClipboardData(text: type)).then((result) {
+          final snackBar = SnackBar(content: Text('Copied to Clipboard'));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+        Navigator.pop(context);
+      },
+    );
   }
 
   Widget _footerBuilder({required Wall wall}) {

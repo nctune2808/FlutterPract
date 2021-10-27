@@ -28,10 +28,18 @@ class _PostViewState extends State<PostView> {
   }
 
   Widget _postBuilder() {
-    return Text(
-      widget.post.title,
-      maxLines: 5,
-      style: TextStyle(fontSize: 20, color: Colors.black),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // example
+        Center(child: Icon(Icons.home_work_rounded, size: 150)),
+        Text(
+          widget.post.title,
+          maxLines: 5,
+          style: TextStyle(fontSize: 18, color: Colors.black),
+        ),
+      ],
     );
   }
 }
