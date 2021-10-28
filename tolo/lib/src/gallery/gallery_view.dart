@@ -67,10 +67,10 @@ class _TaskManager extends State<TaskManager> {
     // Create a Reference to the file
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('images/${state.user!.username}/$fileName.png');
+        .child('images/bH8P8fLCNiXNoSEZGQ0X7zU97nF3/$fileName.png');
 
     final metadata = firebase_storage.SettableMetadata(
-        contentType: 'image/jpeg',
+        contentType: 'image/png',
         customMetadata: {'picked-file-path': file.path});
 
     if (kIsWeb) {
@@ -172,8 +172,18 @@ class _TaskManager extends State<TaskManager> {
     );
   }
 
+  Future test() {
+    final ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('images/Messi_avt.png');
+    // no need of the file extension, the name will do fine.
+    var url = ref.getDownloadURL();
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
+    test();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Storage Example App'),
@@ -203,19 +213,24 @@ class _TaskManager extends State<TaskManager> {
           ? const Center(child: Text("Press the '+' button to add a new file."))
           : ListView.builder(
               itemCount: _uploadTasks.length,
-              itemBuilder: (context, index) => UploadTaskListTile(
-                task: _uploadTasks[index],
-                onDismissed: () => _removeTaskAtIndex(index),
-                onDownloadLink: () {
-                  _downloadLink(_uploadTasks[index].snapshot.ref);
-                },
-                onDownload: () {
-                  if (kIsWeb) {
-                    _downloadBytes(_uploadTasks[index].snapshot.ref);
-                  } else {
-                    _downloadFile(_uploadTasks[index].snapshot.ref);
-                  }
-                },
+              itemBuilder: (context, index) => Column(
+                children: [
+                  UploadTaskListTile(
+                    task: _uploadTasks[index],
+                    onDismissed: () => _removeTaskAtIndex(index),
+                    onDownloadLink: () {
+                      _downloadLink(_uploadTasks[index].snapshot.ref);
+                    },
+                    onDownload: () {
+                      if (kIsWeb) {
+                        _downloadBytes(_uploadTasks[index].snapshot.ref);
+                      } else {
+                        _downloadFile(_uploadTasks[index].snapshot.ref);
+                      }
+                    },
+                  ),
+                  // Image.network(test()),
+                ],
               ),
             ),
     );
