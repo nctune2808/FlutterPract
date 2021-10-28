@@ -63,11 +63,11 @@ class _TaskManager extends State<TaskManager> {
     }
 
     firebase_storage.UploadTask uploadTask;
-
+    final fileName = DateTime.now().toIso8601String();
     // Create a Reference to the file
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('images/logo_Barcelona.png');
+        .child('images/${state.user!.username}/$fileName.png');
 
     final metadata = firebase_storage.SettableMetadata(
         contentType: 'image/jpeg',

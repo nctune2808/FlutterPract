@@ -35,7 +35,7 @@ dependencies:
   graphql_flutter: ^5.0.0
   hasura_connect: ^3.0.6
   
-  image_picker: ^0.7.0
+  image_picker: ^0.7.4+1
   file_picker: ^4.1.6
   event_bus: ^2.0.0
 

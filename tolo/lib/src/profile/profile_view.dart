@@ -60,7 +60,9 @@ class _ProfileViewState extends State<ProfileView> {
       return CircleAvatar(
         radius: 50,
         child: Icon(Icons.person),
-        // backgroundImage: FileImage(File(state.avatarPath!)),
+        backgroundImage: (state.avatarPath != null)
+            ? FileImage(File(state.avatarPath!))
+            : null,
       );
     });
   }

@@ -87,6 +87,7 @@ class _HomeViewState extends State<HomeView> {
         _RouteBuilder(page: "CHAT", icon: Icons.messenger),
         _RouteBuilder(page: "GALLERY", icon: Icons.view_carousel),
         _RouteBuilder(page: "PROFILE", icon: Icons.person_rounded),
+        _RouteBuilder(page: "PHOTO", icon: Icons.menu_book_rounded),
       ],
     );
   }

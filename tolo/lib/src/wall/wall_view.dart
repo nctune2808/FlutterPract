@@ -56,7 +56,7 @@ class _WallViewState extends State<WallView> {
         await Future.delayed(Duration(seconds: 1));
       },
       child: ListView.builder(
-        reverse: true,
+        reverse: false,
         shrinkWrap: true,
         itemCount: walls.length,
         itemBuilder: (BuildContext context, int index) {

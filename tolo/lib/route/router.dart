@@ -13,6 +13,7 @@ import 'package:tolo/src/chat/message/message_bloc.dart';
 import 'package:tolo/src/gallery/gallery_view.dart';
 import 'package:tolo/src/home/home_view.dart';
 import 'package:tolo/src/home/welcome_view.dart';
+import 'package:tolo/src/photo/photo.dart';
 import 'package:tolo/src/profile/profile_bloc.dart';
 import 'package:tolo/src/profile/profile_view.dart';
 import 'package:tolo/src/wall/post/post_bloc.dart';
@@ -27,6 +28,7 @@ const CART_ROUTE = "/cart";
 const WALL_ROUTE = "/wall";
 const CHAT_ROUTE = "/chat";
 const GALLERY_ROUTE = "/gallery";
+const PHOTO_ROUTE = "/photo";
 const PROFILE_ROUTE = "/profile";
 
 class AppRouter {
@@ -82,6 +84,10 @@ class AppRouter {
 
       case GALLERY_ROUTE:
         return MaterialPageRoute(builder: (_) => GalleryView());
+
+      case PHOTO_ROUTE:
+        return MaterialPageRoute(builder: (_) => MyHomePage());
+
       case CHAT_ROUTE:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(

@@ -42,8 +42,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To choose photo as avatar</string>
+	<string>$(PRODUCT_NAME) To choose photo as avatar</string>
 	<key>NSCameraUsageDescription</key>
-	<string>To take picture  as avatar</string>
+	<string>$(PRODUCT_NAME) To take picture  as avatar</string>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>$(PRODUCT_NAME) To upload image</string>
 </dict>
 </plist>
