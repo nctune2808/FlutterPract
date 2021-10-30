@@ -1,14 +1,27 @@
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:tolo/model/photo.dart';
+
 class Album {
-  String url;
+  Reference ref;
+  String name;
+  List<Photo> photos;
+
   Album({
-    required this.url,
+    required this.ref,
+    required this.name,
+    required this.photos,
   });
 
   Album copyWith({
-    String? url,
+    Reference? ref,
+    String? name,
+    List<Photo>? photos,
   }) {
     return Album(
-      url: url ?? this.url,
+      ref: ref ?? this.ref,
+      name: name ?? this.name,
+      photos: photos ?? this.photos,
     );
   }
 }

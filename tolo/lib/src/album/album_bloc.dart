@@ -18,8 +18,18 @@ class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
   @override
   Stream<AlbumState> mapEventToState(AlbumEvent event) async* {
     if (event is FetchAlbumEvent) {
-      String path = await _albumRepo.getAvatar();
-      yield state.copyWith(status: StatusSucess(), path: path);
+      List<Album> albums = [];
+      albums.add(await _albumRepo.listAll('images/cards/'));
+      albums.add(await _albumRepo.listAll('images/avatars/'));
+      albums.add(await _albumRepo.listAll('images/players/'));
+      albums.add(await _albumRepo.listAll('images/trips/'));
+
+      yield state.copyWith(status: StatusSucess(), albums: albums);
     }
+
+    //   if (event get avatar) {
+    //     String path = await _albumRepo.getAvatar();
+    //     yield state.copyWith(status: StatusSucess(), path: path);
+    //   }
   }
 }
