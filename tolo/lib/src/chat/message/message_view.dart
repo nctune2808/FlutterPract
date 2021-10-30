@@ -2,8 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/model/message.dart';
 import 'package:tolo/src/chat/message/message_bloc.dart';
 import 'package:tolo/utility/function/covert.dart';

@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class ProfileRepository {
   // Future<void> saveImages(File _images, DocumentReference ref) async {
   //   String imageURL = await uploadImage(_images);

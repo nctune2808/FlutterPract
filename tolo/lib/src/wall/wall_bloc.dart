@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:tolo/model/post.dart';
 import 'package:tolo/model/wall.dart';
 import 'package:tolo/src/wall/wall_repository.dart';
 import 'package:tolo/utility/state/status.dart';

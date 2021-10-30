@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/route/router.dart';
-import 'package:tolo/src/home/home_view.dart';
 import 'package:tolo/utility/state/status.dart';
 
 import 'signin_bloc.dart';

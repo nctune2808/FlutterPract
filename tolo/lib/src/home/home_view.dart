@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
 import 'package:tolo/model/user.dart';
 import 'package:tolo/route/router.dart';
-import 'package:tolo/src/chat/chat_bloc.dart';
-import 'package:tolo/src/chat/chat_view.dart';
 import 'package:tolo/utility/state/status.dart';
 
 class HomeView extends StatefulWidget {
@@ -88,6 +86,7 @@ class _HomeViewState extends State<HomeView> {
         _RouteBuilder(page: "GALLERY", icon: Icons.view_carousel),
         _RouteBuilder(page: "PROFILE", icon: Icons.person_rounded),
         _RouteBuilder(page: "PHOTO", icon: Icons.menu_book_rounded),
+        _RouteBuilder(page: "ALBUM", icon: Icons.menu_book_rounded),
       ],
     );
   }

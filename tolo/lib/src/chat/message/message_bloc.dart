@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tolo/model/message.dart';
 import 'package:tolo/src/chat/message/message_repository.dart';
 import 'package:tolo/utility/state/status.dart';

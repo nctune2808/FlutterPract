@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tolo/auth/auth_repository.dart';
 import 'package:tolo/model/message.dart';
 
 class MessageRepository {

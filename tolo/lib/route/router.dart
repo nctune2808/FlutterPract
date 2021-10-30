@@ -5,6 +5,8 @@ import 'package:tolo/auth/signin/signin_bloc.dart';
 import 'package:tolo/auth/signin/signin_view.dart';
 import 'package:tolo/auth/signup/signup_bloc.dart';
 import 'package:tolo/auth/signup/signup_view.dart';
+import 'package:tolo/src/album/album_bloc.dart';
+import 'package:tolo/src/album/album_view.dart';
 import 'package:tolo/src/cart/cart_bloc.dart';
 import 'package:tolo/src/cart/cart_view.dart';
 import 'package:tolo/src/chat/chat_bloc.dart';
@@ -13,7 +15,7 @@ import 'package:tolo/src/chat/message/message_bloc.dart';
 import 'package:tolo/src/gallery/gallery_view.dart';
 import 'package:tolo/src/home/home_view.dart';
 import 'package:tolo/src/home/welcome_view.dart';
-import 'package:tolo/src/photo/photo.dart';
+import 'package:tolo/src/photo/exphoto.dart';
 import 'package:tolo/src/profile/profile_bloc.dart';
 import 'package:tolo/src/profile/profile_view.dart';
 import 'package:tolo/src/wall/post/post_bloc.dart';
@@ -29,6 +31,7 @@ const WALL_ROUTE = "/wall";
 const CHAT_ROUTE = "/chat";
 const GALLERY_ROUTE = "/gallery";
 const PHOTO_ROUTE = "/photo";
+const ALBUM_ROUTE = "/album";
 const PROFILE_ROUTE = "/profile";
 
 class AppRouter {
@@ -88,6 +91,20 @@ class AppRouter {
       case PHOTO_ROUTE:
         return MaterialPageRoute(builder: (_) => MyHomePage());
 
+      case ALBUM_ROUTE:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => SessionBloc()..add(AuthenSessionEvent()),
+              ),
+              BlocProvider(
+                  create: (context) => AlbumBloc()..add(FetchAlbumEvent())),
+            ],
+            child: AlbumView(),
+          ),
+        );
+
       case CHAT_ROUTE:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -96,7 +113,7 @@ class AppRouter {
                 create: (context) => SessionBloc()..add(AuthenSessionEvent()),
               ),
               BlocProvider(
-                create: (context) => ChatBloc()..add(InitChatEvent()),
+                create: (context) => ChatBloc()..add(FetchChatEvent()),
                 lazy: true,
               ),
               BlocProvider(

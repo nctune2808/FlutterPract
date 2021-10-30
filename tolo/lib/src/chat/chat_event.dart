@@ -2,7 +2,7 @@ part of 'chat_bloc.dart';
 
 abstract class ChatEvent {}
 
-class InitChatEvent extends ChatEvent {}
+class FetchChatEvent extends ChatEvent {}
 
 // transfer to messsage later
 

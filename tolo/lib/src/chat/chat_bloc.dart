@@ -13,7 +13,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   @override
   Stream<ChatState> mapEventToState(ChatEvent event) async* {
-    if (event is InitChatEvent) {
+    if (event is FetchChatEvent) {
       yield state.copyWith(status: StatusLoading());
       try {
         // await _chatRepo.getMessages();

@@ -1,7 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-
-import 'package:tolo/auth/session/session_bloc.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
