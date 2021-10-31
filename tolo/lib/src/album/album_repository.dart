@@ -54,27 +54,4 @@ class AlbumRepository {
     final file = File('${dir.path}/${ref.name}');
     await ref.writeToFile(file);
   }
-
-  // Future<List<Album>> listAll(String path) async {
-  //   final ref = _storage.ref(path);
-  //   final results = await ref.listAll();
-  //   final urls = await getLink(results.items);
-
-  //   return urls
-  //       .asMap()
-  //       .map((index, url) {
-  //         final ref = results.items[index];
-  //         final name = ref.name;
-  //         final file = Album(ref: ref, name: name, url: url);
-  //         return MapEntry(index, file);
-  //       })
-  //       .values
-  //       .toList();
-  // }
-
-  Stream<String> imageLocation(int index) {
-    final ref =
-        _storage.ref().child('images/${_auth.currentUser!.uid}/$index.png');
-    return ref.getDownloadURL().asStream().map((downloadUrl) => downloadUrl);
-  }
 }

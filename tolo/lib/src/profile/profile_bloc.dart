@@ -16,19 +16,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
     if (event is UpAvatarProfileEvent) {
       yield state.copyWith(isImagePickerVisible: true);
-    } else if (event is ImgPickerProfileEvent) {
+    }
+
+    if (event is ImgPickerProfileEvent) {
       yield state.copyWith(isImagePickerVisible: false);
       final pickedImg = await _imgPicker.getImage(source: event.imageSource);
       if (pickedImg == null) return;
-      // _profRepo.uploadImage(File(pickedImg.path));
-
-      // yield state.copyWith()
+      _profRepo.upload(pickedImg);
       yield state.copyWith(avatarPath: pickedImg.path);
-    } else if (event is ImgPathProfileEvent) {
+    }
+
+    if (event is ImgPathProfileEvent) {
       yield state.copyWith(avatarPath: event.avatarPath);
-    } else if (event is UpDescriptionProfileEvent) {
+    }
+
+    if (event is UpDescriptionProfileEvent) {
       yield state.copyWith(userDescription: event.description);
-    } else if (event is SaveProfileEvent) {
+    }
+
+    if (event is SaveProfileEvent) {
       // handle save changes
     }
   }

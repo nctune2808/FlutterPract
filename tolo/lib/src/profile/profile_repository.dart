@@ -1,10 +1,23 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+
 class ProfileRepository {
-  // Future<void> saveImages(File _images, DocumentReference ref) async {
-  //   String imageURL = await uploadImage(_images);
-  //   ref.update({
-  //     "images": FieldValue.arrayUnion([imageURL])
-  //   });
-  // }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future upload(PickedFile file) async {
+    // not upload yet
+    final metadata = SettableMetadata(
+        contentType: 'image/png',
+        customMetadata: {'picked-file-path': _auth.currentUser!.uid});
+
+    FirebaseStorage.instance
+        .ref()
+        .child("images/avatars")
+        .putFile(File(file.path));
+  }
 
   // Future uploadImage(File file) async {
 

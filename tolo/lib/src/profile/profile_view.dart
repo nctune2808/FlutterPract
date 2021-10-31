@@ -47,7 +47,7 @@ class _ProfileViewState extends State<ProfileView> {
               _usernameTile(),
               _emailTile(),
               // _descriptionTile(),
-              // _saveProfileChangesButton(),
+              _saveProfile(),
             ],
           ),
         ),
@@ -131,14 +131,14 @@ class _ProfileViewState extends State<ProfileView> {
   //   });
   // }
 
-  // Widget _saveProfileChangesButton() {
-  //   return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-  //     return ElevatedButton(
-  //       onPressed: () {},
-  //       child: Text('Save Changes'),
-  //     );
-  //   });
-  // }
+  Widget _saveProfile() {
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+      return ElevatedButton(
+        onPressed: () {},
+        child: Text('Save Changes'),
+      );
+    });
+  }
 
   void _showImageSourceActionSheet() {
     Function(ImageSource) selectImageSource = (imageSource) {
