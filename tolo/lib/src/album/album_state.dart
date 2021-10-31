@@ -7,7 +7,7 @@ class AlbumState {
   AlbumState({
     this.albums,
     this.path,
-    this.status,
+    this.status = const StatusInitial(),
   });
 
   AlbumState copyWith({

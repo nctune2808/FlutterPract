@@ -23,7 +23,6 @@ class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
       albums.add(await _albumRepo.listAll('images/avatars/'));
       albums.add(await _albumRepo.listAll('images/players/'));
       albums.add(await _albumRepo.listAll('images/trips/'));
-
       yield state.copyWith(status: StatusSucess(), albums: albums);
     }
 

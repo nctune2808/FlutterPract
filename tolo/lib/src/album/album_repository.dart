@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tolo/model/album.dart';
 import 'package:tolo/model/photo.dart';
 
@@ -45,6 +48,13 @@ class AlbumRepository {
     return Album(ref: ref, name: path.split("/")[1], photos: photos);
   }
 
+  static Future downloadFile(Reference ref) async {
+    final dir = await getApplicationDocumentsDirectory();
+    print("Direction: $dir");
+    final file = File('${dir.path}/${ref.name}');
+    await ref.writeToFile(file);
+  }
+
   // Future<List<Album>> listAll(String path) async {
   //   final ref = _storage.ref(path);
   //   final results = await ref.listAll();
@@ -67,14 +77,4 @@ class AlbumRepository {
         _storage.ref().child('images/${_auth.currentUser!.uid}/$index.png');
     return ref.getDownloadURL().asStream().map((downloadUrl) => downloadUrl);
   }
-
-  // Future test() async {
-  //   final ref = _storage.ref().child('images/Messi_avt.png');
-  //   var url = await ref.getDownloadURL();
-
-  //   await _firestore
-  //       .collection("images")
-  //       .add({"url": url, "name": "imageName"});
-  //   return url;
-  // }
 }
