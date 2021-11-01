@@ -60,9 +60,8 @@ class _ProfileViewState extends State<ProfileView> {
       return CircleAvatar(
         radius: 50,
         child: Icon(Icons.person),
-        backgroundImage: (state.avatarPath != null)
-            ? FileImage(File(state.avatarPath!))
-            : null,
+        backgroundImage:
+            (state.avatarPath != null) ? NetworkImage(state.avatarPath!) : null,
       );
     });
   }
@@ -153,15 +152,15 @@ class _ProfileViewState extends State<ProfileView> {
         builder: (context) => CupertinoActionSheet(
           actions: [
             CupertinoActionSheetAction(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.pop(context);
-                  selectImageSource(ImageSource.camera);
+                  await selectImageSource(ImageSource.camera);
                 },
                 child: Text("Camera")),
             CupertinoActionSheetAction(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.pop(context);
-                  selectImageSource(ImageSource.gallery);
+                  await selectImageSource(ImageSource.gallery);
                 },
                 child: Text("Photos")),
           ],
@@ -175,17 +174,17 @@ class _ProfileViewState extends State<ProfileView> {
             ListTile(
               leading: Icon(Icons.camera_alt_rounded),
               title: Text("Camera"),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                selectImageSource(ImageSource.camera);
+                await selectImageSource(ImageSource.camera);
               },
             ),
             ListTile(
               leading: Icon(Icons.photo_rounded),
               title: Text("Photos"),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-                selectImageSource(ImageSource.gallery);
+                await selectImageSource(ImageSource.gallery);
               },
             ),
           ],

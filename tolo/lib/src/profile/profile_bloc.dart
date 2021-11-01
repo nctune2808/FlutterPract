@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tolo/model/photo.dart';
+import 'package:tolo/model/user.dart';
 import 'package:tolo/src/profile/profile_repository.dart';
 import 'package:tolo/utility/state/status.dart';
 
@@ -22,16 +23,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield state.copyWith(isImagePickerVisible: false);
       final pickedImg = await _imgPicker.getImage(source: event.imageSource);
       if (pickedImg == null) return;
-      _profRepo.upload(pickedImg);
-      yield state.copyWith(avatarPath: pickedImg.path);
+      // await _profRepo.upload(pickedImg);
+      await _profRepo.uploadGraph(pickedImg); // test ok
+
+      String avt = await _profRepo.getAvatar();
+      yield state.copyWith(avatarPath: avt);
     }
 
     if (event is ImgPathProfileEvent) {
       yield state.copyWith(avatarPath: event.avatarPath);
-    }
-
-    if (event is UpDescriptionProfileEvent) {
-      yield state.copyWith(userDescription: event.description);
     }
 
     if (event is SaveProfileEvent) {

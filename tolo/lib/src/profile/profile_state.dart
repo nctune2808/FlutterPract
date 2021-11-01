@@ -2,34 +2,30 @@ part of 'profile_bloc.dart';
 
 class ProfileState {
   final User? user;
-  final bool? isCurrentUser;
+  final Photo? photo;
   final String? avatarPath;
-  final String? userDescription;
   final Status? status;
   bool isImagePickerVisible;
 
   ProfileState({
     this.user,
-    this.isCurrentUser,
+    this.photo,
     this.avatarPath,
-    this.userDescription,
     this.status = const StatusInitial(),
     this.isImagePickerVisible = false,
   });
 
   ProfileState copyWith({
     User? user,
-    bool? isCurrentUser,
+    Photo? photo,
     String? avatarPath,
-    String? userDescription,
     Status? status,
     bool? isImagePickerVisible,
   }) {
     return ProfileState(
       user: user ?? this.user,
-      isCurrentUser: isCurrentUser ?? this.isCurrentUser,
+      photo: photo ?? this.photo,
       avatarPath: avatarPath ?? this.avatarPath,
-      userDescription: userDescription ?? this.userDescription,
       status: status ?? this.status,
       isImagePickerVisible: isImagePickerVisible ?? this.isImagePickerVisible,
     );

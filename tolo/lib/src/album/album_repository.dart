@@ -15,8 +15,6 @@ class AlbumRepository {
       bucket: 'gs://tolo-1a943.appspot.com', app: FirebaseAuth.instance.app);
 
   Future getAvatar() async {
-    // 1: Streambuilder inside loop of folder[index]
-    // 2: GraphQL ref key
     final ref =
         _storage.ref().child('images/avatars/${_auth.currentUser!.uid}.png');
     String url = await ref.getDownloadURL();

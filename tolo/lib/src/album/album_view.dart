@@ -20,7 +20,17 @@ class _AlbumViewState extends State<AlbumView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Album")),
+      appBar: AppBar(
+        title: Text("Album"),
+        actions: [
+          PopupMenuButton(
+              icon: Icon(Icons.filter_list_rounded),
+              itemBuilder: (context) => [
+                    PopupMenuItem(child: Text('Filter 1')),
+                    PopupMenuItem(child: Text('Filter 2')),
+                  ])
+        ],
+      ),
       body: BlocBuilder<SessionBloc, SessionState>(
         builder: (context, state) {
           return BlocBuilder<AlbumBloc, AlbumState>(
@@ -66,9 +76,27 @@ class _AlbumViewState extends State<AlbumView> {
     );
   }
 
+  // new scene
+
   Widget _albumBuilder(Album album) {
     return Scaffold(
-      appBar: AppBar(title: Text(album.name)),
+      appBar: AppBar(
+        title: Text(album.name),
+        actions: [
+          PopupMenuButton(
+              icon: Icon(Icons.border_all_rounded),
+              itemBuilder: (context) => [
+                    PopupMenuItem(child: Text('List')),
+                    PopupMenuItem(child: Text('Gird')),
+                  ]),
+          PopupMenuButton(
+              icon: Icon(Icons.filter_list_rounded),
+              itemBuilder: (context) => [
+                    PopupMenuItem(child: Text('Filter 1')),
+                    PopupMenuItem(child: Text('Filter 2')),
+                  ])
+        ],
+      ),
       body: GridView.builder(
         padding: EdgeInsets.all(5),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -80,12 +108,11 @@ class _AlbumViewState extends State<AlbumView> {
             onTap: () {
               showDialog(
                 context: context,
-                barrierColor: Colors.black87,
+                barrierColor: Colors.black.withOpacity(0.95),
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    elevation: 24,
                     insetPadding: EdgeInsets.zero,
-                    backgroundColor: Colors.black45,
+                    backgroundColor: Colors.black,
                     contentPadding: EdgeInsets.zero,
                     content: CarouselSlider(
                       options: CarouselOptions(
