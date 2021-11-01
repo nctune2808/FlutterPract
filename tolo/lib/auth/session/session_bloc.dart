@@ -31,7 +31,6 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
 
     if (event is AuthenSessionEvent) {
       User user = await _ssRepo.retrieveUserByUUID(user: _authRepo.getUser());
-
       // token = await user.getIdToken();
       yield state.copyWith(status: StatusAuthenticated(), user: user);
     }

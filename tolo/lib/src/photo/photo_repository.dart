@@ -21,6 +21,7 @@ class PhotoRepository {
 
     final metadata = SettableMetadata(
         contentType: 'image/png',
+        contentEncoding: 'Encoding',
         customMetadata: {'picked-file-path': file.path});
 
     if (kIsWeb) {
@@ -29,12 +30,6 @@ class PhotoRepository {
       uploadTask = ref.putFile(File(file.path), metadata);
     }
     return Future.value(uploadTask);
-  }
-
-  Future test() async {
-    final ref = FirebaseStorage.instance.ref().child('images/Messi_avt.png');
-    var url = await ref.getDownloadURL();
-    return url;
   }
 
   /// Handles the user pressing the PopupMenuItem item.

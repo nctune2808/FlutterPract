@@ -56,14 +56,25 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _avatar() {
-    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-      return CircleAvatar(
-        radius: 50,
-        child: Icon(Icons.person),
-        backgroundImage:
-            (state.avatarPath != null) ? NetworkImage(state.avatarPath!) : null,
-      );
-    });
+    return BlocBuilder<SessionBloc, SessionState>(
+      builder: (context, state) {
+        return BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, pState) {
+            return (pState.photo == null)
+                ? CircleAvatar(
+                    radius: 50,
+                    child: Icon(Icons.person),
+                    backgroundImage: (state.user!.photo != null)
+                        ? NetworkImage(state.user!.photo!.url)
+                        : null)
+                : CircleAvatar(
+                    radius: 50,
+                    child: Icon(Icons.person),
+                    backgroundImage: NetworkImage(pState.photo!.url));
+          },
+        );
+      },
+    );
   }
 
   Widget _changeAvatarButton() {

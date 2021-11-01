@@ -46,4 +46,9 @@ class Photo {
   String toJson() => json.encode(toMap());
 
   factory Photo.fromJson(String source) => Photo.fromMap(json.decode(source));
+
+  @override
+  String toString() {
+    return 'Photo(id: $id, url: $url, name: $name, created_at: $created_at)';
+  }
 }

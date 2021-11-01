@@ -117,15 +117,8 @@ class _TaskManager extends State<TaskManager> {
     );
   }
 
-  Future test() async {
-    final ref = FirebaseStorage.instance.ref().child('images/Messi_avt.png');
-    var url = await ref.getDownloadURL();
-    return url;
-  }
-
   @override
   Widget build(BuildContext context) {
-    test();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Storage Example App'),
