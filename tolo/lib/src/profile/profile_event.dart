@@ -23,4 +23,9 @@ class UpDescriptionProfileEvent extends ProfileEvent {
   UpDescriptionProfileEvent({required this.description});
 }
 
-class SaveProfileEvent extends ProfileEvent {}
+class SaveProfileEvent extends ProfileEvent {
+  User user;
+  SaveProfileEvent({
+    required this.user,
+  });
+}

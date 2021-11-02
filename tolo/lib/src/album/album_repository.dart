@@ -36,8 +36,8 @@ class AlbumRepository {
         .asMap()
         .map((index, url) {
           final ref = results.items[index];
-          final name = ref.name;
-          final file = Photo(name: name, url: url);
+          // final name = ref.name;
+          final file = Photo(path: path, url: url);
           return MapEntry(index, file);
         })
         .values

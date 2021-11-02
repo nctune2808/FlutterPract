@@ -104,7 +104,7 @@ class _AlbumViewState extends State<AlbumView> {
         itemCount: album.photos.length,
         itemBuilder: (context, index) {
           return InkWell(
-            child: Image.network(album.photos[index].url, fit: BoxFit.cover),
+            child: Image.network(album.photos[index].url!, fit: BoxFit.cover),
             onTap: () {
               showDialog(
                 context: context,

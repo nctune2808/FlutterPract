@@ -20,20 +20,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     if (event is ImgPickerProfileEvent) {
+      // handle img path
       yield state.copyWith(isImagePickerVisible: false);
       final pickedImg = await _imgPicker.getImage(source: event.imageSource);
       if (pickedImg == null) return;
-      // await _profRepo.upload(pickedImg);
-      User user = await _profRepo.updateAvatar(pickedImg); // test ok
-      yield state.copyWith(photo: user.photo);
+      yield state.copyWith(avatarPath: pickedImg.path);
     }
 
-    // if (event is ImgPathProfileEvent) {
-    //   yield state.copyWith(photo: );
-    // }
-
     if (event is SaveProfileEvent) {
-      // handle save changes
+      Photo avatar = await _profRepo.updateAvatar(
+          path: state.avatarPath!, user: event.user); // test ok - check?
+      yield state.copyWith(photo: avatar);
     }
   }
 }

@@ -45,7 +45,7 @@ class _PhotoViewState extends State<PhotoView> {
       child: InteractiveViewer(
         minScale: 1,
         maxScale: 10,
-        child: Image.network(widget.photo.url,
+        child: Image.network(widget.photo.url!,
             fit: BoxFit.fitWidth,
             loadingBuilder: (co, ch, lo) => _loadingBuilder(co, ch, lo)),
       ),

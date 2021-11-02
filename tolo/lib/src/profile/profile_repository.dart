@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tolo/auth/session/session_repository.dart';
 import 'package:tolo/model/photo.dart';
 import 'package:tolo/model/user.dart' as tolo;
 import 'package:tolo/service/graphql/graphql_service.dart';
@@ -11,68 +12,57 @@ import 'package:tolo/utility/fragment/photo_fragment.dart';
 import 'package:tolo/utility/fragment/user_fragments.dart';
 
 class ProfileRepository {
-// working...
-  static const String UPDATE_USER = '''
-      ${UserFragment.USER_DATA}
-      mutation MyMutation(\$UUID: String!, \$data: users_set_input!) {
-        update_users_by_pk(pk_columns: {UUID: \$UUID}, _set: \$data) {
-          ...UserData
-        }
-      }
-    ''';
+// working user avatar NULL
 
-  Future updateAvatar(PickedFile file) async {
-    Photo avatar = await uploadGraph(file);
-
-    try {
-      final QueryResult result = await GraphQlService.performMutate(
-        document: UPDATE_USER,
-        variables: {
-          "UUID": _auth.currentUser!.uid,
-          "data": {
-            "avatar_id": avatar.id,
-          }
-        },
-      );
-      final updatedUser = result.data?['update_users_by_pk'];
-      print("updatedUser: $updatedUser");
-      return tolo.User.fromMap(updatedUser);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  static const String INSERT_PHOTO = '''
+  static const String UPDATE_AVATAR = '''
     ${PhotoFragment.PHOTO_DATA}
-    mutation insertPhotos(\$data: photos_insert_input!) {
-      insert_photos_one(object: \$data) {
+    mutation MyMutation(\$id: Int!, \$data: photos_set_input!) {
+      update_photos_by_pk(pk_columns: {id: \$id}, _set: \$data) {
         ...PhotoData
       }
     }
   ''';
 
-  Future uploadGraph(PickedFile file) async {
-    final metadata = SettableMetadata(contentType: 'image/png');
-    final storage_path = "images/avatars/${_auth.currentUser!.uid}_avt.png";
-    final uploadTask = await _storage
-        .ref()
-        .child(storage_path)
-        .putFile(File(file.path), metadata);
-    final String url = (await uploadTask.ref.getDownloadURL());
+  Future updateAvatar({
+    required tolo.User user,
+    required String path,
+  }) async {
+    Photo avatar = await uploadStorage(path);
+    await updateGraph(photo: avatar, user: user);
 
-    final photo = new Photo(url: url, name: "${_auth.currentUser!.uid}_avt");
+    return avatar;
+  }
 
+  Future updateGraph({required tolo.User user, required Photo photo}) async {
+    print("get USER: $user");
     try {
       final QueryResult result = await GraphQlService.performMutate(
-        document: INSERT_PHOTO,
-        variables: {"data": photo.toMap()},
+        document: UPDATE_AVATAR,
+        variables: {
+          "id": user.avatar_id,
+          "data": photo.toMap(),
+        },
       );
-      final insertedPhoto = result.data?['insert_photos_one'];
-      print("uploaded: $insertedPhoto");
-      return Photo.fromMap(insertedPhoto);
+      final updatedAvatar = result.data?['update_photos_by_pk'];
+      print("updatedAvatar: $updatedAvatar");
+      return Photo.fromMap(updatedAvatar);
     } catch (e) {
       throw e;
     }
+  }
+
+  Future uploadStorage(String path) async {
+    final metadata = SettableMetadata(contentType: 'image/png');
+    final storage_path = "images/avatars/${_auth.currentUser!.uid}_avt.png";
+    final uploadTask =
+        await _storage.ref().child(storage_path).putFile(File(path), metadata);
+    final String url = (await uploadTask.ref.getDownloadURL());
+
+    return Photo(
+      url: url,
+      path: storage_path,
+      type: metadata.contentType,
+    );
   }
 
   // -------------------------------------------
@@ -88,31 +78,4 @@ class ProfileRepository {
     String url = await ref.getDownloadURL();
     return url;
   }
-
-  Future upload(PickedFile file) async {
-    final metadata = SettableMetadata(contentType: 'image/png');
-
-    return _storage
-        .ref()
-        .child("images/avatars/${_auth.currentUser!.uid}_avt.png")
-        .putFile(File(file.path), metadata);
-  }
-
-  // Future uploadImage(File file) async {
-
-  //   StorageReference storageReference;
-
-  //   try {
-  //     final fileName = DateTime.now().toIso8601String();
-  //     final storageReference =
-  //         FirebaseStorage.instance.ref().child("images/$fileName");
-
-  //     final StorageUploadTask uploadTask = storageReference.putFile(file);
-  //     final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
-  //     final String url = (await downloadUrl.ref.getDownloadURL());
-  //     print("URL is $url");
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // }
 }

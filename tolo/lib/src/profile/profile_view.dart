@@ -25,10 +25,14 @@ class _ProfileViewState extends State<ProfileView> {
       body: BlocBuilder<SessionBloc, SessionState>(
         builder: (context, state) {
           print("--ProfileSession:-- ${state.status}");
-          if (state.status is StatusAuthenticated) {
-            return _profileBuilder();
-          }
-          return LoadingView();
+          return BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, pState) {
+              if (state.status is StatusAuthenticated) {
+                return _profileBuilder();
+              }
+              return LoadingView();
+            },
+          );
         },
       ),
     );
@@ -46,7 +50,6 @@ class _ProfileViewState extends State<ProfileView> {
               SizedBox(height: 30),
               _usernameTile(),
               _emailTile(),
-              // _descriptionTile(),
               _saveProfile(),
             ],
           ),
@@ -64,13 +67,14 @@ class _ProfileViewState extends State<ProfileView> {
                 ? CircleAvatar(
                     radius: 50,
                     child: Icon(Icons.person),
-                    backgroundImage: (state.user!.photo != null)
-                        ? NetworkImage(state.user!.photo!.url)
-                        : null)
+                    // backgroundImage: (state.user!.photo != null)
+                    //     ? NetworkImage(state.user!.photo!.url)
+                    //     : null
+                  )
                 : CircleAvatar(
                     radius: 50,
                     child: Icon(Icons.person),
-                    backgroundImage: NetworkImage(pState.photo!.url));
+                    backgroundImage: NetworkImage(pState.photo!.url!));
           },
         );
       },
@@ -84,13 +88,18 @@ class _ProfileViewState extends State<ProfileView> {
           _showImageSourceActionSheet();
         }
       },
-      child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-        return TextButton(
-          onPressed: () =>
-              context.read<ProfileBloc>().add(UpAvatarProfileEvent()),
-          child: Text('Change Avatar'),
-        );
-      }),
+      child: BlocBuilder<SessionBloc, SessionState>(
+        builder: (context, state) {
+          return BlocBuilder<ProfileBloc, ProfileState>(
+              builder: (context, pState) {
+            return TextButton(
+              onPressed: () =>
+                  context.read<ProfileBloc>().add(UpAvatarProfileEvent()),
+              child: Text('Change Avatar'),
+            );
+          });
+        },
+      ),
     );
   }
 
@@ -142,12 +151,21 @@ class _ProfileViewState extends State<ProfileView> {
   // }
 
   Widget _saveProfile() {
-    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-      return ElevatedButton(
-        onPressed: () {},
-        child: Text('Save Changes'),
-      );
-    });
+    return BlocBuilder<SessionBloc, SessionState>(
+      builder: (context, state) {
+        return BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, pState) {
+          return ElevatedButton(
+            onPressed: () {
+              context
+                  .read<ProfileBloc>()
+                  .add(SaveProfileEvent(user: state.user!));
+            },
+            child: Text('Save Changes'),
+          );
+        });
+      },
+    );
   }
 
   void _showImageSourceActionSheet() {

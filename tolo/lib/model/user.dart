@@ -8,7 +8,7 @@ class User {
   String? email;
   String? username;
   String? fullname;
-  Photo? photo; // <- FOREIGN
+  int? avatar_id; // <- FOREIGN
 
   User({
     this.id,
@@ -16,17 +16,17 @@ class User {
     this.email,
     this.username,
     this.fullname,
-    this.photo,
+    this.avatar_id,
   });
 
+  // toMap no passing autoID
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'UUID': UUID,
       'email': email,
       'username': username,
       'fullname': fullname,
-      'photo': photo?.toMap(),
+      'avatar_id': avatar_id,
     };
   }
 
@@ -37,7 +37,7 @@ class User {
       email: map['email'] != null ? map['email'] : null,
       username: map['username'] != null ? map['username'] : null,
       fullname: map['fullname'] != null ? map['fullname'] : null,
-      photo: map['photo'] != null ? Photo.fromMap(map['photo']) : null,
+      avatar_id: map['avatar_id'] != null ? map['avatar_id'] : null,
     );
   }
 
@@ -51,7 +51,7 @@ class User {
     String? email,
     String? username,
     String? fullname,
-    Photo? photo,
+    int? avatar_id,
   }) {
     return User(
       id: id ?? this.id,
@@ -59,12 +59,12 @@ class User {
       email: email ?? this.email,
       username: username ?? this.username,
       fullname: fullname ?? this.fullname,
-      photo: photo ?? this.photo,
+      avatar_id: avatar_id ?? this.avatar_id,
     );
   }
 
   @override
   String toString() {
-    return 'User(id: $id, UUID: $UUID, email: $email, username: $username, fullname: $fullname, photo: $photo)';
+    return 'User(id: $id, UUID: $UUID, email: $email, username: $username, fullname: $fullname, avatar_id: $avatar_id)';
   }
 }

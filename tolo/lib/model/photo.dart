@@ -2,43 +2,49 @@ import 'dart:convert';
 
 class Photo {
   int? id;
-  String url;
-  String name;
+  String? path;
+  String? url;
+  String? type;
   DateTime? created_at;
 
   Photo({
     this.id,
-    required this.url,
-    required this.name,
+    this.path,
+    this.url,
+    this.type,
     this.created_at,
   });
 
   Photo copyWith({
     int? id,
+    String? path,
     String? url,
-    String? name,
+    String? type,
     DateTime? created_at,
   }) {
     return Photo(
       id: id ?? this.id,
+      path: path ?? this.path,
       url: url ?? this.url,
-      name: name ?? this.name,
+      type: type ?? this.type,
       created_at: created_at ?? this.created_at,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'path': path,
       'url': url,
-      'name': name,
+      'type': type,
     };
   }
 
   factory Photo.fromMap(Map<String, dynamic> map) {
     return Photo(
-      id: map['id'],
-      url: map['url'],
-      name: map['name'],
+      id: map['id'] != null ? map['id'] : null,
+      path: map['path'] != null ? map['path'] : null,
+      url: map['url'] != null ? map['url'] : null,
+      type: map['type'] != null ? map['type'] : null,
       created_at: DateTime.parse(map['created_at']),
     );
   }
@@ -49,6 +55,6 @@ class Photo {
 
   @override
   String toString() {
-    return 'Photo(id: $id, url: $url, name: $name, created_at: $created_at)';
+    return 'Photo(id: $id, path: $path, url: $url, type: $type, created_at: $created_at)';
   }
 }
