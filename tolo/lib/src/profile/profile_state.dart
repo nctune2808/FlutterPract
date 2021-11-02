@@ -1,10 +1,10 @@
 part of 'profile_bloc.dart';
 
 class ProfileState {
-  final User? user;
-  final Photo? photo;
-  final String? avatarPath;
-  final Status? status;
+  User? user;
+  Photo? photo;
+  String? avatarPath;
+  Status? status;
   bool isImagePickerVisible;
 
   ProfileState({

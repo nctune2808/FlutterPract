@@ -14,6 +14,32 @@ import 'package:tolo/utility/fragment/user_fragments.dart';
 class ProfileRepository {
 // working user avatar NULL
 
+  static const String RETRIEVE_AVATAR = '''
+    ${PhotoFragment.PHOTO_DATA}
+    query MyQuery(\$id: Int!) {
+      photos_by_pk(id: \$id) {
+        ...PhotoData
+      }
+    }
+  ''';
+
+  Future retrieveAvatar({required tolo.User user}) async {
+    try {
+      final QueryResult result = await GraphQlService.performQuery(
+        document: RETRIEVE_AVATAR,
+        variables: {
+          "id": user.avatar_id,
+        },
+      );
+
+      final retrieveAvatar = result.data?['photos_by_pk'];
+      print("retrieveAvatar: $retrieveAvatar");
+      return Photo.fromMap(retrieveAvatar);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   static const String UPDATE_AVATAR = '''
     ${PhotoFragment.PHOTO_DATA}
     mutation MyMutation(\$id: Int!, \$data: photos_set_input!) {

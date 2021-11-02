@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
+import 'package:tolo/model/user.dart';
 import 'package:tolo/src/home/loading_view.dart';
 import 'package:tolo/src/profile/profile_bloc.dart';
 import 'package:tolo/utility/state/status.dart';
@@ -17,6 +18,8 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  var _user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,9 +30,17 @@ class _ProfileViewState extends State<ProfileView> {
           print("--ProfileSession:-- ${state.status}");
           return BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, pState) {
+              pState.user = state.user;
+
               if (state.status is StatusAuthenticated) {
-                return _profileBuilder();
+                if (pState.status is StatusInitial) {
+                  context
+                      .read<ProfileBloc>()
+                      .add(FetchAvatarProfileEvent(user: pState.user!));
+                }
+                return _sceneBuilder(user: pState.user!);
               }
+
               return LoadingView();
             },
           );
@@ -38,7 +49,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget _profileBuilder() {
+  Widget _sceneBuilder({required User user}) {
     return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
       return SafeArea(
         child: Center(
@@ -59,23 +70,14 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _avatar() {
-    return BlocBuilder<SessionBloc, SessionState>(
-      builder: (context, state) {
-        return BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, pState) {
-            return (pState.photo == null)
-                ? CircleAvatar(
-                    radius: 50,
-                    child: Icon(Icons.person),
-                    // backgroundImage: (state.user!.photo != null)
-                    //     ? NetworkImage(state.user!.photo!.url)
-                    //     : null
-                  )
-                : CircleAvatar(
-                    radius: 50,
-                    child: Icon(Icons.person),
-                    backgroundImage: NetworkImage(pState.photo!.url!));
-          },
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, pState) {
+        return CircleAvatar(
+          radius: 50,
+          child: Icon(Icons.person),
+          backgroundImage: (pState.avatarPath == null)
+              ? NetworkImage(pState.photo!.url!)
+              : null,
         );
       },
     );
@@ -88,23 +90,18 @@ class _ProfileViewState extends State<ProfileView> {
           _showImageSourceActionSheet();
         }
       },
-      child: BlocBuilder<SessionBloc, SessionState>(
-        builder: (context, state) {
-          return BlocBuilder<ProfileBloc, ProfileState>(
-              builder: (context, pState) {
-            return TextButton(
-              onPressed: () =>
-                  context.read<ProfileBloc>().add(UpAvatarProfileEvent()),
-              child: Text('Change Avatar'),
-            );
-          });
-        },
-      ),
+      child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, pState) {
+        return TextButton(
+          onPressed: () =>
+              context.read<ProfileBloc>().add(UpAvatarProfileEvent()),
+          child: Text('Change Avatar'),
+        );
+      }),
     );
   }
 
   Widget _usernameTile() {
-    return BlocBuilder<SessionBloc, SessionState>(builder: (context, state) {
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
       return ListTile(
         tileColor: Colors.white,
         leading: Icon(Icons.person),
@@ -114,7 +111,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _emailTile() {
-    return BlocBuilder<SessionBloc, SessionState>(builder: (context, state) {
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
       return ListTile(
         tileColor: Colors.white,
         leading: Icon(Icons.mail),
@@ -151,21 +148,14 @@ class _ProfileViewState extends State<ProfileView> {
   // }
 
   Widget _saveProfile() {
-    return BlocBuilder<SessionBloc, SessionState>(
-      builder: (context, state) {
-        return BlocBuilder<ProfileBloc, ProfileState>(
-            builder: (context, pState) {
-          return ElevatedButton(
-            onPressed: () {
-              context
-                  .read<ProfileBloc>()
-                  .add(SaveProfileEvent(user: state.user!));
-            },
-            child: Text('Save Changes'),
-          );
-        });
-      },
-    );
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (context, pState) {
+      return ElevatedButton(
+        onPressed: () {
+          context.read<ProfileBloc>().add(SaveProfileEvent(user: pState.user!));
+        },
+        child: Text('Save Changes'),
+      );
+    });
   }
 
   void _showImageSourceActionSheet() {

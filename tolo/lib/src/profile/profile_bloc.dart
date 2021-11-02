@@ -15,8 +15,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
+    if (event is FetchAvatarProfileEvent) {
+      Photo photo = await _profRepo.retrieveAvatar(user: event.user);
+      yield state.copyWith(status: StatusSucess(), photo: photo);
+    }
+
     if (event is UpAvatarProfileEvent) {
-      yield state.copyWith(isImagePickerVisible: true);
+      yield state.copyWith(status: StatusSucess(), isImagePickerVisible: true);
     }
 
     if (event is ImgPickerProfileEvent) {
@@ -24,13 +29,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield state.copyWith(isImagePickerVisible: false);
       final pickedImg = await _imgPicker.getImage(source: event.imageSource);
       if (pickedImg == null) return;
-      yield state.copyWith(avatarPath: pickedImg.path);
+      yield state.copyWith(status: StatusSucess(), avatarPath: pickedImg.path);
     }
 
     if (event is SaveProfileEvent) {
       Photo avatar = await _profRepo.updateAvatar(
           path: state.avatarPath!, user: event.user); // test ok - check?
-      yield state.copyWith(photo: avatar);
+      yield state.copyWith(status: StatusSucess(), photo: avatar);
     }
   }
 }
