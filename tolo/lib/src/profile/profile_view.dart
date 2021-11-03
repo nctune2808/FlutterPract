@@ -37,8 +37,9 @@ class _ProfileViewState extends State<ProfileView> {
                   context
                       .read<ProfileBloc>()
                       .add(FetchAvatarProfileEvent(user: pState.user!));
+                } else if (pState.status is StatusSucess) {
+                  return _sceneBuilder(user: pState.user!);
                 }
-                return _sceneBuilder(user: pState.user!);
               }
 
               return LoadingView();
@@ -72,13 +73,17 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _avatar() {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, pState) {
-        return CircleAvatar(
-          radius: 50,
-          child: Icon(Icons.person),
-          backgroundImage: (pState.avatarPath == null)
-              ? NetworkImage(pState.photo!.url!)
-              : null,
-        );
+        if (pState.photo!.url != null && pState.avatarPath == null) {
+          return CircleAvatar(
+              radius: 80, backgroundImage: NetworkImage(pState.photo!.url!));
+        } else {
+          if (pState.avatarPath != null)
+            return CircleAvatar(
+                radius: 80,
+                backgroundImage: FileImage(File(pState.avatarPath!)));
+          else
+            return Icon(Icons.person, size: 50);
+        }
       },
     );
   }
