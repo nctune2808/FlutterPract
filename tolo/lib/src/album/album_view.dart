@@ -112,11 +112,11 @@ class _AlbumViewState extends State<AlbumView> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     insetPadding: EdgeInsets.zero,
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.blue,
                     contentPadding: EdgeInsets.zero,
                     content: CarouselSlider(
                       options: CarouselOptions(
-                        aspectRatio: 1,
+                        aspectRatio: 0.55,
                         initialPage: index,
                         viewportFraction: 1,
                         enlargeCenterPage: true,

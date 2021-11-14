@@ -30,6 +30,25 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+
+  <!-- Firebase Configuration -->
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCBF_7eQap7-YfqqUlc5tfQqz9qKPyzzD4",
+      authDomain: "tolo-1a943.firebaseapp.com",
+      databaseURL: "https://tolo-1a943.firebaseio.com",
+      projectId: "tolo-1a943",
+      storageBucket: "tolo-1a943.appspot.com",
+      messagingSenderId: "...",
+      appId: "1:...:web:...",
+      measurementId: "G-...",
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;

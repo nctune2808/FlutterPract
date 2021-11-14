@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tolo/auth/session/session_bloc.dart';
+import 'package:tolo/model/photo.dart';
 import 'package:tolo/model/user.dart';
+import 'package:tolo/src/album/photo/photo_view.dart';
 import 'package:tolo/src/home/loading_view.dart';
 import 'package:tolo/src/profile/profile_bloc.dart';
 import 'package:tolo/utility/state/status.dart';
@@ -74,8 +76,33 @@ class _ProfileViewState extends State<ProfileView> {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, pState) {
         if (pState.photo!.url != null && pState.avatarPath == null) {
-          return CircleAvatar(
-              radius: 80, backgroundImage: NetworkImage(pState.photo!.url!));
+          return GestureDetector(
+            onTap: () {
+              _showImageSourceActionSheet(photo: pState.photo!);
+            },
+            child: CircleAvatar(
+                radius: 80, backgroundImage: NetworkImage(pState.photo!.url!)),
+          );
+
+          // CupertinoContextMenu(
+          //     actions: [
+          //       CupertinoContextMenuAction(
+          //         trailingIcon: Icons.copy_rounded,
+          //         child: Center(child: Text("ID")),
+          //         onPressed: () {},
+          //       ),
+          //       CupertinoContextMenuAction(
+          //         trailingIcon: Icons.file_download_outlined,
+          //         child: Center(child: Text("Download")),
+          //         onPressed: () {},
+          //       )
+          //     ],
+          //     child: CircleAvatar(
+          //         radius: 80,
+          //         backgroundImage: NetworkImage(pState.photo!.url!)));
+
+          // _showAvatar(photo: pState.photo!),
+
         } else {
           if (pState.avatarPath != null)
             return CircleAvatar(
@@ -90,9 +117,9 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget _changeAvatarButton() {
     return BlocListener<ProfileBloc, ProfileState>(
-      listener: (context, state) {
-        if (state.isImagePickerVisible) {
-          _showImageSourceActionSheet();
+      listener: (context, pState) {
+        if (pState.isImagePickerVisible) {
+          _showImageSourceActionSheet(photo: pState.photo!);
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, pState) {
@@ -163,7 +190,7 @@ class _ProfileViewState extends State<ProfileView> {
     });
   }
 
-  void _showImageSourceActionSheet() {
+  void _showImageSourceActionSheet({required Photo photo}) {
     Function(ImageSource) selectImageSource = (imageSource) {
       context
           .read<ProfileBloc>()
@@ -176,17 +203,39 @@ class _ProfileViewState extends State<ProfileView> {
         builder: (context) => CupertinoActionSheet(
           actions: [
             CupertinoActionSheetAction(
-                onPressed: () async {
-                  Navigator.pop(context);
-                  await selectImageSource(ImageSource.camera);
-                },
-                child: Text("Camera")),
+              child: Text("View Avatar"),
+              onPressed: () async {
+                Navigator.pop(context);
+                _showAvatar(photo: photo);
+              },
+            ),
             CupertinoActionSheetAction(
-                onPressed: () async {
-                  Navigator.pop(context);
-                  await selectImageSource(ImageSource.gallery);
-                },
-                child: Text("Photos")),
+              child: Text("Upload"),
+              onPressed: () async {
+                Navigator.pop(context);
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (context) => CupertinoActionSheet(
+                    actions: [
+                      CupertinoActionSheetAction(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          await selectImageSource(ImageSource.camera);
+                        },
+                        child: Text("Camera"),
+                      ),
+                      CupertinoActionSheetAction(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          await selectImageSource(ImageSource.gallery);
+                        },
+                        child: Text("Photos"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ],
         ),
       );
@@ -196,24 +245,62 @@ class _ProfileViewState extends State<ProfileView> {
         builder: (context) => Wrap(
           children: [
             ListTile(
-              leading: Icon(Icons.camera_alt_rounded),
-              title: Text("Camera"),
+              leading: Icon(Icons.person),
+              title: Text("View Avatar"),
               onTap: () async {
                 Navigator.pop(context);
-                await selectImageSource(ImageSource.camera);
+                _showAvatar(photo: photo);
               },
             ),
             ListTile(
-              leading: Icon(Icons.photo_rounded),
-              title: Text("Photos"),
+              leading: Icon(Icons.upload),
+              title: Text("Upload"),
               onTap: () async {
                 Navigator.pop(context);
-                await selectImageSource(ImageSource.gallery);
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => Wrap(
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.camera_alt_rounded),
+                        title: Text("Camera"),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          await selectImageSource(ImageSource.camera);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.photo_rounded),
+                        title: Text("Photos"),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          await selectImageSource(ImageSource.gallery);
+                        },
+                      ),
+                    ],
+                  ),
+                );
               },
             ),
           ],
         ),
       );
     }
+  }
+
+  void _showAvatar({required Photo photo}) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.95),
+      builder: (BuildContext context) {
+        return AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            backgroundColor: Colors.black,
+            contentPadding: EdgeInsets.zero,
+            content: PhotoView(
+              photo: photo,
+            ));
+      },
+    );
   }
 }
