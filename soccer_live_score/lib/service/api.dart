@@ -22,9 +22,7 @@ class SoccerApi {
     // http.StreamedResponse response = await request.send();
     // print(response.headers);
 
-    final uri = Uri.https('v3.football.api-sports.io', '/fixtures?live=all');
     final res = await http.get(Uri.parse(apiUrl), headers: headers);
-    print(res.headers);
 
     if (res.statusCode == 200) {
       final body = jsonDecode(res.body);

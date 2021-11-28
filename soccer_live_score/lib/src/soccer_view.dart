@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soccer_live_score/model/match.dart';
 import 'package:soccer_live_score/service/api.dart';
 import 'package:soccer_live_score/src/board_view.dart';
+import 'package:soccer_live_score/src/team_view.dart';
 
 class SoccerView extends StatefulWidget {
   const SoccerView({Key? key}) : super(key: key);
@@ -27,13 +28,18 @@ class _SoccerViewState extends State<SoccerView> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Match> allMatches = snapshot.data as List<Match>;
-              Match currentMatch = allMatches[0];
-              return BoardView(
-                  expandedTime: currentMatch.fixture.status.elapsedTime,
-                  homeGoal: currentMatch.goal.home,
-                  awayGoal: currentMatch.goal.away);
+              return ListView.builder(
+                  itemCount: allMatches.length,
+                  itemBuilder: (context, index) {
+                    return BoardView(match: allMatches[index]);
+                  });
+              // Match currentMatch = allMatches[0];
+              // return BoardView(
+              //     expandedTime: currentMatch.fixture.status.elapsedTime,
+              //     homeGoal: currentMatch.goal.home,
+              //     awayGoal: currentMatch.goal.away);
             } else {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
           }),
     );
