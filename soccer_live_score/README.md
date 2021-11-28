@@ -1,16 +1,4 @@
 # soccer_live_score
 
-A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![simulator_screenshot_3F40FE7B-4E56-46B9-86DD-02AD86A78BDE](https://user-images.githubusercontent.com/27118779/143784068-08e37047-37dc-404f-9b9f-139648a58706.png)
