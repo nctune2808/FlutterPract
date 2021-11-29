@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 class Venue {
-  String name;
-  String city;
+  String? name;
+  String? city;
 
   Venue({
     required this.name,

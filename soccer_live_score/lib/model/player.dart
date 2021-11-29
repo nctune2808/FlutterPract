@@ -7,8 +7,8 @@ class Player {
   String lastname;
   int age;
   String nationality;
-  String height;
-  String weight;
+  String? height;
+  String? weight;
   String photo;
 
   Player({
