@@ -1,16 +1,3 @@
 # transport_real_time
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![simulator_screenshot_A5EA0908-2745-4119-9324-01EE62BBBAB7](https://user-images.githubusercontent.com/27118779/143921130-a6cd1d17-a25c-4012-8a09-0b9eb4b42a52.png)
