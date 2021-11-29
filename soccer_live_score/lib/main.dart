@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:soccer_live_score/src/soccer_view.dart';
+import 'package:soccer_live_score/src/match_view.dart';
+import 'package:soccer_live_score/src/player_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SoccerView(),
+      home: PlayerView(),
+      // home: const MatchView(),
     );
   }
 }
