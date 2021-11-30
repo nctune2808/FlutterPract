@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:transport_real_time/views/bus/bus_view.dart';
 import 'package:transport_real_time/views/search/search_view.dart';
 
 void main() {
