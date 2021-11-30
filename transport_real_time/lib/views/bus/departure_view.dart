@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:transport_real_time/models/bus_departure.dart';
 
-class BusDepartureView extends StatelessWidget {
+// ignore: must_be_immutable
+class BusDepartureView extends StatefulWidget {
   List<BusDeparture> departures;
   BusDepartureView({
     Key? key,
@@ -10,7 +11,14 @@ class BusDepartureView extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _BusDepartureViewState createState() => _BusDepartureViewState();
+}
+
+class _BusDepartureViewState extends State<BusDepartureView> {
+  @override
   Widget build(BuildContext context) {
+    List<BusDeparture> departures = widget.departures;
+
     return Expanded(
       child: ListView.builder(
           itemCount: departures.length,
@@ -23,9 +31,13 @@ class BusDepartureView extends StatelessWidget {
                   _borderBuilder(
                     departures[index].line,
                     Colors.red,
+                    false,
                   ),
                   _borderBuilder(
-                      departures[index].best_departure_estimate, Colors.blue)
+                    departures[index].best_departure_estimate,
+                    Colors.blue,
+                    true,
+                  ),
                 ],
               ),
             );
@@ -33,13 +45,21 @@ class BusDepartureView extends StatelessWidget {
     );
   }
 
-  Widget _borderBuilder(String text, Color color) {
+  Widget _borderBuilder(String text, Color color, bool isBold) {
     return Container(
-      child: Text(text, style: const TextStyle(color: Colors.white)),
+      width: 68,
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+      ),
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           color: color),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
     );
   }
 }

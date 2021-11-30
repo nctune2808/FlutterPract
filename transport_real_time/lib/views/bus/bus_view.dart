@@ -4,8 +4,8 @@ import 'package:transport_real_time/services/bus_api.dart';
 import 'package:transport_real_time/views/bus/departure_view.dart';
 import 'package:transport_real_time/views/bus/station_view.dart';
 
-class WelcomeView extends StatelessWidget {
-  const WelcomeView({Key? key}) : super(key: key);
+class BusView extends StatelessWidget {
+  const BusView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

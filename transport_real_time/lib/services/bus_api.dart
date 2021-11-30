@@ -20,6 +20,8 @@ class BusApi {
     for (String key in busDepartures.keys) {
       List<dynamic> busList = body['departures'][key];
       departures += busList.map((item) => BusDeparture.fromJson(item)).toList();
+      departures.sort((a, b) =>
+          (a.best_departure_estimate).compareTo(b.best_departure_estimate));
     }
 
     return BusStation.fromJson(busStationMap, departures);
