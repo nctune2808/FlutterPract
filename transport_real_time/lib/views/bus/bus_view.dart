@@ -14,7 +14,7 @@ class BusView extends StatelessWidget {
           title: Text("Transportation"),
         ),
         body: FutureBuilder(
-          future: BusApi.getBusStation(),
+          future: BusApi.getBusStationByAtcocode(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               BusStation busStation = snapshot.data as BusStation;
@@ -23,7 +23,7 @@ class BusView extends StatelessWidget {
                 children: [
                   BusStationView(busStation: busStation),
                   BusDepartureView(
-                    departures: busStation.departures,
+                    departures: busStation.departures!,
                   ),
                 ],
               );

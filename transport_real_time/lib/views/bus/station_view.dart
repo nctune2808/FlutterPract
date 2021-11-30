@@ -21,7 +21,7 @@ class BusStationView extends StatelessWidget {
           ),
         ),
         Text(
-          busStation.locality,
+          busStation.locality!,
           style: const TextStyle(
             fontSize: 15,
             fontStyle: FontStyle.italic,
