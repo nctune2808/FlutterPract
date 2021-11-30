@@ -11,7 +11,7 @@ class WelcomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Transport"),
+          title: Text("Transportation"),
         ),
         body: FutureBuilder(
           future: BusApi.getBusStation(),

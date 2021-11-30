@@ -25,7 +25,7 @@ class PlayerView extends StatelessWidget {
                         children: [
                           Image.network(
                             allPlayers[index].photo,
-                            height: 100,
+                            height: 110,
                           ),
                           Text(
                             allPlayers[index].name,
