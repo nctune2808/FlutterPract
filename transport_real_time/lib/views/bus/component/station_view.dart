@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:transport_real_time/models/bus_station.dart';
 
-class BusStationView extends StatelessWidget {
+class StationView extends StatelessWidget {
   BusStation busStation;
-  BusStationView({
+  StationView({
     Key? key,
     required this.busStation,
   }) : super(key: key);

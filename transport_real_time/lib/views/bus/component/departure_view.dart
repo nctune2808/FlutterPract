@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:transport_real_time/models/bus_departure.dart';
 
 // ignore: must_be_immutable
-class BusDepartureView extends StatefulWidget {
+class DepartureView extends StatefulWidget {
   List<BusDeparture> departures;
-  BusDepartureView({
+  DepartureView({
     Key? key,
     required this.departures,
   }) : super(key: key);
 
   @override
-  _BusDepartureViewState createState() => _BusDepartureViewState();
+  _DepartureViewState createState() => _DepartureViewState();
 }
 
-class _BusDepartureViewState extends State<BusDepartureView> {
+class _DepartureViewState extends State<DepartureView> {
   @override
   Widget build(BuildContext context) {
     List<BusDeparture> departures = widget.departures;

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:transport_real_time/models/bus_station.dart';
 import 'package:transport_real_time/services/bus_api.dart';
-import 'package:transport_real_time/views/bus/departure_view.dart';
-import 'package:transport_real_time/views/bus/station_view.dart';
+import 'package:transport_real_time/views/bus/component/departure_view.dart';
+import 'package:transport_real_time/views/bus/component/station_view.dart';
 
-class SearchByAtcoView extends StatelessWidget {
+class BusDepaturesView extends StatelessWidget {
   String atco;
-  SearchByAtcoView({
+  BusDepaturesView({
     Key? key,
     required this.atco,
   }) : super(key: key);
@@ -16,7 +16,7 @@ class SearchByAtcoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Transportation"),
+          title: Text("Bus Departures"),
         ),
         body: FutureBuilder(
           future: BusApi.getBusStationByAtcocode(atco),
@@ -26,8 +26,8 @@ class SearchByAtcoView extends StatelessWidget {
 
               return Column(
                 children: [
-                  BusStationView(busStation: busStation),
-                  BusDepartureView(
+                  StationView(busStation: busStation),
+                  DepartureView(
                     departures: busStation.departures!,
                   ),
                 ],

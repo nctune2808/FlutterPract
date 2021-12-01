@@ -50,7 +50,7 @@ class BusApi {
     List<dynamic> busStationList = body['member'];
     // Map<String, dynamic> busMembers = body['member'];
 
-    print(busStationList);
+    // print(busStationList);
 
     // return BusStation.fromJson(busStationList[0], null);
 
