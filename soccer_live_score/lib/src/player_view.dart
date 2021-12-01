@@ -1,60 +1,53 @@
 import 'package:flutter/material.dart';
+
 import 'package:soccer_live_score/model/player.dart';
 import 'package:soccer_live_score/service/api_player.dart';
 
-class PlayerView extends StatelessWidget {
-  const PlayerView({Key? key}) : super(key: key);
+class PlayerView extends StatefulWidget {
+  Player player;
+  bool moreDetails;
+  PlayerView({
+    Key? key,
+    required this.player,
+    required this.moreDetails,
+  }) : super(key: key);
 
   @override
+  _PlayerViewState createState() => _PlayerViewState();
+}
+
+class _PlayerViewState extends State<PlayerView> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("Players")),
-        body: FutureBuilder(
-            future: PlayerApi.getAllPlayers(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Player> allPlayers = snapshot.data as List<Player>;
-                return GridView.builder(
-                  itemCount: allPlayers.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Column(
-                        children: [
-                          Image.network(
-                            allPlayers[index].photo,
-                            height: 110,
-                          ),
-                          Text(
-                            allPlayers[index].name,
-                            maxLines: 1,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-                // return ListView.builder(
-                //     itemCount: allPlayers.length,
-                //     itemBuilder: (context, index) {
-                //       return Padding(
-                //         padding: const EdgeInsets.symmetric(vertical: 10),
-                //         child: Column(
-                //           children: [
-                //             Image.network(
-                //               allPlayers[index].photo,
-                //               height: 80,
-                //             ),
-                //             Text(allPlayers[index].name),
-                //           ],
-                //         ),
-                //       );
-                //     });
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }));
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.network(
+            widget.player.photo,
+            height: widget.moreDetails ? 200 : 100,
+          ),
+          SizedBox(height: 2),
+          Text(
+            widget.player.name,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+          ),
+          if (widget.moreDetails)
+            Column(
+              children: [
+                Text('ID: ${widget.player.id}'),
+                Text(widget.player.nationality),
+                Text('Age: ${widget.player.age}'),
+                Text('Height: ${widget.player.height}'),
+                Text('Weight: ${widget.player.weight}'),
+              ],
+            )
+        ],
+      ),
+    );
   }
 }
