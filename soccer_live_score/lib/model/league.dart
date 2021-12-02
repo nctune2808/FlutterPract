@@ -4,7 +4,7 @@ class League {
   String logo;
   String flag;
   int season;
-  String round;
+  String? round;
 
   League({
     required this.name,
@@ -12,7 +12,7 @@ class League {
     required this.logo,
     required this.flag,
     required this.season,
-    required this.round,
+    this.round,
   });
 
   factory League.fromJson(Map<String, dynamic> json) {

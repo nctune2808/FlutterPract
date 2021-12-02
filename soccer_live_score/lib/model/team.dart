@@ -8,7 +8,7 @@ class Team {
     required this.id,
     required this.name,
     required this.logoUrl,
-    required this.winner,
+    this.winner,
   });
 
   factory Team.fromJson(Map<String, dynamic> json) {

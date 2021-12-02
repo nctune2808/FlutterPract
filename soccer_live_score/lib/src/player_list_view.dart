@@ -11,6 +11,7 @@ class PlayerListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Players")),
+        backgroundColor: Colors.white,
         body: FutureBuilder(
             future: PlayerApi.getAllPlayers(),
             builder: (context, snapshot) {

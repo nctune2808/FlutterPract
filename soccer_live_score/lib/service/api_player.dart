@@ -5,7 +5,7 @@ import 'package:soccer_live_score/model/player.dart';
 
 class PlayerApi {
   static const apiUrl =
-      'https://v3.football.api-sports.io/players?team=33&season=2021';
+      'https://v3.football.api-sports.io/players?team=85&season=2021';
 
   static const headers = {
     'x-rapidapi-key': '828693ac37bf972d1c1196a987882d87',
@@ -32,9 +32,7 @@ class PlayerApi {
       if (res.statusCode == 200) {
         final body = jsonDecode(res.body);
         List<dynamic> playersList = body['response'];
-
-        players +=
-            playersList.map((item) => Player.fromJson(item['player'])).toList();
+        players += playersList.map((item) => Player.fromJson(item)).toList();
       }
     }
 

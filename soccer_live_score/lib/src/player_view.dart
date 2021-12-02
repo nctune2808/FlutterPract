@@ -25,25 +25,41 @@ class _PlayerViewState extends State<PlayerView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.network(
-            widget.player.photo,
+            widget.player.playerInfos.photo,
             height: widget.moreDetails ? 200 : 100,
           ),
           SizedBox(height: 2),
           Text(
-            widget.player.name,
+            widget.player.playerInfos.name,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             maxLines: 1,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
           ),
           if (widget.moreDetails)
-            Column(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('ID: ${widget.player.id}'),
-                Text(widget.player.nationality),
-                Text('Age: ${widget.player.age}'),
-                Text('Height: ${widget.player.height}'),
-                Text('Weight: ${widget.player.weight}'),
+                Column(
+                  children: [
+                    Text(widget.player.playerStats.games.position),
+                    Text('${widget.player.playerStats.games.rating}'),
+                    Text('Sub-in: ${widget.player.playerStats.subtitutes.sin}'),
+                    Text(
+                        'Sub-out: ${widget.player.playerStats.subtitutes.sout}'),
+                    Text(
+                        'Bench: ${widget.player.playerStats.subtitutes.bench}'),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text('ID: ${widget.player.playerInfos.id}'),
+                    Text(widget.player.playerInfos.nationality),
+                    Text('Age: ${widget.player.playerInfos.age}'),
+                    Text('Height: ${widget.player.playerInfos.height}'),
+                    Text('Weight: ${widget.player.playerInfos.weight}'),
+                  ],
+                ),
               ],
             )
         ],
