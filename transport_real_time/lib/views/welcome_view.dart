@@ -14,12 +14,7 @@ class _WelcomeViewState extends State<WelcomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Let's Go")),
-      body: Column(
-        children: [
-          SearchView(),
-          MapView(),
-        ],
-      ),
+      body: MapView(),
     );
   }
 }

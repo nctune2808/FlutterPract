@@ -13,4 +13,7 @@ class PlaceLocation {
       lng: json['lng'],
     );
   }
+
+  @override
+  String toString() => 'PlaceLocation(lat: $lat, lng: $lng)';
 }
