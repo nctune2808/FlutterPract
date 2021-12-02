@@ -21,6 +21,7 @@ class _SearchViewState extends State<SearchView> {
         IconButton(
             onPressed: () async {
               if (_searchController.text.isNotEmpty) {
+                print(_searchController.text);
                 PlaceLocation place =
                     await PlaceApi().getPlace(_searchController.text);
 

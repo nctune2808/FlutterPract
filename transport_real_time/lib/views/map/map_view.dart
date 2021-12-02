@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:transport_real_time/views/search/search_view.dart';
 
 class MapView extends StatelessWidget {

@@ -6,11 +6,20 @@ import 'package:transport_real_time/services/bus_api.dart';
 
 class PlaceApi {
   final String key = 'AIzaSyAe0BUgZ5lEcPvy9PWkzFJCEbsNIcOeICI';
+  static const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Origin, X-Requested-With, Content-Type, Accept',
+  };
 
   Future<String> getPlaceId(String input) async {
     final url =
         'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$input&inputtype=textquery&key=$key';
-    var response = await http.get(Uri.parse(url));
+    var response = await http.get(
+      Uri.parse(url),
+    );
 
     var json = jsonDecode(response.body);
 
