@@ -20,15 +20,18 @@ class _SearchViewState extends State<SearchView> {
         Expanded(child: TextFormField(controller: _searchController)),
         IconButton(
             onPressed: () async {
-              PlaceLocation place =
-                  await PlaceApi().getPlace(_searchController.text);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) =>
-                      BusStationsView(lat: place.lat, lng: place.lng),
-                ),
-              );
+              if (_searchController.text.isNotEmpty) {
+                PlaceLocation place =
+                    await PlaceApi().getPlace(_searchController.text);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        BusStationsView(lat: place.lat, lng: place.lng),
+                  ),
+                );
+              }
             },
             icon: Icon(Icons.search))
       ],

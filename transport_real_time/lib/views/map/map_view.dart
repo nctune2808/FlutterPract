@@ -48,30 +48,17 @@ class MapView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Map")),
-      body: Column(
-        children: [
-          SearchView(),
-          Expanded(
-            child: GoogleMap(
-              mapType: MapType.normal,
-              markers: {_markerGG, _markerLK},
-              polylines: {_polyline},
-              polygons: {_polygon},
-              initialCameraPosition: _kGooglePlex,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
-          ),
-        ],
+    return Expanded(
+      child: GoogleMap(
+        mapType: MapType.normal,
+        markers: {_markerGG, _markerLK},
+        polylines: {_polyline},
+        polygons: {_polygon},
+        initialCameraPosition: _kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: _goToTheLake,
-      //   label: Text('To the lake!'),
-      //   icon: Icon(Icons.directions_boat),
-      // ),
     );
   }
 

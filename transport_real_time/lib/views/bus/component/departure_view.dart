@@ -24,20 +24,25 @@ class _DepartureViewState extends State<DepartureView> {
           itemCount: departures.length,
           itemBuilder: (context, index) {
             return Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              padding: const EdgeInsets.only(top: 5),
+              child: Column(
                 children: [
-                  _borderBuilder(
-                    departures[index].line,
-                    Colors.red,
-                    false,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _borderBuilder(
+                        departures[index].line,
+                        Colors.red,
+                        false,
+                      ),
+                      _borderBuilder(
+                        departures[index].best_departure_estimate,
+                        Colors.blue,
+                        true,
+                      ),
+                    ],
                   ),
-                  _borderBuilder(
-                    departures[index].best_departure_estimate,
-                    Colors.blue,
-                    true,
-                  ),
+                  Divider(),
                 ],
               ),
             );

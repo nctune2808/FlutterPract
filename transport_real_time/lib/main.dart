@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:transport_real_time/views/map/map_view.dart';
-import 'package:transport_real_time/views/search/search_view.dart';
+import 'package:transport_real_time/views/welcome_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,8 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: BusView(),
-      home: MapView(),
+      home: WelcomeView(),
     );
   }
 }

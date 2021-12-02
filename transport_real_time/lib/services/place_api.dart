@@ -5,7 +5,7 @@ import 'package:transport_real_time/models/place_location.dart';
 import 'package:transport_real_time/services/bus_api.dart';
 
 class PlaceApi {
-  final String key = 'AIzaSyDZocsYannBi_mAogCBRUEqlzGPGgOfvjM';
+  final String key = 'AIzaSyAe0BUgZ5lEcPvy9PWkzFJCEbsNIcOeICI';
 
   Future<String> getPlaceId(String input) async {
     final url =
