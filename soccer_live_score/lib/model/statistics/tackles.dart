@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class Tackles {
-  int total;
-  int blocks;
-  int interceptions;
+  int? total;
+  int? blocks;
+  int? interceptions;
 
   Tackles({
     required this.total,

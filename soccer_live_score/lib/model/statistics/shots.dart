@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 class Shots {
-  int total;
-  int on;
+  int? total;
+  int? on;
 
   Shots({
     required this.total,

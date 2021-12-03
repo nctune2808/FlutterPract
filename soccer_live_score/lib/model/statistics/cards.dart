@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class Cards {
-  int yellow;
-  int yellowred;
-  int red;
+  int? yellow;
+  int? yellowred;
+  int? red;
 
   Cards({
     required this.yellow,

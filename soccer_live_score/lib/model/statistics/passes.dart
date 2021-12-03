@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class Passes {
-  int total;
-  int key;
-  int accuracy;
+  int? total;
+  int? key;
+  int? accuracy;
 
   Passes({
     required this.total,

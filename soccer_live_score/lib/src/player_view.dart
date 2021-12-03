@@ -5,11 +5,9 @@ import 'package:soccer_live_score/service/api_player.dart';
 
 class PlayerView extends StatefulWidget {
   Player player;
-  bool moreDetails;
   PlayerView({
     Key? key,
     required this.player,
-    required this.moreDetails,
   }) : super(key: key);
 
   @override
@@ -26,7 +24,7 @@ class _PlayerViewState extends State<PlayerView> {
         children: [
           Image.network(
             widget.player.playerInfos.photo,
-            height: widget.moreDetails ? 200 : 100,
+            height: 100,
           ),
           SizedBox(height: 2),
           Text(
@@ -36,32 +34,6 @@ class _PlayerViewState extends State<PlayerView> {
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
           ),
-          if (widget.moreDetails)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Text(widget.player.playerStats.games.position),
-                    Text('${widget.player.playerStats.games.rating}'),
-                    Text('Sub-in: ${widget.player.playerStats.subtitutes.sin}'),
-                    Text(
-                        'Sub-out: ${widget.player.playerStats.subtitutes.sout}'),
-                    Text(
-                        'Bench: ${widget.player.playerStats.subtitutes.bench}'),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text('ID: ${widget.player.playerInfos.id}'),
-                    Text(widget.player.playerInfos.nationality),
-                    Text('Age: ${widget.player.playerInfos.age}'),
-                    Text('Height: ${widget.player.playerInfos.height}'),
-                    Text('Weight: ${widget.player.playerInfos.weight}'),
-                  ],
-                ),
-              ],
-            )
         ],
       ),
     );

@@ -1,8 +1,13 @@
 import 'dart:convert';
 
 import 'package:soccer_live_score/model/statistics/cards.dart';
+import 'package:soccer_live_score/model/statistics/dribbles.dart';
 import 'package:soccer_live_score/model/statistics/games.dart';
+import 'package:soccer_live_score/model/statistics/goals.dart';
+import 'package:soccer_live_score/model/statistics/passes.dart';
+import 'package:soccer_live_score/model/statistics/shots.dart';
 import 'package:soccer_live_score/model/statistics/substitutes.dart';
+import 'package:soccer_live_score/model/statistics/tackles.dart';
 
 class Player {
   PlayerInfos playerInfos;
@@ -60,11 +65,21 @@ class PlayerStats {
   Games games;
   Subtitutes subtitutes;
   Cards cards;
+  Shots shots;
+  Passes passes;
+  Tackles tackles;
+  Dribbles dribbles;
+  Goals goals;
 
   PlayerStats({
     required this.games,
     required this.subtitutes,
     required this.cards,
+    required this.shots,
+    required this.passes,
+    required this.tackles,
+    required this.dribbles,
+    required this.goals,
   });
 
   factory PlayerStats.fromJson(Map<String, dynamic> json) {
@@ -72,6 +87,11 @@ class PlayerStats {
       games: Games.fromJson(json['games']),
       subtitutes: Subtitutes.fromJson(json['substitutes']),
       cards: Cards.fromJson(json['cards']),
+      shots: Shots.fromJson(json['shots']),
+      passes: Passes.fromJson(json['passes']),
+      tackles: Tackles.fromJson(json['tackles']),
+      dribbles: Dribbles.fromJson(json['dribbles']),
+      goals: Goals.fromJson(json['goals']),
     );
   }
 }

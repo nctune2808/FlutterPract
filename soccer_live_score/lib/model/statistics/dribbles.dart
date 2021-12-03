@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class Dribbles {
-  int attempts;
-  int success;
-  int past; // null
+  int? attempts;
+  int? success;
+  int? past; // null
 
   Dribbles({
     required this.attempts,

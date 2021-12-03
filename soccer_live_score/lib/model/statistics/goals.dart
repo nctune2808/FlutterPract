@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 class Goals {
-  int total;
-  int conceded; // null
-  int assists;
-  int saves;
+  int? total;
+  int? conceded; // null
+  int? assists;
+  int? saves;
 
   Goals({
     required this.total,

@@ -25,7 +25,6 @@ class PlayerListView extends StatelessWidget {
                     return InkWell(
                       child: PlayerView(
                         player: allPlayers[index],
-                        moreDetails: false,
                       ),
                       onTap: () {
                         Navigator.push(
