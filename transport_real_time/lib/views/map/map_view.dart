@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:transport_real_time/models/bus_station.dart';
 import 'package:transport_real_time/models/place_location.dart';
+import 'package:transport_real_time/services/bus_api.dart';
 import 'package:transport_real_time/services/place_api.dart';
-// import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
-import 'package:transport_real_time/views/search/search_view.dart';
 
 class MapView extends StatefulWidget {
   const MapView({Key? key}) : super(key: key);
@@ -30,23 +30,27 @@ class _MapViewState extends State<MapView> {
 
   Set<Marker> _markers = Set<Marker>();
   Set<Polygon> _polygons = Set<Polygon>();
+  int counter = 0;
 
   @override
   void initState() {
     super.initState();
-    _setMaker(37.42796133580664, -122.085749655962);
+    _setMaker(37.42796133580664, -122.085749655962, null);
   }
 
-  void _setMaker(double lat, double lng) {
+  void _setMaker(double lat, double lng, BitmapDescriptor? icon) {
+    final String markerId = 'marker_${counter}';
+    counter++;
     setState(() {
       _markers.add(Marker(
-        markerId: MarkerId('marker'),
+        markerId: MarkerId(markerId),
         position: LatLng(lat, lng),
-        icon: BitmapDescriptor.defaultMarker,
+        icon: icon ?? BitmapDescriptor.defaultMarker,
         infoWindow:
             InfoWindow(title: '${_searchController.text.toUpperCase()}'),
       ));
     });
+    print(_markers.length);
   }
 
   @override
@@ -61,8 +65,6 @@ class _MapViewState extends State<MapView> {
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
-
-              print(_searchController.text);
             },
           ),
         ),
@@ -79,10 +81,21 @@ class _MapViewState extends State<MapView> {
         IconButton(
             onPressed: () async {
               if (_searchController.text.isNotEmpty) {
-                print(_searchController.text);
-                PlaceLocation place =
+                List<PlaceLocation> placeList =
                     await PlaceApi().getPlace(_searchController.text);
-                _goToPlace(place);
+
+                _goToPlace(placeList[0]);
+                for (PlaceLocation place in placeList) {
+                  print(place);
+                  setState(() {
+                    _setMaker(
+                        place.lat,
+                        place.lng,
+                        BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueAzure));
+                  });
+                }
+
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(
@@ -100,7 +113,8 @@ class _MapViewState extends State<MapView> {
   Future<void> _goToPlace(PlaceLocation place) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(place.lat, place.lng), zoom: 12)));
-    _setMaker(place.lat, place.lng);
+        CameraPosition(target: LatLng(place.lat, place.lng), zoom: 16)));
+    _setMaker(place.lat, place.lng,
+        BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure));
   }
 }

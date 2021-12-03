@@ -29,21 +29,20 @@ class PlaceApi {
     return placeId;
   }
 
-  Future<PlaceLocation> getPlace(String input) async {
-    final placeId = await getPlaceId(input);
-
+  Future<List<PlaceLocation>> getPlace(String input) async {
     final String url =
-        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
+        "https://maps.googleapis.com/maps/api/place/textsearch/json" +
+            "?query=${input}" +
+            "&type=bus_station" +
+            "&key=${key}";
 
     var response = await http.get(Uri.parse(url));
 
     var body = jsonDecode(response.body);
 
-    Map<String, dynamic> placeResult = body['result']['geometry']['location'];
-    PlaceLocation placeLocation = PlaceLocation.fromJson(placeResult);
-    BusApi.getBusStationByGeo(
-        placeLocation.lat.toString(), placeLocation.lng.toString());
-
-    return placeLocation;
+    List<dynamic> results = body['results'];
+    return results
+        .map((place) => PlaceLocation.fromJson(place['geometry']['location']))
+        .toList();
   }
 }

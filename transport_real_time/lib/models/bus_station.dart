@@ -39,4 +39,9 @@ class BusStation {
       distance: json['distance'],
     );
   }
+
+  @override
+  String toString() {
+    return 'BusStation(atcocode: $atcocode, name: $name, indicator: $indicator, bearing: $bearing, locality: $locality, departures: $departures, latitude: $latitude, longitude: $longitude, distance: $distance)';
+  }
 }
