@@ -39,9 +39,10 @@ class _MapViewState extends State<MapView> {
   }
 
   void _setMaker(double lat, double lng, BitmapDescriptor? icon) {
-    final String markerId = 'marker_${counter}';
-    counter++;
     setState(() {
+      counter++;
+      final String markerId = 'marker_${counter}';
+
       _markers.add(Marker(
         markerId: MarkerId(markerId),
         position: LatLng(lat, lng),
@@ -50,7 +51,12 @@ class _MapViewState extends State<MapView> {
             InfoWindow(title: '${_searchController.text.toUpperCase()}'),
       ));
     });
-    print(_markers.length);
+  }
+
+  void _setMapStyle(GoogleMapController controller) async {
+    String value = await DefaultAssetBundle.of(context)
+        .loadString('assets/map_style.json');
+    controller.setMapStyle(value);
   }
 
   @override
@@ -62,8 +68,10 @@ class _MapViewState extends State<MapView> {
           child: GoogleMap(
             mapType: MapType.normal,
             markers: _markers,
+            myLocationEnabled: true,
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
+              _setMapStyle(controller);
               _controller.complete(controller);
             },
           ),
@@ -77,23 +85,32 @@ class _MapViewState extends State<MapView> {
   Widget searchBar() {
     return Row(
       children: [
-        Expanded(child: TextFormField(controller: _searchController)),
+        Expanded(
+          child: TextFormField(
+            decoration: InputDecoration(hintText: "Address, Postcode ..."),
+            textCapitalization: TextCapitalization.words,
+            controller: _searchController,
+            autocorrect: false,
+          ),
+        ),
         IconButton(
             onPressed: () async {
               if (_searchController.text.isNotEmpty) {
+                setState(() {
+                  _markers.clear();
+                });
                 List<PlaceLocation> placeList =
                     await PlaceApi().getPlace(_searchController.text);
 
                 _goToPlace(placeList[0]);
                 for (PlaceLocation place in placeList) {
                   print(place);
-                  setState(() {
-                    _setMaker(
-                        place.lat,
-                        place.lng,
-                        BitmapDescriptor.defaultMarkerWithHue(
-                            BitmapDescriptor.hueAzure));
-                  });
+                  _setMaker(
+                    place.lat,
+                    place.lng,
+                    BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueAzure),
+                  );
                 }
 
                 // Navigator.push(

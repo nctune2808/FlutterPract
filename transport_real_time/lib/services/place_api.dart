@@ -30,10 +30,18 @@ class PlaceApi {
   }
 
   Future<List<PlaceLocation>> getPlace(String input) async {
+    // final String url =
+    //     "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+    //         "location=51.5493599%2C-0.0753006" +
+    //         "&type=bus_station" +
+    //         "&radius=500" +
+    //         "&key=${key}";
+
     final String url =
         "https://maps.googleapis.com/maps/api/place/textsearch/json" +
+            // "?location=51.5493599%2C-0.0753006" +
             "?query=${input}" +
-            "&type=bus_station" +
+            "&region=uk" +
             "&key=${key}";
 
     var response = await http.get(Uri.parse(url));
