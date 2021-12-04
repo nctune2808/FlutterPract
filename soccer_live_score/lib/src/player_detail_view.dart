@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:soccer_live_score/model/player.dart';
-import 'package:soccer_live_score/src/player_view.dart';
 
 class PlayerDetailView extends StatelessWidget {
   Player player;
@@ -20,18 +19,39 @@ class PlayerDetailView extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(title: Text("Players")),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PlayerView(player: player),
-          Column(
+          Container(
+            padding: EdgeInsets.only(top: 10, left: 10),
+            child: Text(
+              '${player.playerInfos.name} (${player.playerInfos.lastname})',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ),
+          Row(
             children: [
-              _borderBuilder(
-                stats.games.position,
-                false,
+              Image.network(
+                player.playerInfos.photo,
+                height: 180,
               ),
-              Text(infos.nationality),
-              Text('Age: ${infos.age}'),
-              Text('Height: ${infos.height}'),
-              Text('Weight: ${infos.weight}'),
+              Expanded(
+                child: Column(
+                  children: [
+                    // _rowBuilder(Icon(Icons.login), "abc"),
+                    // _rowBuilder(Icon(Icons.logout), "abc"),
+                    // _rowBuilder(Icon(Icons.sports_soccer), "abcdddd"),
+
+                    _borderBuilder(
+                      stats.games.position,
+                      false,
+                    ),
+                    Text(infos.nationality),
+                    Text('Age: ${infos.age}'),
+                    Text('Height: ${infos.height}'),
+                    Text('Weight: ${infos.weight}'),
+                  ],
+                ),
+              ),
             ],
           ),
           Row(
@@ -61,34 +81,51 @@ class PlayerDetailView extends StatelessWidget {
               ),
             ],
           ),
-          Text('${stats.games.rating} *'),
+          _rowBuilder(
+              Icon(Icons.star, color: Colors.yellow), '${stats.games.rating}'),
         ],
       ),
     );
   }
 
+  Widget _rowBuilder(Icon icon, String text) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        icon,
+        SizedBox(width: 20),
+        Text(text),
+      ],
+    );
+  }
+
   Widget _borderBuilder(String text, bool isBold) {
-    Color color = Colors.black;
+    Color color = Colors.lightGreen;
     switch (text) {
       case 'Attacker':
         color = Colors.red;
         break;
-      // case '':
-      // default:
+
+      case 'Midfielder':
+        color = Colors.orangeAccent;
+        break;
+
+      case 'Defender':
+        color = Colors.lightBlue;
+        break;
     }
     return Container(
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
-      ),
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: color),
-      padding: const EdgeInsets.all(8),
-    );
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+        ),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            color: color),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10));
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:soccer_live_score/model/player.dart';
 import 'package:soccer_live_score/service/api_player.dart';
 import 'package:soccer_live_score/src/player_detail_view.dart';
-import 'package:soccer_live_score/src/player_view.dart';
 
 class PlayerListView extends StatelessWidget {
   const PlayerListView({Key? key}) : super(key: key);
@@ -23,9 +22,7 @@ class PlayerListView extends StatelessWidget {
                       crossAxisCount: 3),
                   itemBuilder: (context, index) {
                     return InkWell(
-                      child: PlayerView(
-                        player: allPlayers[index],
-                      ),
+                      child: PlayerView(allPlayers[index]),
                       onTap: () {
                         Navigator.push(
                             context,
@@ -37,25 +34,32 @@ class PlayerListView extends StatelessWidget {
                     );
                   },
                 );
-                // return ListView.builder(
-                //     itemCount: allPlayers.length,
-                //     itemBuilder: (context, index) {
-                //       return Padding(
-                //         padding: const EdgeInsets.symmetric(vertical: 10),
-                //         child: Column(
-                //           children: [
-                //             Image.network(
-                //               allPlayers[index].photo,
-                //               height: 80,
-                //             ),
-                //             Text(allPlayers[index].name),
-                //           ],
-                //         ),
-                //       );
-                //     });
               } else {
                 return const Center(child: CircularProgressIndicator());
               }
             }));
+  }
+
+  Widget PlayerView(Player player) {
+    return Padding(
+      padding: const EdgeInsets.all(5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.network(
+            player.playerInfos.photo,
+            height: 100,
+          ),
+          SizedBox(height: 2),
+          Text(
+            player.playerInfos.name,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
   }
 }
