@@ -1,7 +1,8 @@
-import 'dart:convert';
-
 import 'package:transport_real_time/models/location.dart';
 
+// PlaceAutocomplete { description }
+// PlaceDetail { name, formatted_address }
+//
 class Place {
   String? name;
   String place_id;

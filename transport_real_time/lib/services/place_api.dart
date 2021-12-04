@@ -3,10 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:transport_real_time/models/location.dart';
 import 'package:transport_real_time/models/place.dart';
-import 'package:transport_real_time/models/place_autocomplete.dart';
-import 'package:transport_real_time/models/place_detail.dart';
 import 'package:transport_real_time/models/place_location.dart';
-import 'package:transport_real_time/models/place_nearby.dart';
 import 'package:transport_real_time/services/bus_api.dart';
 
 class PlaceApi {
