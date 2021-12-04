@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:transport_real_time/models/bus_station.dart';
+import 'package:transport_real_time/models/place.dart';
 import 'package:transport_real_time/models/place_location.dart';
 import 'package:transport_real_time/services/bus_api.dart';
 import 'package:transport_real_time/services/place_api.dart';
@@ -91,6 +92,14 @@ class _MapViewState extends State<MapView> {
             textCapitalization: TextCapitalization.words,
             controller: _searchController,
             autocorrect: false,
+            onChanged: (value) async {
+              if (_searchController.text.isNotEmpty) {
+                List<Place> placeAuto =
+                    await PlaceApi().getPlaceAutocomplete(value);
+
+                print("-suggestion: ${placeAuto[0].description}");
+              }
+            },
           ),
         ),
         IconButton(
