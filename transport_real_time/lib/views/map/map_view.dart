@@ -39,10 +39,10 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     super.initState();
-    _setMaker(37.42796133580664, -122.085749655962, null);
+    _setMaker("Empty", 37.42796133580664, -122.085749655962, null);
   }
 
-  void _setMaker(double lat, double lng, BitmapDescriptor? icon) {
+  void _setMaker(String? name, double lat, double lng, BitmapDescriptor? icon) {
     setState(() {
       counter++;
       final String markerId = 'marker_${counter}';
@@ -51,8 +51,7 @@ class _MapViewState extends State<MapView> {
         markerId: MarkerId(markerId),
         position: LatLng(lat, lng),
         icon: icon ?? BitmapDescriptor.defaultMarker,
-        infoWindow:
-            InfoWindow(title: '${_searchController.text.toUpperCase()}'),
+        infoWindow: InfoWindow(title: '${name!}'),
       ));
     });
   }
@@ -167,10 +166,6 @@ class _MapViewState extends State<MapView> {
                   setState(() {
                     _markers.clear();
                   });
-                  // List<PlaceLocation> placeList =
-                  //     await PlaceApi().getPlace(_searchController.text);
-
-                  // _goToPlace(placeList[0]);
 
                   Place placeDetail =
                       await PlaceApi().getPlaceDetail(placeSelected.place_id!);
@@ -181,6 +176,7 @@ class _MapViewState extends State<MapView> {
 
                   for (Place place in placeNearby) {
                     _setMaker(
+                      place.name,
                       place.location!.lat,
                       place.location!.lng,
                       BitmapDescriptor.defaultMarkerWithHue(
@@ -207,6 +203,7 @@ class _MapViewState extends State<MapView> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(place.location!.lat, place.location!.lng), zoom: 16)));
-    _setMaker(place.location!.lat, place.location!.lng, null);
+    _setMaker(placeSelected.description, place.location!.lat,
+        place.location!.lng, null);
   }
 }
