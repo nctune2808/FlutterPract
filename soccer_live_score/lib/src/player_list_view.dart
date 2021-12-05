@@ -17,6 +17,7 @@ class PlayerListView extends StatelessWidget {
               if (snapshot.hasData) {
                 List<Player> allPlayers = snapshot.data as List<Player>;
                 return GridView.builder(
+                  shrinkWrap: true,
                   itemCount: allPlayers.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3),

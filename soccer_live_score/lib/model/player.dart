@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:soccer_live_score/model/league.dart';
 import 'package:soccer_live_score/model/statistics/cards.dart';
 import 'package:soccer_live_score/model/statistics/dribbles.dart';
 import 'package:soccer_live_score/model/statistics/games.dart';
@@ -8,6 +9,7 @@ import 'package:soccer_live_score/model/statistics/passes.dart';
 import 'package:soccer_live_score/model/statistics/shots.dart';
 import 'package:soccer_live_score/model/statistics/substitutes.dart';
 import 'package:soccer_live_score/model/statistics/tackles.dart';
+import 'package:soccer_live_score/model/team.dart';
 
 class Player {
   PlayerInfos playerInfos;
@@ -62,6 +64,8 @@ class PlayerInfos {
 }
 
 class PlayerStats {
+  Team team;
+  League league;
   Games games;
   Subtitutes subtitutes;
   Cards cards;
@@ -72,6 +76,8 @@ class PlayerStats {
   Goals goals;
 
   PlayerStats({
+    required this.team,
+    required this.league,
     required this.games,
     required this.subtitutes,
     required this.cards,
@@ -92,6 +98,8 @@ class PlayerStats {
       tackles: Tackles.fromJson(json['tackles']),
       dribbles: Dribbles.fromJson(json['dribbles']),
       goals: Goals.fromJson(json['goals']),
+      league: League.fromJson(json['league']),
+      team: Team.fromJson(json['team']),
     );
   }
 }

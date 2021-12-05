@@ -1,9 +1,9 @@
 class League {
   String name;
-  String country;
-  String logo;
-  String flag;
-  int season;
+  String? country;
+  String? logo;
+  String? flag;
+  dynamic season;
   String? round;
 
   League({
@@ -24,5 +24,10 @@ class League {
       season: json['season'],
       round: json['round'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'League(name: $name, country: $country, logo: $logo, flag: $flag, season: $season, round: $round)';
   }
 }

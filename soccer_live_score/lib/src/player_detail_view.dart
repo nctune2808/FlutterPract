@@ -29,29 +29,25 @@ class PlayerDetailView extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Column(
+                children: [
+                  Image.network(
+                    stats.team.logoUrl,
+                    height: 80,
+                  ),
+                  // Image.network(
+                  //   stats.league.logo!,
+                  //   height: 80,
+                  // )
+                ],
+              ),
               Image.network(
                 player.playerInfos.photo,
                 height: 180,
               ),
-              Expanded(
-                child: Column(
-                  children: [
-                    // _rowBuilder(Icon(Icons.login), "abc"),
-                    // _rowBuilder(Icon(Icons.logout), "abc"),
-                    // _rowBuilder(Icon(Icons.sports_soccer), "abcdddd"),
-
-                    _borderBuilder(
-                      stats.games.position,
-                      false,
-                    ),
-                    Text(infos.nationality),
-                    Text('Age: ${infos.age}'),
-                    Text('Height: ${infos.height}'),
-                    Text('Weight: ${infos.weight}'),
-                  ],
-                ),
-              ),
+              Text('${infos.nationality} FLAG'),
             ],
           ),
           Row(
@@ -64,6 +60,19 @@ class PlayerDetailView extends StatelessWidget {
                   Text('Bench: ${stats.subtitutes.bench}'),
                   Text('Yellow: ${stats.cards.yellow}'),
                   Text('Red: ${stats.cards.red}'),
+                ],
+              ),
+              Column(
+                children: [
+                  // _rowBuilder(Icon(Icons.login), "abc"),
+                  // _rowBuilder(Icon(Icons.logout), "abc"),
+                  // _rowBuilder(Icon(Icons.sports_soccer), "abcdddd"),
+
+                  _borderBuilder(stats.games.position, false),
+
+                  Text('Age: ${infos.age}'),
+                  Text('Height: ${infos.height}'),
+                  Text('Weight: ${infos.weight}'),
                 ],
               ),
               Column(
