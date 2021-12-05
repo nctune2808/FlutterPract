@@ -32,6 +32,8 @@ class _MapViewState extends State<MapView> {
   Set<Marker> _markers = Set<Marker>();
   Set<Polygon> _polygons = Set<Polygon>();
   int counter = 0;
+  List<Place> placeAuto = [];
+  bool isShown = false;
 
   @override
   void initState() {
@@ -60,22 +62,75 @@ class _MapViewState extends State<MapView> {
     controller.setMapStyle(value);
   }
 
+  void _setPredict(String value) async {
+    if (value != "" || value.isNotEmpty) {
+      isShown = true;
+      placeAuto = await PlaceApi().getPlaceAutocomplete(value);
+    } else {
+      placeAuto.clear();
+      isShown = false;
+    }
+
+    setState(() {
+      placeAuto = placeAuto;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        searchBar(),
-        Expanded(
-          child: GoogleMap(
-            mapType: MapType.normal,
-            markers: _markers,
-            myLocationEnabled: true,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) {
-              _setMapStyle(controller);
-              _controller.complete(controller);
-            },
-          ),
+        GoogleMap(
+          mapType: MapType.normal,
+          markers: _markers,
+          myLocationEnabled: true,
+          initialCameraPosition: _kGooglePlex,
+          onMapCreated: (GoogleMapController controller) {
+            _setMapStyle(controller);
+            _controller.complete(controller);
+          },
+        ),
+        Column(
+          children: [
+            searchBar(),
+            isShown
+                ? Container(
+                    height: placeAuto.length * 35,
+                    decoration: BoxDecoration(
+                      // backgroundBlendMode: BlendMode.darken,
+                      color: Colors.black54,
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      reverse: true,
+                      itemCount: placeAuto.length,
+                      itemBuilder: (builder, index) {
+                        // print(placeAuto[index].description);
+                        return InkWell(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              placeAuto[index].description!,
+                              overflow: TextOverflow.ellipsis,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          onTap: () {
+                            print('${placeAuto[index].place_id}');
+                            _searchController.text =
+                                placeAuto[index].description!;
+
+                            setState(() {
+                              isShown = false;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ],
     );
@@ -84,55 +139,53 @@ class _MapViewState extends State<MapView> {
   TextEditingController _searchController = TextEditingController();
 
   Widget searchBar() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextFormField(
-            decoration: InputDecoration(hintText: "Address, Postcode ..."),
-            textCapitalization: TextCapitalization.words,
-            controller: _searchController,
-            autocorrect: false,
-            onChanged: (value) async {
-              if (_searchController.text.isNotEmpty) {
-                List<Place> placeAuto =
-                    await PlaceApi().getPlaceAutocomplete(value);
-
-                print("-suggestion: ${placeAuto[0].description}");
-              }
-            },
+    return Container(
+      color: Colors.white,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              decoration: InputDecoration(hintText: "Address, Postcode ..."),
+              textCapitalization: TextCapitalization.words,
+              controller: _searchController,
+              autocorrect: false,
+              onChanged: (value) async {
+                _setPredict(value);
+              },
+            ),
           ),
-        ),
-        IconButton(
-            onPressed: () async {
-              if (_searchController.text.isNotEmpty) {
-                setState(() {
-                  _markers.clear();
-                });
-                List<PlaceLocation> placeList =
-                    await PlaceApi().getPlace(_searchController.text);
+          IconButton(
+              onPressed: () async {
+                if (_searchController.text.isNotEmpty) {
+                  setState(() {
+                    _markers.clear();
+                  });
+                  List<PlaceLocation> placeList =
+                      await PlaceApi().getPlace(_searchController.text);
 
-                _goToPlace(placeList[0]);
-                for (PlaceLocation place in placeList) {
-                  print(place);
-                  _setMaker(
-                    place.lat,
-                    place.lng,
-                    BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueAzure),
-                  );
+                  _goToPlace(placeList[0]);
+                  for (PlaceLocation place in placeList) {
+                    print(place);
+                    _setMaker(
+                      place.lat,
+                      place.lng,
+                      BitmapDescriptor.defaultMarkerWithHue(
+                          BitmapDescriptor.hueAzure),
+                    );
+                  }
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) =>
+                  //         BusStationsView(lat: place.lat, lng: place.lng),
+                  //   ),
+                  // );
                 }
-
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (_) =>
-                //         BusStationsView(lat: place.lat, lng: place.lng),
-                //   ),
-                // );
-              }
-            },
-            icon: Icon(Icons.search))
-      ],
+              },
+              icon: Icon(Icons.search))
+        ],
+      ),
     );
   }
 
