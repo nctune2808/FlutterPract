@@ -5,7 +5,7 @@ import 'package:transport_real_time/models/location.dart';
 //
 class Place {
   String? name;
-  String place_id;
+  String? place_id;
   String? description;
   List<String>? types;
   String? formatted_address;
@@ -13,7 +13,7 @@ class Place {
 
   Place({
     this.name,
-    required this.place_id,
+    this.place_id,
     this.description,
     this.types,
     this.formatted_address,
@@ -29,5 +29,10 @@ class Place {
       formatted_address: json['formatted_address'],
       location: isRequired ? Location.fromJson(json['geometry']) : null,
     );
+  }
+
+  @override
+  String toString() {
+    return 'Place(name: $name, place_id: $place_id, description: $description, types: $types, formatted_address: $formatted_address, location: $location)';
   }
 }

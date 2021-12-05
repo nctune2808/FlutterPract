@@ -32,7 +32,8 @@ class _MapViewState extends State<MapView> {
   Set<Marker> _markers = Set<Marker>();
   Set<Polygon> _polygons = Set<Polygon>();
   int counter = 0;
-  List<Place> placeAuto = [];
+  List<Place> placeAutoList = [];
+  Place placeSelected = Place();
   bool isShown = false;
 
   @override
@@ -65,14 +66,14 @@ class _MapViewState extends State<MapView> {
   void _setPredict(String value) async {
     if (value != "" || value.isNotEmpty) {
       isShown = true;
-      placeAuto = await PlaceApi().getPlaceAutocomplete(value);
+      placeAutoList = await PlaceApi().getPlaceAutocomplete(value);
     } else {
-      placeAuto.clear();
+      placeAutoList.clear();
       isShown = false;
     }
 
     setState(() {
-      placeAuto = placeAuto;
+      placeAutoList = placeAutoList;
     });
   }
 
@@ -91,42 +92,47 @@ class _MapViewState extends State<MapView> {
           },
         ),
         Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             searchBar(),
             isShown
                 ? Container(
-                    height: placeAuto.length * 35,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       // backgroundBlendMode: BlendMode.darken,
                       color: Colors.black54,
                     ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      reverse: true,
-                      itemCount: placeAuto.length,
-                      itemBuilder: (builder, index) {
-                        // print(placeAuto[index].description);
-                        return InkWell(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: Text(
-                              placeAuto[index].description!,
-                              overflow: TextOverflow.ellipsis,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                    child: Center(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(10.0),
+                        shrinkWrap: true,
+                        reverse: true,
+                        itemCount: placeAutoList.length,
+                        itemBuilder: (builder, index) {
+                          // print(placeAuto[index].description);
+                          return InkWell(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                placeAutoList[index].description!,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
                             ),
-                          ),
-                          onTap: () {
-                            print('${placeAuto[index].place_id}');
-                            _searchController.text =
-                                placeAuto[index].description!;
+                            onTap: () {
+                              print('${placeAutoList[index].place_id}');
+                              _searchController.text =
+                                  placeAutoList[index].description!;
 
-                            setState(() {
-                              isShown = false;
-                            });
-                          },
-                        );
-                      },
+                              setState(() {
+                                placeSelected = placeAutoList[index];
+                                isShown = false;
+                              });
+                            },
+                          );
+                        },
+                      ),
                     ),
                   )
                 : Container(),
@@ -140,6 +146,7 @@ class _MapViewState extends State<MapView> {
 
   Widget searchBar() {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       color: Colors.white,
       child: Row(
         children: [
@@ -160,15 +167,22 @@ class _MapViewState extends State<MapView> {
                   setState(() {
                     _markers.clear();
                   });
-                  List<PlaceLocation> placeList =
-                      await PlaceApi().getPlace(_searchController.text);
+                  // List<PlaceLocation> placeList =
+                  //     await PlaceApi().getPlace(_searchController.text);
 
-                  _goToPlace(placeList[0]);
-                  for (PlaceLocation place in placeList) {
-                    print(place);
+                  // _goToPlace(placeList[0]);
+
+                  Place placeDetail =
+                      await PlaceApi().getPlaceDetail(placeSelected.place_id!);
+                  _goToPlace(placeDetail);
+
+                  List<Place> placeNearby =
+                      await PlaceApi().getPlaceNearby(placeDetail.location!);
+
+                  for (Place place in placeNearby) {
                     _setMaker(
-                      place.lat,
-                      place.lng,
+                      place.location!.lat,
+                      place.location!.lng,
                       BitmapDescriptor.defaultMarkerWithHue(
                           BitmapDescriptor.hueAzure),
                     );
@@ -189,11 +203,10 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  Future<void> _goToPlace(PlaceLocation place) async {
+  Future<void> _goToPlace(Place place) async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(place.lat, place.lng), zoom: 16)));
-    _setMaker(place.lat, place.lng,
-        BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure));
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(place.location!.lat, place.location!.lng), zoom: 16)));
+    _setMaker(place.location!.lat, place.location!.lng, null);
   }
 }
