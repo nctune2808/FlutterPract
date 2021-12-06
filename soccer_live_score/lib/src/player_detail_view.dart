@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:soccer_live_score/model/country.dart';
 
 import 'package:soccer_live_score/model/player.dart';
+import 'package:soccer_live_score/service/api_country.dart';
 
-class PlayerDetailView extends StatelessWidget {
+class PlayerDetailView extends StatefulWidget {
   Player player;
 
   PlayerDetailView({
@@ -11,10 +13,24 @@ class PlayerDetailView extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    PlayerStats stats = player.playerStats;
-    PlayerInfos infos = player.playerInfos;
+  _PlayerDetailViewState createState() => _PlayerDetailViewState();
+}
 
+class _PlayerDetailViewState extends State<PlayerDetailView> {
+  late PlayerStats stats;
+  late PlayerInfos infos;
+  String flag = "";
+
+  @override
+  void initState() {
+    super.initState();
+    stats = widget.player.playerStats;
+    infos = widget.player.playerInfos;
+    getCountryFlag(infos.nationality);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: Text("Players")),
@@ -24,30 +40,25 @@ class PlayerDetailView extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: 10, left: 10),
             child: Text(
-              '${player.playerInfos.name} (${player.playerInfos.lastname})',
+              '${infos.name} (${infos.lastname})',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Column(
-                children: [
-                  Image.network(
-                    stats.team.logoUrl,
-                    height: 80,
-                  ),
-                  // Image.network(
-                  //   stats.league.logo!,
-                  //   height: 80,
-                  // )
-                ],
+              Image.network(
+                stats.team.logoUrl,
+                height: 80,
               ),
               Image.network(
-                player.playerInfos.photo,
+                infos.photo,
                 height: 180,
               ),
-              Text('${infos.nationality} FLAG'),
+              Image.network(
+                flag,
+                width: 50,
+              ),
             ],
           ),
           Row(
@@ -95,6 +106,14 @@ class PlayerDetailView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void getCountryFlag(String name) async {
+    flag = (await CountryApi.getCountry(name)).flag;
+    print(flag);
+    setState(() {
+      flag = flag;
+    });
   }
 
   Widget _rowBuilder(Icon icon, String text) {

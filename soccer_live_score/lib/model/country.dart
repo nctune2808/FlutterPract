@@ -13,9 +13,12 @@ class Country {
 
   factory Country.fromJson(Map<String, dynamic> json) {
     return Country(
-      name: json['name'],
-      code: json['code'],
-      flag: json['flag'],
+      name: json['name']['common'],
+      code: json['cca2'],
+      flag: json['flags']['svg'],
     );
   }
+
+  @override
+  String toString() => 'Country(name: $name, code: $code, flag: $flag)';
 }
