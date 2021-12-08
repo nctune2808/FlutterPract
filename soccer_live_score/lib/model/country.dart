@@ -15,7 +15,7 @@ class Country {
     return Country(
       name: json['name']['common'],
       code: json['cca2'],
-      flag: json['flags']['svg'],
+      flag: json['flags']['png'],
     );
   }
 

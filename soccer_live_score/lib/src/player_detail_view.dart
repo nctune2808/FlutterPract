@@ -19,13 +19,14 @@ class PlayerDetailView extends StatefulWidget {
 class _PlayerDetailViewState extends State<PlayerDetailView> {
   late PlayerStats stats;
   late PlayerInfos infos;
-  String flag = "";
+  var flag = "";
 
   @override
   void initState() {
     super.initState();
     stats = widget.player.playerStats;
     infos = widget.player.playerInfos;
+
     getCountryFlag(infos.nationality);
   }
 
@@ -55,10 +56,11 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
                 infos.photo,
                 height: 180,
               ),
-              Image.network(
-                flag,
-                width: 50,
-              ),
+              Text(flag)
+              // Image.network(
+              //   flag,
+              //   width: 50,
+              // ),
             ],
           ),
           Row(
@@ -109,11 +111,11 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
   }
 
   void getCountryFlag(String name) async {
-    flag = (await CountryApi.getCountry(name)).flag;
-    print(flag);
+    final getFlag = (await CountryApi.getCountry(name)).flag;
     setState(() {
-      flag = flag;
+      flag = getFlag;
     });
+    // return Text(getFlag);
   }
 
   Widget _rowBuilder(Icon icon, String text) {
