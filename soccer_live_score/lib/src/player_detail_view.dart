@@ -21,13 +21,19 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
   late PlayerInfos infos;
   var flag = "";
 
+  void _getCountryFlag(String name) async {
+    final getFlag = (await CountryApi.getCountry(name)).flag;
+    setState(() {
+      flag = getFlag;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     stats = widget.player.playerStats;
     infos = widget.player.playerInfos;
-
-    getCountryFlag(infos.nationality);
+    _getCountryFlag(infos.nationality);
   }
 
   @override
@@ -39,10 +45,10 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.only(top: 10, left: 10),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Text(
               '${infos.name} (${infos.lastname})',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
           ),
           Row(
@@ -54,53 +60,22 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
               ),
               Image.network(
                 infos.photo,
-                height: 180,
+                height: 150,
               ),
-              Text(flag)
-              // Image.network(
-              //   flag,
-              //   width: 50,
-              // ),
+              flag.isNotEmpty
+                  ? Image.network(flag, width: 80)
+                  : SizedBox(width: 80),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          GridView(
+            // shrinkWrap: true,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, crossAxisSpacing: 20, mainAxisSpacing: 20),
             children: [
-              Column(
-                children: [
-                  Text('Sub-in: ${stats.subtitutes.sin}'),
-                  Text('Sub-out: ${stats.subtitutes.sout}'),
-                  Text('Bench: ${stats.subtitutes.bench}'),
-                  Text('Yellow: ${stats.cards.yellow}'),
-                  Text('Red: ${stats.cards.red}'),
-                ],
-              ),
-              Column(
-                children: [
-                  // _rowBuilder(Icon(Icons.login), "abc"),
-                  // _rowBuilder(Icon(Icons.logout), "abc"),
-                  // _rowBuilder(Icon(Icons.sports_soccer), "abcdddd"),
-
-                  _borderBuilder(stats.games.position, false),
-
-                  Text('Age: ${infos.age}'),
-                  Text('Height: ${infos.height}'),
-                  Text('Weight: ${infos.weight}'),
-                ],
-              ),
-              Column(
-                children: [
-                  Text("Assit: ${stats.goals.assists}"),
-                  Text("Goal: ${stats.goals.total}"),
-                  Text("Shot: ${stats.shots.on} / ${stats.shots.total}"),
-                  Text(
-                      "Tackle: ${stats.tackles.interceptions} / ${stats.tackles.total}"),
-                  Text(
-                      "Dribble: ${stats.dribbles.success} / ${stats.dribbles.attempts}"),
-                  Text(
-                      "Pass: ${stats.passes.total} - ${stats.passes.accuracy}%"),
-                ],
-              ),
+              _leftPane(),
+              _centerPane(),
+              _rightPane(),
             ],
           ),
           _rowBuilder(
@@ -110,14 +85,6 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
     );
   }
 
-  void getCountryFlag(String name) async {
-    final getFlag = (await CountryApi.getCountry(name)).flag;
-    setState(() {
-      flag = getFlag;
-    });
-    // return Text(getFlag);
-  }
-
   Widget _rowBuilder(Icon icon, String text) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -125,6 +92,47 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
         icon,
         SizedBox(width: 20),
         Text(text),
+      ],
+    );
+  }
+
+  Widget _leftPane() {
+    return Column(
+      children: [
+        Text('Sub-in: ${stats.subtitutes.sin}'),
+        Text('Sub-out: ${stats.subtitutes.sout}'),
+        Text('Bench: ${stats.subtitutes.bench}'),
+        Text('Yellow: ${stats.cards.yellow}'),
+        Text('Red: ${stats.cards.red}'),
+      ],
+    );
+  }
+
+  Widget _rightPane() {
+    return Column(
+      children: [
+        Text("Assit: ${stats.goals.assists}"),
+        Text("Goal: ${stats.goals.total}"),
+        Text("Shot: ${stats.shots.on} / ${stats.shots.total}"),
+        Text("Tackle: ${stats.tackles.interceptions} / ${stats.tackles.total}"),
+        Text("Dribble: ${stats.dribbles.success} / ${stats.dribbles.attempts}"),
+        Text("Pass: ${stats.passes.total} - ${stats.passes.accuracy}%"),
+      ],
+    );
+  }
+
+  Widget _centerPane() {
+    return Column(
+      children: [
+        // _rowBuilder(Icon(Icons.login), "abc"),
+        // _rowBuilder(Icon(Icons.logout), "abc"),
+        // _rowBuilder(Icon(Icons.sports_soccer), "abcdddd"),
+
+        _borderBuilder(stats.games.position, false),
+
+        Text('Age: ${infos.age}'),
+        Text('Height: ${infos.height}'),
+        Text('Weight: ${infos.weight}'),
       ],
     );
   }
