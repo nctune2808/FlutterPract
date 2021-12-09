@@ -83,7 +83,9 @@ class _MapViewState extends State<MapView> {
         GoogleMap(
           mapType: MapType.normal,
           markers: _markers,
+          myLocationButtonEnabled: true,
           myLocationEnabled: true,
+          zoomControlsEnabled: false,
           initialCameraPosition: _kGooglePlex,
           onMapCreated: (GoogleMapController controller) {
             _setMapStyle(controller);
