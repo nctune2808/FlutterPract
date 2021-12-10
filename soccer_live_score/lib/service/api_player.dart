@@ -5,7 +5,7 @@ import 'package:soccer_live_score/model/player.dart';
 
 class PlayerApi {
   static const apiUrl =
-      'https://v3.football.api-sports.io/players?team=85&season=2021';
+      'https://v3.football.api-sports.io/players?team=85&season=2014';
 
   // static const key = "87a58cb23e77bac534b33a49f494863f";
   static const key = "828693ac37bf972d1c1196a987882d87";

@@ -12,20 +12,18 @@ class TeamView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Image.network(
-            team.logoUrl,
-            width: 50,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            team.name,
-            textAlign: TextAlign.center,
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        Image.network(
+          team.logoUrl,
+          width: 60,
+        ),
+        const SizedBox(height: 10),
+        Text(
+          team.name,
+          textAlign: TextAlign.center,
+        )
+      ],
     );
   }
 }

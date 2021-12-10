@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:soccer_live_score/model/country.dart';
 
 import 'package:soccer_live_score/model/player.dart';
@@ -57,6 +58,7 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
               Image.network(
                 stats.team.logoUrl,
                 height: 80,
+                width: 80,
               ),
               Image.network(
                 infos.photo,
@@ -68,8 +70,9 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
             ],
           ),
           GridView(
-            // shrinkWrap: true,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            shrinkWrap: true,
+            padding: EdgeInsets.all(20),
+            physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, crossAxisSpacing: 20, mainAxisSpacing: 20),
             children: [
