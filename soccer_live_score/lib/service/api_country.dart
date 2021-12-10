@@ -12,6 +12,7 @@ class CountryApi {
     var cJson = jsonDecode(cRes.body) as List<dynamic>;
     List<Country> countries =
         cJson.map((json) => Country.fromJson(json)).toList();
+    countries.sort((a, b) => a.name.compareTo(b.name));
     return (countries);
   }
 

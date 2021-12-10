@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:soccer_live_score/model/country.dart';
 import 'package:soccer_live_score/model/team.dart';
@@ -16,7 +17,6 @@ class _WelcomeViewState extends State<WelcomeView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getCountryList();
     index;
@@ -36,9 +36,6 @@ class _WelcomeViewState extends State<WelcomeView> {
         logoUrl: 'https://media.;api-sports.io/football/teams/85.png',
         name: 'PSG');
 
-    FixedExtentScrollController fixedExtentScrollController =
-        new FixedExtentScrollController();
-
     return Scaffold(
         appBar: AppBar(title: Text("Football Addicts")),
         body: Column(
@@ -50,6 +47,12 @@ class _WelcomeViewState extends State<WelcomeView> {
           ],
         ));
   }
+
+// physics: FixedExtentScrollPhysics(),
+// squeeze: 2,
+// itemExtent: 80,
+// perspective: 0.01,
+// diameterRatio: 1.5,
 
   Widget _leagueBuilder() {
     return Column(
@@ -122,39 +125,47 @@ class _WelcomeViewState extends State<WelcomeView> {
   }
 
   Widget _countryBuilder() {
-    return Column(
-      children: [
-        Text("Select Country", style: TextStyle(fontSize: 20)),
-        Container(
-          height: 100,
-          color: Colors.grey,
-          child: ListWheelScrollView(
-            // controller: fixedExtentScrollController,
-            physics: FixedExtentScrollPhysics(),
-            squeeze: 2,
-            itemExtent: 80,
-            perspective: 0.01,
-            diameterRatio: 1.5,
-            // magnification: 1,
-            // useMagnifier: true,
-            children: [
-              ...countries.map((country) {
-                return Center(child: Text(country.name));
-              })
-            ],
-            onSelectedItemChanged: (selected) => {
-              setState(() {
-                index = selected;
-              })
-            },
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Text("Select Country", style: TextStyle(fontSize: 20)),
+          SizedBox(height: 10),
+          DropdownSearch<String>(
+            mode: Mode.DIALOG,
+            showSearchBox: true,
+            showSelectedItems: true,
+            // compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            items: countries.map((country) => country.name).toList(),
+            onChanged: print,
           ),
-        ),
-        Image.network(
-          countries[index].flag,
-          width: 100,
-          height: 100,
-        ),
-      ],
+
+          // Container(
+          //   height: 100,
+          //   color: Colors.grey,
+          //   child: ListWheelScrollView(
+          //     // controller: fixedExtentScrollController,
+          //     physics: FixedExtentScrollPhysics(),
+          //     squeeze: 2,
+          //     itemExtent: 80,
+          //     perspective: 0.01,
+          //     diameterRatio: 1.5,
+          //     // magnification: 1,
+          //     // useMagnifier: true,
+          //     children: [
+          //       ...countries.map((country) {
+          //         return Center(child: Text(country.name));
+          //       })
+          //     ],
+          //     onSelectedItemChanged: (selected) => {
+          //       setState(() {
+          //         index = selected;
+          //       })
+          //     },
+          //   ),
+          // ),
+        ],
+      ),
     );
   }
 
