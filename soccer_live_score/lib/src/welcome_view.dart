@@ -16,10 +16,9 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeViewState extends State<WelcomeView> {
   List<Country> countries = [];
   List<League> leagues = [];
-  int index = -1;
+  late League selected;
 
-  FixedExtentScrollController _leagueController =
-      FixedExtentScrollController(initialItem: 0);
+  FixedExtentScrollController _leagueController = FixedExtentScrollController();
 
   @override
   void initState() {
@@ -78,7 +77,7 @@ class _WelcomeViewState extends State<WelcomeView> {
           color: Colors.black26,
           child: ListWheelScrollView(
             controller: _leagueController,
-            // physics: FixedExtentScrollPhysics(),
+            physics: FixedExtentScrollPhysics(),
             squeeze: 2,
             itemExtent: 80,
             perspective: 0.01,
@@ -90,15 +89,15 @@ class _WelcomeViewState extends State<WelcomeView> {
                 .toList(),
             onSelectedItemChanged: (value) {
               setState(() {
-                index = value;
+                selected = leagues[value];
               });
               print(value);
             },
           ),
         ),
-        index > -1
+        leagues.isNotEmpty
             ? Image.network(
-                leagues[index].info.logo!,
+                selected.info.logo!,
                 height: 100,
               )
             : Container()
@@ -132,7 +131,6 @@ class _WelcomeViewState extends State<WelcomeView> {
               _scrollBuilder(),
               _scrollBuilder(),
               _scrollBuilder(),
-              _scrollBuilder(),
             ],
             onSelectedItemChanged: (index) => {print(index)},
           ),
@@ -155,7 +153,6 @@ class _WelcomeViewState extends State<WelcomeView> {
             // compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             items: countries.map((country) => country.name).toList(),
             onChanged: (value) {
-              _leagueController.initialItem;
               _getLeagueList(value.toString());
             },
           ),
