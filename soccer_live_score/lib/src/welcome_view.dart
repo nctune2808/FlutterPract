@@ -1,8 +1,10 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:soccer_live_score/model/country.dart';
+import 'package:soccer_live_score/model/league.dart';
 import 'package:soccer_live_score/model/team.dart';
 import 'package:soccer_live_score/service/api_country.dart';
+import 'package:soccer_live_score/service/api_league.dart';
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({Key? key}) : super(key: key);
@@ -13,19 +15,31 @@ class WelcomeView extends StatefulWidget {
 
 class _WelcomeViewState extends State<WelcomeView> {
   List<Country> countries = [];
-  int index = 0;
+  List<League> leagues = [];
+  int index = -1;
+
+  FixedExtentScrollController _leagueController =
+      FixedExtentScrollController(initialItem: 0);
 
   @override
   void initState() {
     super.initState();
     _getCountryList();
-    index;
+    // index;
   }
 
   void _getCountryList() async {
     List<Country> countryList = await CountryApi.getAllCountries();
     setState(() {
       countries = countryList;
+    });
+  }
+
+  void _getLeagueList(String name) async {
+    leagues.clear();
+    List<League> leagueList = await LeagueApi.getLeague(name);
+    setState(() {
+      leagues = leagueList;
     });
   }
 
@@ -58,33 +72,36 @@ class _WelcomeViewState extends State<WelcomeView> {
     return Column(
       children: [
         Text("Select League", style: TextStyle(fontSize: 20)),
+        SizedBox(height: 10),
         Container(
           height: 100,
-          color: Colors.grey,
+          color: Colors.black26,
           child: ListWheelScrollView(
-            // controller: fixedExtentScrollController,
-            physics: FixedExtentScrollPhysics(),
+            controller: _leagueController,
+            // physics: FixedExtentScrollPhysics(),
             squeeze: 2,
             itemExtent: 80,
             perspective: 0.01,
             diameterRatio: 1.5,
-            // magnification: 1.5,
+            // magnification: 1.25,
             // useMagnifier: true,
-            children: [
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-            ],
-            onSelectedItemChanged: (index) => {print(index)},
+            children: leagues
+                .map((league) => Center(child: Text(league.info.name)))
+                .toList(),
+            onSelectedItemChanged: (value) {
+              setState(() {
+                index = value;
+              });
+              print(value);
+            },
           ),
         ),
+        index > -1
+            ? Image.network(
+                leagues[index].info.logo!,
+                height: 100,
+              )
+            : Container()
       ],
     );
   }
@@ -137,7 +154,10 @@ class _WelcomeViewState extends State<WelcomeView> {
             showSelectedItems: true,
             // compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             items: countries.map((country) => country.name).toList(),
-            onChanged: print,
+            onChanged: (value) {
+              _leagueController.initialItem;
+              _getLeagueList(value.toString());
+            },
           ),
 
           // Container(

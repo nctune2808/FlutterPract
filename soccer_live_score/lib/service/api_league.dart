@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:soccer_live_score/model/league.dart';
 import 'package:soccer_live_score/model/match.dart';
 
 class LeagueApi {
@@ -17,7 +18,17 @@ class LeagueApi {
     if (res.statusCode == 200) {
       final body = jsonDecode(res.body);
       List<dynamic> list = body['response'];
-      print("Api service: $body");
+      List<League> leagues = list.map((json) => League.fromJson(json)).toList();
     }
+  }
+
+  static Future<List<League>> getLeague(String name) async {
+    final String lUrl = apiUrl + '?country=$name';
+    var lRes = await http.get(Uri.parse(lUrl), headers: headers);
+    var lJson = jsonDecode(lRes.body);
+    List<dynamic> list = lJson['response'];
+    List<League> leagues = list.map((json) => League.fromJson(json)).toList();
+    leagues.sort((a, b) => a.info.id.compareTo(b.info.id));
+    return leagues;
   }
 }

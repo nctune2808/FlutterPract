@@ -23,7 +23,7 @@ class BoardView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text("${match.league.name} - ${date}"),
+        Text("${match.league.info.name} - ${date}"),
         Text(
           "${match.fixture.status.elapsedTime}\"",
           style: const TextStyle(
