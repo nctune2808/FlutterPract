@@ -16,7 +16,7 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeViewState extends State<WelcomeView> {
   List<Country> countries = [];
   List<League> leagues = [];
-  bool reset = false;
+
   int index = 0;
 
   FixedExtentScrollController _leagueController = FixedExtentScrollController();
@@ -36,13 +36,8 @@ class _WelcomeViewState extends State<WelcomeView> {
   }
 
   void _getLeagueList(String name) async {
-    leagues.clear();
-    setState(() {
-      reset = true;
-    });
     List<League> leagueList = await LeagueApi.getLeague(name);
     setState(() {
-      reset = false;
       leagues = leagueList;
     });
   }
@@ -60,17 +55,11 @@ class _WelcomeViewState extends State<WelcomeView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             countries.isNotEmpty ? _countryBuilder() : Container(),
-            _leagueBuilder(),
+            leagues.isNotEmpty ? _leagueBuilder() : Container(),
             _clubBuilder(),
           ],
         ));
   }
-
-// physics: FixedExtentScrollPhysics(),
-// squeeze: 2,
-// itemExtent: 80,
-// perspective: 0.01,
-// diameterRatio: 1.5,
 
   Widget _leagueBuilder() {
     return Column(
@@ -82,7 +71,7 @@ class _WelcomeViewState extends State<WelcomeView> {
           color: Colors.black26,
           child: ListWheelScrollView(
             controller: _leagueController,
-            // physics: ScrollPhysics(),
+            physics: FixedExtentScrollPhysics(),
             squeeze: 2,
             itemExtent: 80,
             perspective: 0.01,
@@ -152,14 +141,17 @@ class _WelcomeViewState extends State<WelcomeView> {
           Text("Select Country", style: TextStyle(fontSize: 20)),
           SizedBox(height: 10),
           DropdownSearch<String>(
-              mode: Mode.DIALOG,
-              showSearchBox: true,
-              showSelectedItems: true,
-              // compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              items: countries.map((country) => country.name).toList(),
-              onChanged: (value) {
-                _getLeagueList(value.toString());
-              }),
+            mode: Mode.DIALOG,
+            showSearchBox: true,
+            showSelectedItems: true,
+            // compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            items: countries.map((country) => country.name).toList(),
+            onChanged: (value) {
+              leagues.clear();
+              _getLeagueList(value.toString());
+              _leagueController.jumpToItem(0);
+            },
+          ),
 
           // Container(
           //   height: 100,
