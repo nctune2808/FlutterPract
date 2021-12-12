@@ -22,8 +22,8 @@ class LeagueApi {
     }
   }
 
-  static Future<List<League>> getLeague(String name) async {
-    final String lUrl = apiUrl + '?country=$name';
+  static Future<List<League>> getLeague(String code) async {
+    final String lUrl = apiUrl + '?code=$code';
     var lRes = await http.get(Uri.parse(lUrl), headers: headers);
     var lJson = jsonDecode(lRes.body);
     List<dynamic> list = lJson['response'];

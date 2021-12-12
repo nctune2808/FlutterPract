@@ -16,7 +16,9 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeViewState extends State<WelcomeView> {
   List<Country> countries = [];
   List<League> leagues = [];
+  List<Team> teams = [];
 
+  int c_index = 0;
   int index = 0;
 
   FixedExtentScrollController _leagueController = FixedExtentScrollController();
@@ -29,14 +31,15 @@ class _WelcomeViewState extends State<WelcomeView> {
   }
 
   void _getCountryList() async {
+    leagues.clear();
     List<Country> countryList = await CountryApi.getAllCountries();
     setState(() {
       countries = countryList;
     });
   }
 
-  void _getLeagueList(String name) async {
-    List<League> leagueList = await LeagueApi.getLeague(name);
+  void _getLeagueList(String code) async {
+    List<League> leagueList = await LeagueApi.getLeague(code);
     setState(() {
       leagues = leagueList;
     });
@@ -51,12 +54,13 @@ class _WelcomeViewState extends State<WelcomeView> {
 
     return Scaffold(
         appBar: AppBar(title: Text("Football Addicts")),
+        backgroundColor: Colors.white,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             countries.isNotEmpty ? _countryBuilder() : Container(),
             leagues.isNotEmpty ? _leagueBuilder() : Container(),
-            _clubBuilder(),
+            teams.isNotEmpty ? _clubBuilder() : Container(),
           ],
         ));
   }
@@ -68,7 +72,7 @@ class _WelcomeViewState extends State<WelcomeView> {
         SizedBox(height: 10),
         Container(
           height: 100,
-          color: Colors.black26,
+          color: Colors.black12,
           child: ListWheelScrollView(
             controller: _leagueController,
             physics: FixedExtentScrollPhysics(),
@@ -85,16 +89,14 @@ class _WelcomeViewState extends State<WelcomeView> {
               setState(() {
                 index = value;
               });
-              print(value);
             },
           ),
         ),
-        leagues.isNotEmpty
-            ? Image.network(
-                leagues[index].info.logo!,
-                height: 100,
-              )
-            : Container()
+        SizedBox(height: 10),
+        Image.network(
+          leagues[index].info.logo!,
+          height: 100,
+        )
       ],
     );
   }
@@ -126,7 +128,7 @@ class _WelcomeViewState extends State<WelcomeView> {
               _scrollBuilder(),
               _scrollBuilder(),
             ],
-            onSelectedItemChanged: (index) => {print(index)},
+            onSelectedItemChanged: (index) => {},
           ),
         ),
       ],
@@ -140,43 +142,20 @@ class _WelcomeViewState extends State<WelcomeView> {
         children: [
           Text("Select Country", style: TextStyle(fontSize: 20)),
           SizedBox(height: 10),
-          DropdownSearch<String>(
+          DropdownSearch<Country>(
             mode: Mode.DIALOG,
             showSearchBox: true,
             showSelectedItems: true,
-            // compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-            items: countries.map((country) => country.name).toList(),
+            compareFn: (item, selectedItem) => item?.name == selectedItem?.name,
+            items: countries.map((country) => country).toList(),
+            itemAsString: (item) {
+              return item!.name;
+            },
             onChanged: (value) {
-              leagues.clear();
-              _getLeagueList(value.toString());
+              _getLeagueList(value!.code);
               _leagueController.jumpToItem(0);
             },
           ),
-
-          // Container(
-          //   height: 100,
-          //   color: Colors.grey,
-          //   child: ListWheelScrollView(
-          //     // controller: fixedExtentScrollController,
-          //     physics: FixedExtentScrollPhysics(),
-          //     squeeze: 2,
-          //     itemExtent: 80,
-          //     perspective: 0.01,
-          //     diameterRatio: 1.5,
-          //     // magnification: 1,
-          //     // useMagnifier: true,
-          //     children: [
-          //       ...countries.map((country) {
-          //         return Center(child: Text(country.name));
-          //       })
-          //     ],
-          //     onSelectedItemChanged: (selected) => {
-          //       setState(() {
-          //         index = selected;
-          //       })
-          //     },
-          //   ),
-          // ),
         ],
       ),
     );
