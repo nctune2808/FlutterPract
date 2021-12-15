@@ -15,12 +15,12 @@ class TeamView extends StatelessWidget {
     return Column(
       children: [
         Image.network(
-          team.logoUrl,
+          team.logoUrl!,
           width: 60,
         ),
         const SizedBox(height: 10),
         Text(
-          team.name,
+          team.name!,
           textAlign: TextAlign.center,
         )
       ],

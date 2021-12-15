@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:soccer_live_score/model/league.dart';
-import 'package:soccer_live_score/model/match.dart';
 
 class LeagueApi {
   static const apiUrl = 'https://v3.football.api-sports.io/leagues';

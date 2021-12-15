@@ -5,6 +5,7 @@ import 'package:soccer_live_score/model/league.dart';
 import 'package:soccer_live_score/model/team.dart';
 import 'package:soccer_live_score/service/api_country.dart';
 import 'package:soccer_live_score/service/api_league.dart';
+import 'package:soccer_live_score/service/api_team.dart';
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({Key? key}) : super(key: key);
@@ -18,10 +19,11 @@ class _WelcomeViewState extends State<WelcomeView> {
   List<League> leagues = [];
   List<Team> teams = [];
 
-  int c_index = 0;
-  int index = 0;
+  int l_index = 0;
+  int t_index = 0;
 
   FixedExtentScrollController _leagueController = FixedExtentScrollController();
+  FixedExtentScrollController _teamController = FixedExtentScrollController();
 
   @override
   void initState() {
@@ -39,9 +41,17 @@ class _WelcomeViewState extends State<WelcomeView> {
   }
 
   void _getLeagueList(String code) async {
+    teams.clear();
     List<League> leagueList = await LeagueApi.getLeague(code);
     setState(() {
       leagues = leagueList;
+    });
+  }
+
+  void _getTeamList(int leagueId) async {
+    List<Team> teamList = await TeamApi.getTeams(leagueId);
+    setState(() {
+      teams = teamList;
     });
   }
 
@@ -60,7 +70,7 @@ class _WelcomeViewState extends State<WelcomeView> {
           children: [
             countries.isNotEmpty ? _countryBuilder() : Container(),
             leagues.isNotEmpty ? _leagueBuilder() : Container(),
-            teams.isNotEmpty ? _clubBuilder() : Container(),
+            teams.isNotEmpty ? _teamBuilder() : Container(),
           ],
         ));
   }
@@ -86,51 +96,52 @@ class _WelcomeViewState extends State<WelcomeView> {
                 .map((league) => Center(child: Text(league.info.name)))
                 .toList(),
             onSelectedItemChanged: (value) {
+              _getTeamList(leagues[value].info.id);
+              _teamController.jumpToItem(0);
               setState(() {
-                index = value;
+                l_index = value;
               });
             },
           ),
         ),
         SizedBox(height: 10),
         Image.network(
-          leagues[index].info.logo!,
+          leagues[l_index].info.logo!,
           height: 100,
         )
       ],
     );
   }
 
-  Widget _clubBuilder() {
+  Widget _teamBuilder() {
+    print("team");
+    // _getTeamList(leagues[0].info.id);
     return Column(
       children: [
-        Text("Select Club", style: TextStyle(fontSize: 20)),
+        Text("Select Team", style: TextStyle(fontSize: 20)),
         Container(
           height: 100,
           color: Colors.grey,
           child: ListWheelScrollView(
-            // controller: fixedExtentScrollController,
+            controller: _teamController,
             physics: FixedExtentScrollPhysics(),
             squeeze: 2,
             itemExtent: 80,
             perspective: 0.01,
             diameterRatio: 1.5,
-            // magnification: 1.5,
-            // useMagnifier: true,
-            children: [
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-              _scrollBuilder(),
-            ],
-            onSelectedItemChanged: (index) => {},
+            children:
+                teams.map((team) => Center(child: Text(team.name!))).toList(),
+            onSelectedItemChanged: (value) => {
+              setState(() {
+                t_index = value;
+              })
+            },
           ),
         ),
+        Image.network(
+          teams[t_index].logoUrl!,
+          height: 100,
+        )
       ],
     );
   }
@@ -158,16 +169,6 @@ class _WelcomeViewState extends State<WelcomeView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _scrollBuilder() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.ac_unit),
-        Text("data"),
-      ],
     );
   }
 }

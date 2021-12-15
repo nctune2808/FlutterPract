@@ -56,7 +56,7 @@ class _PlayerDetailViewState extends State<PlayerDetailView> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Image.network(
-                stats.team.logoUrl,
+                stats.team.logoUrl!,
                 height: 80,
                 width: 80,
               ),

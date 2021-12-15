@@ -17,7 +17,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     // LeagueApi.getAllLeagues();
     return Scaffold(
-      appBar: AppBar(title: Text(team.name)),
+      appBar: AppBar(title: Text(team.name!)),
       body: Column(
         children: [
           Container(
