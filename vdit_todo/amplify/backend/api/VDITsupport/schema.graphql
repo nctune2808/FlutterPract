@@ -1,3 +1,14 @@
-type Test @model @auth(rules: [{allow: public}]) {
-  id: ID!
+type Address {
+  line1: String
+  line2: String
+  postcode: String!
+  town: String
 }
+
+type Contact @model @auth(rules: [{allow: public, operations: [read]}, {allow: private, operations: [create, read, update]}, {allow: owner}]) {
+  id: ID!
+  name: String!
+  phone: [String]
+  untitledfield: Address
+}
+ 

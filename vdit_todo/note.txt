@@ -6,3 +6,7 @@ flutter pub add amplify_flutter
 amplify codegen models
 
 
+---------
+
+amplify push --allow-destructive-graphql-schema-updates
+

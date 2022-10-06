@@ -1,0 +1,526 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Address @aws_api_key @aws_cognito_user_pools @aws_iam {
+  city: String
+  line1: String
+  line2: String
+  postcode: String!
+  town: String
+}
+
+type Business @aws_api_key @aws_cognito_user_pools @aws_iam {
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  _version: Int!
+  address: Address!
+  businessType: BusinessType!
+  contacts(filter: ModelContactBusinessFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelContactBusinessConnection
+  createdAt: AWSDateTime!
+  id: ID!
+  name: String!
+  supports(filter: ModelSupportBusinessFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelSupportBusinessConnection
+  updatedAt: AWSDateTime!
+}
+
+type Contact @aws_api_key @aws_cognito_user_pools @aws_iam {
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  _version: Int!
+  address: Address
+  businesses(filter: ModelContactBusinessFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelContactBusinessConnection
+  createdAt: AWSDateTime!
+  id: ID!
+  name: String!
+  phone: [String]
+  updatedAt: AWSDateTime!
+}
+
+type ContactBusiness @aws_api_key @aws_cognito_user_pools @aws_iam {
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  _version: Int!
+  business: Business!
+  businessID: ID!
+  contact: Contact!
+  contactID: ID!
+  createdAt: AWSDateTime!
+  id: ID!
+  updatedAt: AWSDateTime!
+}
+
+type ModelBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam {
+  items: [Business]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+type ModelContactBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam {
+  items: [ContactBusiness]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+type ModelContactConnection @aws_api_key @aws_cognito_user_pools @aws_iam {
+  items: [Contact]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+type ModelSupportBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam {
+  items: [SupportBusiness]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+type ModelSupportConnection @aws_api_key @aws_cognito_user_pools @aws_iam {
+  items: [Support]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+type Mutation {
+  createBusiness(condition: ModelBusinessConditionInput, input: CreateBusinessInput!): Business @aws_cognito_user_pools @aws_iam
+  createContact(condition: ModelContactConditionInput, input: CreateContactInput!): Contact @aws_cognito_user_pools @aws_iam
+  createContactBusiness(condition: ModelContactBusinessConditionInput, input: CreateContactBusinessInput!): ContactBusiness @aws_cognito_user_pools @aws_iam
+  createSupport(condition: ModelSupportConditionInput, input: CreateSupportInput!): Support @aws_cognito_user_pools @aws_iam
+  createSupportBusiness(condition: ModelSupportBusinessConditionInput, input: CreateSupportBusinessInput!): SupportBusiness @aws_cognito_user_pools @aws_iam
+  deleteBusiness(condition: ModelBusinessConditionInput, input: DeleteBusinessInput!): Business @aws_cognito_user_pools @aws_iam
+  deleteContact(condition: ModelContactConditionInput, input: DeleteContactInput!): Contact @aws_cognito_user_pools @aws_iam
+  deleteContactBusiness(condition: ModelContactBusinessConditionInput, input: DeleteContactBusinessInput!): ContactBusiness @aws_cognito_user_pools @aws_iam
+  deleteSupport(condition: ModelSupportConditionInput, input: DeleteSupportInput!): Support @aws_cognito_user_pools @aws_iam
+  deleteSupportBusiness(condition: ModelSupportBusinessConditionInput, input: DeleteSupportBusinessInput!): SupportBusiness @aws_cognito_user_pools @aws_iam
+  updateBusiness(condition: ModelBusinessConditionInput, input: UpdateBusinessInput!): Business @aws_cognito_user_pools @aws_iam
+  updateContact(condition: ModelContactConditionInput, input: UpdateContactInput!): Contact @aws_cognito_user_pools @aws_iam
+  updateContactBusiness(condition: ModelContactBusinessConditionInput, input: UpdateContactBusinessInput!): ContactBusiness @aws_cognito_user_pools @aws_iam
+  updateSupport(condition: ModelSupportConditionInput, input: UpdateSupportInput!): Support @aws_cognito_user_pools @aws_iam
+  updateSupportBusiness(condition: ModelSupportBusinessConditionInput, input: UpdateSupportBusinessInput!): SupportBusiness @aws_cognito_user_pools @aws_iam
+}
+
+type Query {
+  getBusiness(id: ID!): Business @aws_api_key @aws_cognito_user_pools @aws_iam
+  getContact(id: ID!): Contact @aws_api_key @aws_cognito_user_pools @aws_iam
+  getContactBusiness(id: ID!): ContactBusiness @aws_api_key @aws_cognito_user_pools @aws_iam
+  getSupport(id: ID!): Support @aws_api_key @aws_cognito_user_pools @aws_iam
+  getSupportBusiness(id: ID!): SupportBusiness @aws_api_key @aws_cognito_user_pools @aws_iam
+  listBusinesses(filter: ModelBusinessFilterInput, limit: Int, nextToken: String): ModelBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  listContactBusinesses(filter: ModelContactBusinessFilterInput, limit: Int, nextToken: String): ModelContactBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  listContacts(filter: ModelContactFilterInput, limit: Int, nextToken: String): ModelContactConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  listSupportBusinesses(filter: ModelSupportBusinessFilterInput, limit: Int, nextToken: String): ModelSupportBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  listSupports(filter: ModelSupportFilterInput, limit: Int, nextToken: String): ModelSupportConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  syncBusinesses(filter: ModelBusinessFilterInput, lastSync: AWSTimestamp, limit: Int, nextToken: String): ModelBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  syncContactBusinesses(filter: ModelContactBusinessFilterInput, lastSync: AWSTimestamp, limit: Int, nextToken: String): ModelContactBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  syncContacts(filter: ModelContactFilterInput, lastSync: AWSTimestamp, limit: Int, nextToken: String): ModelContactConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  syncSupportBusinesses(filter: ModelSupportBusinessFilterInput, lastSync: AWSTimestamp, limit: Int, nextToken: String): ModelSupportBusinessConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+  syncSupports(filter: ModelSupportFilterInput, lastSync: AWSTimestamp, limit: Int, nextToken: String): ModelSupportConnection @aws_api_key @aws_cognito_user_pools @aws_iam
+}
+
+type Subscription {
+  onCreateBusiness: Business @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["createBusiness"])
+  onCreateContact: Contact @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["createContact"])
+  onCreateContactBusiness: ContactBusiness @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["createContactBusiness"])
+  onCreateSupport: Support @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["createSupport"])
+  onCreateSupportBusiness: SupportBusiness @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["createSupportBusiness"])
+  onDeleteBusiness: Business @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["deleteBusiness"])
+  onDeleteContact: Contact @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["deleteContact"])
+  onDeleteContactBusiness: ContactBusiness @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["deleteContactBusiness"])
+  onDeleteSupport: Support @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["deleteSupport"])
+  onDeleteSupportBusiness: SupportBusiness @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["deleteSupportBusiness"])
+  onUpdateBusiness: Business @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["updateBusiness"])
+  onUpdateContact: Contact @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["updateContact"])
+  onUpdateContactBusiness: ContactBusiness @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["updateContactBusiness"])
+  onUpdateSupport: Support @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["updateSupport"])
+  onUpdateSupportBusiness: SupportBusiness @aws_api_key @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : ["updateSupportBusiness"])
+}
+
+type Support @aws_api_key @aws_cognito_user_pools @aws_iam {
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  _version: Int!
+  businesses(filter: ModelSupportBusinessFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelSupportBusinessConnection
+  createdAt: AWSDateTime!
+  id: ID!
+  isDone: Boolean!
+  supportType: SupportType!
+  updatedAt: AWSDateTime!
+}
+
+type SupportBusiness @aws_api_key @aws_cognito_user_pools @aws_iam {
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  _version: Int!
+  business: Business!
+  businessID: ID!
+  createdAt: AWSDateTime!
+  id: ID!
+  support: Support!
+  supportID: ID!
+  updatedAt: AWSDateTime!
+}
+
+enum BusinessType {
+  BEAUTY
+  RESTAURANT
+  RETAILS
+}
+
+enum ModelAttributeTypes {
+  _null
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+enum SupportType {
+  NO
+  RT
+  SM
+}
+
+input AddressInput {
+  city: String
+  line1: String
+  line2: String
+  postcode: String!
+  town: String
+}
+
+input CreateBusinessInput {
+  _version: Int
+  address: AddressInput!
+  businessType: BusinessType!
+  id: ID
+  name: String!
+}
+
+input CreateContactBusinessInput {
+  _version: Int
+  businessID: ID!
+  contactID: ID!
+  id: ID
+}
+
+input CreateContactInput {
+  _version: Int
+  address: AddressInput
+  id: ID
+  name: String!
+  phone: [String]
+}
+
+input CreateSupportBusinessInput {
+  _version: Int
+  businessID: ID!
+  id: ID
+  supportID: ID!
+}
+
+input CreateSupportInput {
+  _version: Int
+  id: ID
+  isDone: Boolean!
+  supportType: SupportType!
+}
+
+input DeleteBusinessInput {
+  _version: Int
+  id: ID!
+}
+
+input DeleteContactBusinessInput {
+  _version: Int
+  id: ID!
+}
+
+input DeleteContactInput {
+  _version: Int
+  id: ID!
+}
+
+input DeleteSupportBusinessInput {
+  _version: Int
+  id: ID!
+}
+
+input DeleteSupportInput {
+  _version: Int
+  id: ID!
+}
+
+input ModelBooleanInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  eq: Boolean
+  ne: Boolean
+}
+
+input ModelBusinessConditionInput {
+  and: [ModelBusinessConditionInput]
+  businessType: ModelBusinessTypeInput
+  name: ModelStringInput
+  not: ModelBusinessConditionInput
+  or: [ModelBusinessConditionInput]
+}
+
+input ModelBusinessFilterInput {
+  and: [ModelBusinessFilterInput]
+  businessType: ModelBusinessTypeInput
+  id: ModelIDInput
+  name: ModelStringInput
+  not: ModelBusinessFilterInput
+  or: [ModelBusinessFilterInput]
+}
+
+input ModelBusinessTypeInput {
+  eq: BusinessType
+  ne: BusinessType
+}
+
+input ModelContactBusinessConditionInput {
+  and: [ModelContactBusinessConditionInput]
+  businessID: ModelIDInput
+  contactID: ModelIDInput
+  not: ModelContactBusinessConditionInput
+  or: [ModelContactBusinessConditionInput]
+}
+
+input ModelContactBusinessFilterInput {
+  and: [ModelContactBusinessFilterInput]
+  businessID: ModelIDInput
+  contactID: ModelIDInput
+  id: ModelIDInput
+  not: ModelContactBusinessFilterInput
+  or: [ModelContactBusinessFilterInput]
+}
+
+input ModelContactConditionInput {
+  and: [ModelContactConditionInput]
+  name: ModelStringInput
+  not: ModelContactConditionInput
+  or: [ModelContactConditionInput]
+  phone: ModelStringInput
+}
+
+input ModelContactFilterInput {
+  and: [ModelContactFilterInput]
+  id: ModelIDInput
+  name: ModelStringInput
+  not: ModelContactFilterInput
+  or: [ModelContactFilterInput]
+  phone: ModelStringInput
+}
+
+input ModelFloatInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  between: [Float]
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+}
+
+input ModelIDInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+}
+
+input ModelSizeInput {
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+}
+
+input ModelStringInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionBooleanInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input ModelSubscriptionFloatInput {
+  between: [Float]
+  eq: Float
+  ge: Float
+  gt: Float
+  in: [Float]
+  le: Float
+  lt: Float
+  ne: Float
+  notIn: [Float]
+}
+
+input ModelSubscriptionIDInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  in: [ID]
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+  notIn: [ID]
+}
+
+input ModelSubscriptionIntInput {
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  in: [Int]
+  le: Int
+  lt: Int
+  ne: Int
+  notIn: [Int]
+}
+
+input ModelSubscriptionStringInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  in: [String]
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+  notIn: [String]
+}
+
+input ModelSupportBusinessConditionInput {
+  and: [ModelSupportBusinessConditionInput]
+  businessID: ModelIDInput
+  not: ModelSupportBusinessConditionInput
+  or: [ModelSupportBusinessConditionInput]
+  supportID: ModelIDInput
+}
+
+input ModelSupportBusinessFilterInput {
+  and: [ModelSupportBusinessFilterInput]
+  businessID: ModelIDInput
+  id: ModelIDInput
+  not: ModelSupportBusinessFilterInput
+  or: [ModelSupportBusinessFilterInput]
+  supportID: ModelIDInput
+}
+
+input ModelSupportConditionInput {
+  and: [ModelSupportConditionInput]
+  isDone: ModelBooleanInput
+  not: ModelSupportConditionInput
+  or: [ModelSupportConditionInput]
+  supportType: ModelSupportTypeInput
+}
+
+input ModelSupportFilterInput {
+  and: [ModelSupportFilterInput]
+  id: ModelIDInput
+  isDone: ModelBooleanInput
+  not: ModelSupportFilterInput
+  or: [ModelSupportFilterInput]
+  supportType: ModelSupportTypeInput
+}
+
+input ModelSupportTypeInput {
+  eq: SupportType
+  ne: SupportType
+}
+
+input UpdateBusinessInput {
+  _version: Int
+  address: AddressInput
+  businessType: BusinessType
+  id: ID!
+  name: String
+}
+
+input UpdateContactBusinessInput {
+  _version: Int
+  businessID: ID
+  contactID: ID
+  id: ID!
+}
+
+input UpdateContactInput {
+  _version: Int
+  address: AddressInput
+  id: ID!
+  name: String
+  phone: [String]
+}
+
+input UpdateSupportBusinessInput {
+  _version: Int
+  businessID: ID
+  id: ID!
+  supportID: ID
+}
+
+input UpdateSupportInput {
+  _version: Int
+  id: ID!
+  isDone: Boolean
+  supportType: SupportType
+}
