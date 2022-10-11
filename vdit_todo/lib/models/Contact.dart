@@ -32,7 +32,7 @@ class Contact extends Model {
   final String id;
   final String? _name;
   final List<String>? _phone;
-  final Address? _untitledfield;
+  final Address? _address;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -61,8 +61,8 @@ class Contact extends Model {
     return _phone;
   }
   
-  Address? get untitledfield {
-    return _untitledfield;
+  Address? get address {
+    return _address;
   }
   
   TemporalDateTime? get createdAt {
@@ -73,14 +73,14 @@ class Contact extends Model {
     return _updatedAt;
   }
   
-  const Contact._internal({required this.id, required name, phone, untitledfield, createdAt, updatedAt}): _name = name, _phone = phone, _untitledfield = untitledfield, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Contact._internal({required this.id, required name, phone, address, createdAt, updatedAt}): _name = name, _phone = phone, _address = address, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Contact({String? id, required String name, List<String>? phone, Address? untitledfield}) {
+  factory Contact({String? id, required String name, List<String>? phone, Address? address}) {
     return Contact._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       phone: phone != null ? List<String>.unmodifiable(phone) : phone,
-      untitledfield: untitledfield);
+      address: address);
   }
   
   bool equals(Object other) {
@@ -94,7 +94,7 @@ class Contact extends Model {
       id == other.id &&
       _name == other._name &&
       DeepCollectionEquality().equals(_phone, other._phone) &&
-      _untitledfield == other._untitledfield;
+      _address == other._address;
   }
   
   @override
@@ -108,7 +108,7 @@ class Contact extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("phone=" + (_phone != null ? _phone!.toString() : "null") + ", ");
-    buffer.write("untitledfield=" + (_untitledfield != null ? _untitledfield!.toString() : "null") + ", ");
+    buffer.write("address=" + (_address != null ? _address!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -116,32 +116,32 @@ class Contact extends Model {
     return buffer.toString();
   }
   
-  Contact copyWith({String? id, String? name, List<String>? phone, Address? untitledfield}) {
+  Contact copyWith({String? id, String? name, List<String>? phone, Address? address}) {
     return Contact._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       phone: phone ?? this.phone,
-      untitledfield: untitledfield ?? this.untitledfield);
+      address: address ?? this.address);
   }
   
   Contact.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
       _phone = json['phone']?.cast<String>(),
-      _untitledfield = json['untitledfield']?['serializedData'] != null
-        ? Address.fromJson(new Map<String, dynamic>.from(json['untitledfield']['serializedData']))
+      _address = json['address']?['serializedData'] != null
+        ? Address.fromJson(new Map<String, dynamic>.from(json['address']['serializedData']))
         : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'phone': _phone, 'untitledfield': _untitledfield?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name, 'phone': _phone, 'address': _address?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField PHONE = QueryField(fieldName: "phone");
-  static final QueryField UNTITLEDFIELD = QueryField(fieldName: "untitledfield");
+  static final QueryField ADDRESS = QueryField(fieldName: "address");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Contact";
     modelSchemaDefinition.pluralName = "Contacts";
@@ -188,7 +188,7 @@ class Contact extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
-      fieldName: 'untitledfield',
+      fieldName: 'address',
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Address')
     ));

@@ -22,18 +22,26 @@
 import 'package:amplify_core/amplify_core.dart';
 import 'Contact.dart';
 import 'Address.dart';
+import 'Concert.dart';
+import 'Conference.dart';
+import 'Festival.dart';
+import 'Venue.dart';
 
 export 'Address.dart';
+export 'Concert.dart';
+export 'Conference.dart';
 export 'Contact.dart';
+export 'Festival.dart';
+export 'Venue.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "00d3fbc6b85d180ddf6ce4da680df808";
+  String version = "7a10d276cd52f39b0b86fcdf476c8610";
   @override
   List<ModelSchema> modelSchemas = [Contact.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
-  List<ModelSchema> customTypeSchemas = [Address.schema];
+  List<ModelSchema> customTypeSchemas = [Address.schema, Concert.schema, Conference.schema, Festival.schema, Venue.schema];
 
   static ModelProvider get instance => _instance;
   
