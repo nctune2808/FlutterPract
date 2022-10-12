@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "vditpanel",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-10-12T23:45:00.205Z"
+}
