@@ -1,7 +1,7 @@
 
 
 npm install -g @aws-amplify/cli
-amplify pull --appId d3mwfv2nj7sf4 --envName staging
+amplify pull --appId d3qpniz33sf43t --envName staging
 flutter pub add amplify_flutter
 amplify codegen models
 

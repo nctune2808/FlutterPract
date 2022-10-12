@@ -25,12 +25,22 @@ import 'package:flutter/foundation.dart';
 
 /** This is an auto generated class representing the Venue type in your schema. */
 @immutable
-class Venue {
+class Venue extends Model {
+  static const classType = const _VenueModelType();
   final String id;
   final String? _name;
   final String? _address;
-  final int? _maxOccupancy;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
+  @override
+  getInstanceType() => classType;
+  
+  @override
+  String getId() {
+    return id;
+  }
+  
   String? get name {
     return _name;
   }
@@ -39,18 +49,21 @@ class Venue {
     return _address;
   }
   
-  int? get maxOccupancy {
-    return _maxOccupancy;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
   }
   
-  const Venue._internal({required this.id, name, address, maxOccupancy}): _name = name, _address = address, _maxOccupancy = maxOccupancy;
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
   
-  factory Venue({String? id, String? name, String? address, int? maxOccupancy}) {
+  const Venue._internal({required this.id, name, address, createdAt, updatedAt}): _name = name, _address = address, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Venue({String? id, String? name, String? address}) {
     return Venue._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
-      address: address,
-      maxOccupancy: maxOccupancy);
+      address: address);
   }
   
   bool equals(Object other) {
@@ -63,8 +76,7 @@ class Venue {
     return other is Venue &&
       id == other.id &&
       _name == other._name &&
-      _address == other._address &&
-      _maxOccupancy == other._maxOccupancy;
+      _address == other._address;
   }
   
   @override
@@ -78,56 +90,73 @@ class Venue {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("address=" + "$_address" + ", ");
-    buffer.write("maxOccupancy=" + (_maxOccupancy != null ? _maxOccupancy!.toString() : "null"));
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Venue copyWith({String? id, String? name, String? address, int? maxOccupancy}) {
+  Venue copyWith({String? id, String? name, String? address}) {
     return Venue._internal(
       id: id ?? this.id,
       name: name ?? this.name,
-      address: address ?? this.address,
-      maxOccupancy: maxOccupancy ?? this.maxOccupancy);
+      address: address ?? this.address);
   }
   
   Venue.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
       _address = json['address'],
-      _maxOccupancy = (json['maxOccupancy'] as num?)?.toInt();
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'address': _address, 'maxOccupancy': _maxOccupancy
+    'id': id, 'name': _name, 'address': _address, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
+  static final QueryField ID = QueryField(fieldName: "id");
+  static final QueryField NAME = QueryField(fieldName: "name");
+  static final QueryField ADDRESS = QueryField(fieldName: "address");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Venue";
     modelSchemaDefinition.pluralName = "Venues";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'id',
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
+    modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'name',
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Venue.NAME,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'address',
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Venue.ADDRESS,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'maxOccupancy',
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
+}
+
+class _VenueModelType extends ModelType<Venue> {
+  const _VenueModelType();
+  
+  @override
+  Venue fromJson(Map<String, dynamic> jsonData) {
+    return Venue.fromJson(jsonData);
+  }
 }

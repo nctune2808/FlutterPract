@@ -19,7 +19,6 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
-import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -27,16 +26,23 @@ import 'package:flutter/foundation.dart';
 
 /** This is an auto generated class representing the Conference type in your schema. */
 @immutable
-class Conference {
+class Conference extends Model {
+  static const classType = const _ConferenceModelType();
   final String id;
   final String? _name;
-  final String? _startsAt;
-  final String? _endsAt;
-  final Venue? _venue;
-  final int? _minAgeRestriction;
   final List<String>? _speakers;
   final List<String>? _workshops;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
+  @override
+  getInstanceType() => classType;
+  
+  @override
+  String getId() {
+    return id;
+  }
+  
   String get name {
     try {
       return _name!;
@@ -50,22 +56,6 @@ class Conference {
     }
   }
   
-  String? get startsAt {
-    return _startsAt;
-  }
-  
-  String? get endsAt {
-    return _endsAt;
-  }
-  
-  Venue? get venue {
-    return _venue;
-  }
-  
-  int? get minAgeRestriction {
-    return _minAgeRestriction;
-  }
-  
   List<String>? get speakers {
     return _speakers;
   }
@@ -74,16 +64,20 @@ class Conference {
     return _workshops;
   }
   
-  const Conference._internal({required this.id, required name, startsAt, endsAt, venue, minAgeRestriction, speakers, workshops}): _name = name, _startsAt = startsAt, _endsAt = endsAt, _venue = venue, _minAgeRestriction = minAgeRestriction, _speakers = speakers, _workshops = workshops;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
   
-  factory Conference({String? id, required String name, String? startsAt, String? endsAt, Venue? venue, int? minAgeRestriction, List<String>? speakers, List<String>? workshops}) {
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const Conference._internal({required this.id, required name, speakers, workshops, createdAt, updatedAt}): _name = name, _speakers = speakers, _workshops = workshops, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Conference({String? id, required String name, List<String>? speakers, List<String>? workshops}) {
     return Conference._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
-      startsAt: startsAt,
-      endsAt: endsAt,
-      venue: venue,
-      minAgeRestriction: minAgeRestriction,
       speakers: speakers != null ? List<String>.unmodifiable(speakers) : speakers,
       workshops: workshops != null ? List<String>.unmodifiable(workshops) : workshops);
   }
@@ -98,10 +92,6 @@ class Conference {
     return other is Conference &&
       id == other.id &&
       _name == other._name &&
-      _startsAt == other._startsAt &&
-      _endsAt == other._endsAt &&
-      _venue == other._venue &&
-      _minAgeRestriction == other._minAgeRestriction &&
       DeepCollectionEquality().equals(_speakers, other._speakers) &&
       DeepCollectionEquality().equals(_workshops, other._workshops);
   }
@@ -116,25 +106,19 @@ class Conference {
     buffer.write("Conference {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
-    buffer.write("startsAt=" + "$_startsAt" + ", ");
-    buffer.write("endsAt=" + "$_endsAt" + ", ");
-    buffer.write("venue=" + (_venue != null ? _venue!.toString() : "null") + ", ");
-    buffer.write("minAgeRestriction=" + (_minAgeRestriction != null ? _minAgeRestriction!.toString() : "null") + ", ");
     buffer.write("speakers=" + (_speakers != null ? _speakers!.toString() : "null") + ", ");
-    buffer.write("workshops=" + (_workshops != null ? _workshops!.toString() : "null"));
+    buffer.write("workshops=" + (_workshops != null ? _workshops!.toString() : "null") + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Conference copyWith({String? id, String? name, String? startsAt, String? endsAt, Venue? venue, int? minAgeRestriction, List<String>? speakers, List<String>? workshops}) {
+  Conference copyWith({String? id, String? name, List<String>? speakers, List<String>? workshops}) {
     return Conference._internal(
       id: id ?? this.id,
       name: name ?? this.name,
-      startsAt: startsAt ?? this.startsAt,
-      endsAt: endsAt ?? this.endsAt,
-      venue: venue ?? this.venue,
-      minAgeRestriction: minAgeRestriction ?? this.minAgeRestriction,
       speakers: speakers ?? this.speakers,
       workshops: workshops ?? this.workshops);
   }
@@ -142,71 +126,66 @@ class Conference {
   Conference.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
-      _startsAt = json['startsAt'],
-      _endsAt = json['endsAt'],
-      _venue = json['venue']?['serializedData'] != null
-        ? Venue.fromJson(new Map<String, dynamic>.from(json['venue']['serializedData']))
-        : null,
-      _minAgeRestriction = (json['minAgeRestriction'] as num?)?.toInt(),
       _speakers = json['speakers']?.cast<String>(),
-      _workshops = json['workshops']?.cast<String>();
+      _workshops = json['workshops']?.cast<String>(),
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'startsAt': _startsAt, 'endsAt': _endsAt, 'venue': _venue?.toJson(), 'minAgeRestriction': _minAgeRestriction, 'speakers': _speakers, 'workshops': _workshops
+    'id': id, 'name': _name, 'speakers': _speakers, 'workshops': _workshops, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
+  static final QueryField ID = QueryField(fieldName: "id");
+  static final QueryField NAME = QueryField(fieldName: "name");
+  static final QueryField SPEAKERS = QueryField(fieldName: "speakers");
+  static final QueryField WORKSHOPS = QueryField(fieldName: "workshops");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Conference";
     modelSchemaDefinition.pluralName = "Conferences";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'id',
+    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Conference.NAME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'name',
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'startsAt',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'endsAt',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
-      fieldName: 'venue',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Venue')
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'minAgeRestriction',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'speakers',
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Conference.SPEAKERS,
       isRequired: false,
       isArray: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'workshops',
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Conference.WORKSHOPS,
       isRequired: false,
       isArray: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.string))
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
+}
+
+class _ConferenceModelType extends ModelType<Conference> {
+  const _ConferenceModelType();
+  
+  @override
+  Conference fromJson(Map<String, dynamic> jsonData) {
+    return Conference.fromJson(jsonData);
+  }
 }

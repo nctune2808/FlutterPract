@@ -19,22 +19,28 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
-import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the Concert type in your schema. */
 @immutable
-class Concert {
+class Concert extends Model {
+  static const classType = const _ConcertModelType();
   final String id;
   final String? _name;
-  final String? _startsAt;
-  final String? _endsAt;
-  final Venue? _venue;
-  final int? _minAgeRestriction;
   final String? _performingBand;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
+  @override
+  getInstanceType() => classType;
+  
+  @override
+  String getId() {
+    return id;
+  }
+  
   String get name {
     try {
       return _name!;
@@ -48,36 +54,24 @@ class Concert {
     }
   }
   
-  String? get startsAt {
-    return _startsAt;
-  }
-  
-  String? get endsAt {
-    return _endsAt;
-  }
-  
-  Venue? get venue {
-    return _venue;
-  }
-  
-  int? get minAgeRestriction {
-    return _minAgeRestriction;
-  }
-  
   String? get performingBand {
     return _performingBand;
   }
   
-  const Concert._internal({required this.id, required name, startsAt, endsAt, venue, minAgeRestriction, performingBand}): _name = name, _startsAt = startsAt, _endsAt = endsAt, _venue = venue, _minAgeRestriction = minAgeRestriction, _performingBand = performingBand;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
   
-  factory Concert({String? id, required String name, String? startsAt, String? endsAt, Venue? venue, int? minAgeRestriction, String? performingBand}) {
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const Concert._internal({required this.id, required name, performingBand, createdAt, updatedAt}): _name = name, _performingBand = performingBand, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Concert({String? id, required String name, String? performingBand}) {
     return Concert._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
-      startsAt: startsAt,
-      endsAt: endsAt,
-      venue: venue,
-      minAgeRestriction: minAgeRestriction,
       performingBand: performingBand);
   }
   
@@ -91,10 +85,6 @@ class Concert {
     return other is Concert &&
       id == other.id &&
       _name == other._name &&
-      _startsAt == other._startsAt &&
-      _endsAt == other._endsAt &&
-      _venue == other._venue &&
-      _minAgeRestriction == other._minAgeRestriction &&
       _performingBand == other._performingBand;
   }
   
@@ -108,86 +98,74 @@ class Concert {
     buffer.write("Concert {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
-    buffer.write("startsAt=" + "$_startsAt" + ", ");
-    buffer.write("endsAt=" + "$_endsAt" + ", ");
-    buffer.write("venue=" + (_venue != null ? _venue!.toString() : "null") + ", ");
-    buffer.write("minAgeRestriction=" + (_minAgeRestriction != null ? _minAgeRestriction!.toString() : "null") + ", ");
-    buffer.write("performingBand=" + "$_performingBand");
+    buffer.write("performingBand=" + "$_performingBand" + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Concert copyWith({String? id, String? name, String? startsAt, String? endsAt, Venue? venue, int? minAgeRestriction, String? performingBand}) {
+  Concert copyWith({String? id, String? name, String? performingBand}) {
     return Concert._internal(
       id: id ?? this.id,
       name: name ?? this.name,
-      startsAt: startsAt ?? this.startsAt,
-      endsAt: endsAt ?? this.endsAt,
-      venue: venue ?? this.venue,
-      minAgeRestriction: minAgeRestriction ?? this.minAgeRestriction,
       performingBand: performingBand ?? this.performingBand);
   }
   
   Concert.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
-      _startsAt = json['startsAt'],
-      _endsAt = json['endsAt'],
-      _venue = json['venue']?['serializedData'] != null
-        ? Venue.fromJson(new Map<String, dynamic>.from(json['venue']['serializedData']))
-        : null,
-      _minAgeRestriction = (json['minAgeRestriction'] as num?)?.toInt(),
-      _performingBand = json['performingBand'];
+      _performingBand = json['performingBand'],
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'startsAt': _startsAt, 'endsAt': _endsAt, 'venue': _venue?.toJson(), 'minAgeRestriction': _minAgeRestriction, 'performingBand': _performingBand
+    'id': id, 'name': _name, 'performingBand': _performingBand, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
+  static final QueryField ID = QueryField(fieldName: "id");
+  static final QueryField NAME = QueryField(fieldName: "name");
+  static final QueryField PERFORMINGBAND = QueryField(fieldName: "performingBand");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Concert";
     modelSchemaDefinition.pluralName = "Concerts";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'id',
+    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Concert.NAME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'name',
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'startsAt',
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Concert.PERFORMINGBAND,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'endsAt',
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
-      fieldName: 'venue',
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Venue')
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'minAgeRestriction',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'performingBand',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
+}
+
+class _ConcertModelType extends ModelType<Concert> {
+  const _ConcertModelType();
+  
+  @override
+  Concert fromJson(Map<String, dynamic> jsonData) {
+    return Concert.fromJson(jsonData);
+  }
 }

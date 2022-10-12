@@ -1,69 +1,71 @@
-
-
 interface Event {
-    id: ID!
-    name: String!
-    startsAt: String
-    endsAt: String
-    venue: Venue
-    minAgeRestriction: Int
-}
-
-# type Query {
-#     findEventsAtVenue(venueId: ID!): [Event]
-# }
-
-type Address {
-  line1: String
-  line2: String
-  postcode: String!
-  town: String
-}
-
-type Contact @model @auth(rules: [{allow: public, operations: [read]}, {allow: private, operations: [create, read, update]}, {allow: owner}]) {
   id: ID!
   name: String!
-  phone: [String]
-  address: Address
+  venue: Venue
+}
+
+type Query {
+  findEventsAtVenue(venueId: ID!): [Event]
 }
 
 # ----------------------
 
-type Venue @model @auth(rules: [{allow: public, operations: [read]}, {allow: private, operations: [create, read, update]}, {allow: owner}]) {
-    id: ID!
-    name: String
-    address: String
-    maxOccupancy: Int
+type Venue
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [create, read, update] }
+      { allow: owner }
+    ]
+  ) {
+  id: ID!
+  name: String
+  address: String
 }
 
-type Concert implements Event @model @auth(rules: [{allow: public, operations: [read]}, {allow: private, operations: [create, read, update]}, {allow: owner}]){
-    id: ID!
-    name: String!
-    startsAt: String
-    endsAt: String
-    venue: Venue
-    minAgeRestriction: Int
-    performingBand: String
+type Concert implements Event
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [create, read, update] }
+      { allow: owner }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  venue: Venue @hasOne
+  performingBand: String
 }
 
-type Festival implements Event @model @auth(rules: [{allow: public, operations: [read]}, {allow: private, operations: [create, read, update]}, {allow: owner}]) {
-    id: ID!
-    name: String!
-    startsAt: String
-    endsAt: String
-    venue: Venue
-    minAgeRestriction: Int
-    performers: [String]
+type Festival implements Event
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [create, read, update] }
+      { allow: owner }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  venue: Venue @hasOne
+  performers: [String]
 }
 
-type Conference implements Event @model @auth(rules: [{allow: public, operations: [read]}, {allow: private, operations: [create, read, update]}, {allow: owner}]) {
-    id: ID!
-    name: String!
-    startsAt: String
-    endsAt: String
-    venue: Venue
-    minAgeRestriction: Int
-    speakers: [String]
-    workshops: [String]
+type Conference implements Event
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [create, read, update] }
+      { allow: owner }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  venue: Venue @hasOne
+  speakers: [String]
+  workshops: [String]
 }
-
