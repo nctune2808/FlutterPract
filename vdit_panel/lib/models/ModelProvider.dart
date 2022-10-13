@@ -30,7 +30,7 @@ export 'Post.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "165944a36979cd395e3b22145bbfeff0";
+  String version = "2c5fe21788884e77602b2585ae299fb7";
   @override
   List<ModelSchema> modelSchemas = [Blog.schema, Comment.schema, Post.schema];
   static final ModelProvider _instance = ModelProvider();

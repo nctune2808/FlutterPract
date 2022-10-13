@@ -31,6 +31,7 @@ class Comment extends Model {
   final String id;
   final Post? _post;
   final String? _content;
+  final String? _postID;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -59,6 +60,19 @@ class Comment extends Model {
     }
   }
   
+  String get postID {
+    try {
+      return _postID!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -67,13 +81,14 @@ class Comment extends Model {
     return _updatedAt;
   }
   
-  const Comment._internal({required this.id, post, required content, createdAt, updatedAt}): _post = post, _content = content, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Comment._internal({required this.id, post, required content, required postID, createdAt, updatedAt}): _post = post, _content = content, _postID = postID, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Comment({String? id, Post? post, required String content}) {
+  factory Comment({String? id, Post? post, required String content, required String postID}) {
     return Comment._internal(
       id: id == null ? UUID.getUUID() : id,
       post: post,
-      content: content);
+      content: content,
+      postID: postID);
   }
   
   bool equals(Object other) {
@@ -86,7 +101,8 @@ class Comment extends Model {
     return other is Comment &&
       id == other.id &&
       _post == other._post &&
-      _content == other._content;
+      _content == other._content &&
+      _postID == other._postID;
   }
   
   @override
@@ -100,6 +116,7 @@ class Comment extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("post=" + (_post != null ? _post!.toString() : "null") + ", ");
     buffer.write("content=" + "$_content" + ", ");
+    buffer.write("postID=" + "$_postID" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -107,11 +124,12 @@ class Comment extends Model {
     return buffer.toString();
   }
   
-  Comment copyWith({String? id, Post? post, String? content}) {
+  Comment copyWith({String? id, Post? post, String? content, String? postID}) {
     return Comment._internal(
       id: id ?? this.id,
       post: post ?? this.post,
-      content: content ?? this.content);
+      content: content ?? this.content,
+      postID: postID ?? this.postID);
   }
   
   Comment.fromJson(Map<String, dynamic> json)  
@@ -120,11 +138,12 @@ class Comment extends Model {
         ? Post.fromJson(new Map<String, dynamic>.from(json['post']['serializedData']))
         : null,
       _content = json['content'],
+      _postID = json['postID'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'post': _post?.toJson(), 'content': _content, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'post': _post?.toJson(), 'content': _content, 'postID': _postID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "id");
@@ -132,6 +151,7 @@ class Comment extends Model {
     fieldName: "post",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Post).toString()));
   static final QueryField CONTENT = QueryField(fieldName: "content");
+  static final QueryField POSTID = QueryField(fieldName: "postID");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Comment";
     modelSchemaDefinition.pluralName = "Comments";
@@ -140,11 +160,33 @@ class Comment extends Model {
       AuthRule(
         authStrategy: AuthStrategy.PUBLIC,
         operations: [
+          ModelOperation.READ
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "VDIT" ],
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.READ,
           ModelOperation.CREATE,
           ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+          ModelOperation.DELETE
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "CLIENT" ],
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.READ,
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE
         ])
+    ];
+    
+    modelSchemaDefinition.indexes = [
+      ModelIndex(fields: const ["postID"], name: "byPost")
     ];
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
@@ -158,6 +200,12 @@ class Comment extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Comment.CONTENT,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Comment.POSTID,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));

@@ -143,10 +143,28 @@ class Blog extends Model {
       AuthRule(
         authStrategy: AuthStrategy.PUBLIC,
         operations: [
+          ModelOperation.READ
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "VDIT" ],
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.READ,
           ModelOperation.CREATE,
           ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+          ModelOperation.DELETE
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "CLIENT" ],
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.READ,
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE
         ])
     ];
     
@@ -162,7 +180,7 @@ class Blog extends Model {
       key: Blog.POSTS,
       isRequired: false,
       ofModelName: (Post).toString(),
-      associatedKey: Post.BLOG
+      associatedKey: Post.BLOGID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

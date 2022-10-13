@@ -10,6 +10,11 @@
       "StackName": "amplify-vditpanel-staging-230553",
       "StackId": "arn:aws:cloudformation:eu-west-2:826897014935:stack/amplify-vditpanel-staging-230553/6c4616d0-4a82-11ed-b2b0-06664fb92fcc",
       "AmplifyAppId": "d1jtktmfart5is"
+    },
+    "categories": {
+      "auth": {
+        "VDITpanel": {}
+      }
     }
   }
 }

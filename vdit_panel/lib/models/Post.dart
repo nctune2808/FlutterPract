@@ -33,6 +33,7 @@ class Post extends Model {
   final String? _title;
   final Blog? _blog;
   final List<Comment>? _comments;
+  final String? _blogID;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -65,6 +66,19 @@ class Post extends Model {
     return _comments;
   }
   
+  String get blogID {
+    try {
+      return _blogID!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -73,14 +87,15 @@ class Post extends Model {
     return _updatedAt;
   }
   
-  const Post._internal({required this.id, required title, blog, comments, createdAt, updatedAt}): _title = title, _blog = blog, _comments = comments, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Post._internal({required this.id, required title, blog, comments, required blogID, createdAt, updatedAt}): _title = title, _blog = blog, _comments = comments, _blogID = blogID, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Post({String? id, required String title, Blog? blog, List<Comment>? comments}) {
+  factory Post({String? id, required String title, Blog? blog, List<Comment>? comments, required String blogID}) {
     return Post._internal(
       id: id == null ? UUID.getUUID() : id,
       title: title,
       blog: blog,
-      comments: comments != null ? List<Comment>.unmodifiable(comments) : comments);
+      comments: comments != null ? List<Comment>.unmodifiable(comments) : comments,
+      blogID: blogID);
   }
   
   bool equals(Object other) {
@@ -94,7 +109,8 @@ class Post extends Model {
       id == other.id &&
       _title == other._title &&
       _blog == other._blog &&
-      DeepCollectionEquality().equals(_comments, other._comments);
+      DeepCollectionEquality().equals(_comments, other._comments) &&
+      _blogID == other._blogID;
   }
   
   @override
@@ -108,6 +124,7 @@ class Post extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("title=" + "$_title" + ", ");
     buffer.write("blog=" + (_blog != null ? _blog!.toString() : "null") + ", ");
+    buffer.write("blogID=" + "$_blogID" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -115,12 +132,13 @@ class Post extends Model {
     return buffer.toString();
   }
   
-  Post copyWith({String? id, String? title, Blog? blog, List<Comment>? comments}) {
+  Post copyWith({String? id, String? title, Blog? blog, List<Comment>? comments, String? blogID}) {
     return Post._internal(
       id: id ?? this.id,
       title: title ?? this.title,
       blog: blog ?? this.blog,
-      comments: comments ?? this.comments);
+      comments: comments ?? this.comments,
+      blogID: blogID ?? this.blogID);
   }
   
   Post.fromJson(Map<String, dynamic> json)  
@@ -135,11 +153,12 @@ class Post extends Model {
           .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
+      _blogID = json['blogID'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'title': _title, 'blog': _blog?.toJson(), 'comments': _comments?.map((Comment? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'title': _title, 'blog': _blog?.toJson(), 'comments': _comments?.map((Comment? e) => e?.toJson()).toList(), 'blogID': _blogID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "id");
@@ -150,6 +169,7 @@ class Post extends Model {
   static final QueryField COMMENTS = QueryField(
     fieldName: "comments",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Comment).toString()));
+  static final QueryField BLOGID = QueryField(fieldName: "blogID");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Post";
     modelSchemaDefinition.pluralName = "Posts";
@@ -158,11 +178,33 @@ class Post extends Model {
       AuthRule(
         authStrategy: AuthStrategy.PUBLIC,
         operations: [
+          ModelOperation.READ
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "VDIT" ],
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.READ,
           ModelOperation.CREATE,
           ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+          ModelOperation.DELETE
+        ]),
+      AuthRule(
+        authStrategy: AuthStrategy.GROUPS,
+        groupClaim: "cognito:groups",
+        groups: [ "CLIENT" ],
+        provider: AuthRuleProvider.USERPOOLS,
+        operations: [
+          ModelOperation.READ,
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE
         ])
+    ];
+    
+    modelSchemaDefinition.indexes = [
+      ModelIndex(fields: const ["blogID"], name: "byBlog")
     ];
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
@@ -184,7 +226,13 @@ class Post extends Model {
       key: Post.COMMENTS,
       isRequired: false,
       ofModelName: (Comment).toString(),
-      associatedKey: Comment.POST
+      associatedKey: Comment.POSTID
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Post.BLOGID,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
