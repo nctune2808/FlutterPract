@@ -4,14 +4,10 @@
   ],
   "projectName": "VDITpanel",
   "version": "3.1",
-  "frontend": "javascript",
-  "javascript": {
-    "framework": "vue",
+  "frontend": "flutter",
+  "flutter": {
     "config": {
-      "SourceDir": "src",
-      "DistributionDir": "dist",
-      "BuildCommand": "npm run-script build",
-      "StartCommand": "npm run-script serve"
+      "ResDir": "./lib/"
     }
   }
 }
