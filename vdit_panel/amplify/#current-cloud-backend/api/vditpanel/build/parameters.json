@@ -1,0 +1,19 @@
+{
+    "AppSyncApiName": "vditpanel",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authVDITpanel",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "S3DeploymentBucket": "amplify-vditpanel-staging-230553-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/386a4a05be07c90114fdc68e465a762eadd46750"
+}
