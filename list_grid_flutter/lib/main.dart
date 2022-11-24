@@ -19,42 +19,104 @@ class _MyAppState extends State<MyApp> {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Colors.white70,
-          appBar: AppBar(
-            bottom: TabBar(
-              tabs: [Text("List"), Text("Grid")],
+            backgroundColor: Colors.white70,
+            appBar: AppBar(
+              bottom: TabBar(
+                tabs: [Text("List"), Text("Grid")],
+              ),
             ),
-          ),
-          body: TabBarView(
-            children: [_contentListView(), _contentGridView()],
-          ),
-        ),
+            body: _contentListView()
+            // TabBarView(
+            //   children: [
+            //     _contentListView(),
+            //     _contentGridView(),
+            //   ],
+            // ),
+            ),
       ),
     );
   }
 
   Widget _contentListView() {
-    return ListView.builder(
-        itemCount: _users.length,
-        itemBuilder: (context, index) => Card(
-              child: ListTile(
-                title: Text(_users[index]),
-                onTap: () => print(index),
+    return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
+      child: Flex(direction: Axis.vertical, children: [
+        Container(
+          alignment: Alignment.center,
+          height: 1000,
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: 3,
+            itemBuilder: (context, index) => Container(
+              width: 100,
+              child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 24,
+                itemBuilder: (ncontext, nindex) => Card(
+                  child: ListTile(
+                    title: Text(nindex.toString()),
+                    onTap: () => print("$index at $nindex"),
+                  ),
+                ),
               ),
-            ));
+            ),
+          ),
+        ),
+      ]),
+    );
   }
 
   Widget _contentGridView() {
     return GridView.builder(
-      itemCount: _users.length,
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-      itemBuilder: (context, index) => Card(
-        child: GridTile(
-          child: Center(child: Text(_users[index])),
-          // onTap: () => print(index),
-        ),
+      itemCount: 4,
+      // itemCount: _users.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        mainAxisExtent: 500,
       ),
+      itemBuilder: (context, gindex) => Card(
+          child: SingleChildScrollView(
+        child: Flexible(
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: _users.length,
+            itemBuilder: (context, lindex) => Card(
+              child: ListTile(
+                title: Text(_users[lindex]),
+                onTap: () => print("$gindex & $lindex"),
+              ),
+            ),
+          ),
+        ),
+      )),
     );
   }
+  // Widget _contentGridView() {
+  //   return GridView.builder(
+  //     itemCount: 4,
+  //     // itemCount: _users.length,
+  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //       crossAxisCount: 4,
+  //       mainAxisExtent: 500,
+  //     ),
+  //     itemBuilder: (context, gindex) => Card(
+  //         child: SingleChildScrollView(
+  //       child: Flexible(
+  //         child: ListView.builder(
+  //           shrinkWrap: true,
+  //           physics: NeverScrollableScrollPhysics(),
+  //           itemCount: _users.length,
+  //           itemBuilder: (context, lindex) => Card(
+  //             child: ListTile(
+  //               title: Text(_users[lindex]),
+  //               onTap: () => print("$gindex & $lindex"),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     )),
+  //   );
+  // }
 }
