@@ -13,7 +13,7 @@ class TableHead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: cellWidth,
+      height: cellHeight,
       child: Row(
         children: [
           MultiplicationTableCell(
@@ -22,17 +22,19 @@ class TableHead extends StatelessWidget {
             Colors.yellow.withOpacity(0.3),
           ),
           Expanded(
-            child: ListView(
+            child: ListView.builder(
               controller: scrollController,
               physics: ClampingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              children: List.generate(maxNumber - 1, (index) {
+              shrinkWrap: true,
+              itemCount: 20,
+              itemBuilder: (context, index) {
                 return MultiplicationTableCell(
                   0,
                   index,
                   Colors.yellow.withOpacity(0.3),
                 );
-              }),
+              },
             ),
           ),
         ],

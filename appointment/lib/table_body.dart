@@ -48,41 +48,37 @@ class _TableBodyState extends State<TableBody> {
       },
       child: Row(
         children: [
-          SizedBox(
+          Container(
             width: cellWidth,
-            child: ListView(
+            child: ListView.builder(
               controller: _firstColumnController,
-              physics: const AlwaysScrollableScrollPhysics(
-                parent: BouncingScrollPhysics(),
-              ),
-              children: List.generate(maxNumber - 1, (index) {
+              itemCount: 20,
+              itemBuilder: (context, index) {
                 return MultiplicationTableCell(
-                  0,
-                  index,
-                  Colors.yellow.withOpacity(0.3),
-                );
-              }),
+                    0, index, Colors.yellow.withOpacity(0.3));
+              },
             ),
           ),
           Expanded(
             child: SingleChildScrollView(
-              controller: widget.scrollController,
-              scrollDirection: Axis.horizontal,
-              physics: const ClampingScrollPhysics(),
-              child: SizedBox(
-                width: (maxNumber - 1) * cellWidth,
-                child: ListView(
-                  controller: _restColumnsController,
-                  physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),
-                  ),
-                  children: List.generate(maxNumber - 1, (y) {
-                    return Row(
-                      children: List.generate(maxNumber - 1, (x) {
-                        return MultiplicationTableCell(x, (y), Colors.white);
-                      }),
-                    );
-                  }),
+              controller: _restColumnsController,
+              child: Container(
+                height: cellHeight * maxNumber,
+                child: ListView.builder(
+                  controller: widget.scrollController,
+                  scrollDirection: Axis.horizontal,
+                  physics: const ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 20,
+                  itemBuilder: (context, x) => SizedBox(
+                      width: cellWidth,
+                      child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 20,
+                          itemBuilder: (context, y) => Row(children: [
+                                MultiplicationTableCell(x, (y), Colors.white)
+                              ]))),
                 ),
               ),
             ),

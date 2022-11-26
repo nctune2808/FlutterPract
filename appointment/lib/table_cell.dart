@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-const double cellWidth = 55;
+const double cellWidth = 100;
+const double cellHeight = 55;
 
 class MultiplicationTableCell extends StatelessWidget {
   final int? valuex;
@@ -17,7 +18,7 @@ class MultiplicationTableCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: cellWidth,
-      height: cellWidth,
+      height: cellHeight,
       decoration: BoxDecoration(
         color: color,
         border: Border.all(
