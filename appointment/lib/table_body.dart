@@ -73,7 +73,8 @@ class _TableBodyState extends State<TableBody> {
                 child: ListView.builder(
                     controller: widget.scrollController,
                     scrollDirection: Axis.horizontal,
-                    physics: const ClampingScrollPhysics(),
+                    physics: AlwaysScrollableScrollPhysics(
+                        parent: BouncingScrollPhysics()),
                     shrinkWrap: true,
                     itemCount: datas.length,
                     itemBuilder: (context, x) => SizedBox(

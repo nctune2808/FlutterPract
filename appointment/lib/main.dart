@@ -1,3 +1,4 @@
+import 'package:appointment/datepicker.dart';
 import 'package:flutter/material.dart';
 
 import 'multiplication_table.dart';
@@ -11,7 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Appointment',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -38,7 +40,12 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: MultiplicationTable(),
+        child: Column(
+          children: [
+            Expanded(flex: 1, child: DatePickerFrame()),
+            Expanded(flex: 10, child: MultiplicationTable()),
+          ],
+        ),
       ),
     );
   }

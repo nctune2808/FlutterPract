@@ -24,7 +24,8 @@ class TableHead extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               controller: scrollController,
-              physics: ClampingScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               itemCount: datas.length,
