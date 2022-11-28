@@ -17,9 +17,9 @@ class TableHead extends StatelessWidget {
       child: Row(
         children: [
           MultiplicationTableCell(
-            0,
-            0,
-            Colors.yellow.withOpacity(0.3),
+            '',
+            '',
+            Colors.yellow.withOpacity(0.4),
           ),
           Expanded(
             child: ListView.builder(
@@ -27,11 +27,11 @@ class TableHead extends StatelessWidget {
               physics: ClampingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              itemCount: 20,
+              itemCount: datas.length,
               itemBuilder: (context, index) {
                 return MultiplicationTableCell(
-                  0,
-                  index,
+                  '0',
+                  datas[index].staff,
                   Colors.yellow.withOpacity(0.3),
                 );
               },

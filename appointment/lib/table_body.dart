@@ -1,8 +1,10 @@
+import 'package:appointment/data.dart';
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import 'table_cell.dart';
 import 'constants.dart';
+import 'time.dart';
 
 class TableBody extends StatefulWidget {
   final ScrollController scrollController;
@@ -43,7 +45,7 @@ class _TableBodyState extends State<TableBody> {
       },
       onRefresh: () async {
         await Future.delayed(
-          Duration(seconds: 2),
+          Duration(seconds: 1),
         );
       },
       child: Row(
@@ -52,39 +54,58 @@ class _TableBodyState extends State<TableBody> {
             width: cellWidth,
             child: ListView.builder(
               controller: _firstColumnController,
-              itemCount: 20,
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
+              itemCount: times.length,
               itemBuilder: (context, index) {
                 return MultiplicationTableCell(
-                    0, index, Colors.yellow.withOpacity(0.3));
+                    'TIME', times[index].time, Colors.yellow.withOpacity(0.1));
               },
             ),
           ),
           Expanded(
             child: SingleChildScrollView(
               controller: _restColumnsController,
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
               child: Container(
-                height: cellHeight * maxNumber,
+                height: cellHeight * times.length,
                 child: ListView.builder(
-                  controller: widget.scrollController,
-                  scrollDirection: Axis.horizontal,
-                  physics: const ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 20,
-                  itemBuilder: (context, x) => SizedBox(
-                      width: cellWidth,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 20,
-                          itemBuilder: (context, y) => Row(children: [
-                                MultiplicationTableCell(x, (y), Colors.white)
-                              ]))),
-                ),
+                    controller: widget.scrollController,
+                    scrollDirection: Axis.horizontal,
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: datas.length,
+                    itemBuilder: (context, x) => SizedBox(
+                        width: cellWidth,
+                        child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: times.length,
+                            itemBuilder: (context, y) {
+                              bool isMatched =
+                                  _checkMatch(datas[x], times[y], x, y);
+                              return Row(children: [
+                                MultiplicationTableCell(
+                                    x.toString(),
+                                    y.toString(),
+                                    isMatched
+                                        ? Colors.lightBlue.shade100
+                                        : Colors.white)
+                              ]);
+                            }))),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  bool _checkMatch(Data d, Time t, int x, int y) {
+    if (d.time == t.time) {
+      return (d.time == t.time && d.id == x);
+    }
+    return false;
   }
 }

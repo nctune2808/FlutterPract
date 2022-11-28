@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-const double cellWidth = 100;
-const double cellHeight = 55;
+const double cellWidth = 90;
+const double cellHeight = 50;
 
 class MultiplicationTableCell extends StatelessWidget {
-  final int? valuex;
-  final int? valuey;
-  final Color? color;
+  final String valuex;
+  final String valuey;
+  final Color color;
 
   MultiplicationTableCell(
     this.valuex,
@@ -30,7 +30,7 @@ class MultiplicationTableCell extends StatelessWidget {
       child: ListTile(
         onTap: () => print("${valuex} and ${valuey}"),
         title: Text(
-          '${valuey ?? ''}',
+          '${valuey}',
           style: TextStyle(fontSize: 16.0),
         ),
       ),
