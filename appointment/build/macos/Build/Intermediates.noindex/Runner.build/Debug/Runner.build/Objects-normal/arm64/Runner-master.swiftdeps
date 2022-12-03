@@ -1,0 +1,8 @@
+version: "Apple Swift version 5.7.1 (swiftlang-5.7.1.135.3 clang-1400.0.29.51)"
+options: "f77476cd0e00b15bdb747f28a6bad6a0ce7648691eb784b8e20c3c357e3db1f9"
+build_start_time: [1669679263, 110375881]
+build_end_time: [1669679266, 171401023]
+inputs:
+  "/Users/nctuan/Desktop/T-Drive/Practical/FlutterPract/appointment/macos/Flutter/GeneratedPluginRegistrant.swift": [1669679256, 817003250]
+  "/Users/nctuan/Desktop/T-Drive/Practical/FlutterPract/appointment/macos/Runner/AppDelegate.swift": [1636925589, 491940975]
+  "/Users/nctuan/Desktop/T-Drive/Practical/FlutterPract/appointment/macos/Runner/MainFlutterWindow.swift": [1636925589, 493358612]
