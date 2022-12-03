@@ -39,6 +39,7 @@ class _TableBodyState extends State<TableBody> {
 
   @override
   Widget build(BuildContext context) {
+    bool isMatched = false;
     return RefreshIndicator(
       notificationPredicate: (ScrollNotification notification) {
         return notification.depth == 0 || notification.depth == 1;
@@ -59,7 +60,7 @@ class _TableBodyState extends State<TableBody> {
               itemCount: times.length,
               itemBuilder: (context, index) {
                 return MultiplicationTableCell(
-                    'TIME', times[index].time, Colors.yellow.withOpacity(0.1));
+                    0, 0, null, times[index], Colors.yellow.withOpacity(0.1));
               },
             ),
           ),
@@ -69,7 +70,7 @@ class _TableBodyState extends State<TableBody> {
               physics: AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics()),
               child: Container(
-                height: cellHeight * times.length,
+                height: cellHeight * 2 * times.length,
                 child: ListView.builder(
                     controller: widget.scrollController,
                     scrollDirection: Axis.horizontal,
@@ -84,12 +85,14 @@ class _TableBodyState extends State<TableBody> {
                             shrinkWrap: true,
                             itemCount: times.length,
                             itemBuilder: (context, y) {
-                              bool isMatched =
-                                  _checkMatch(datas[x], times[y], x, y);
+                              isMatched = _checkMatch(datas[x], times[y], x, y);
+
                               return Row(children: [
                                 MultiplicationTableCell(
-                                    x.toString(),
-                                    y.toString(),
+                                    x,
+                                    y,
+                                    (datas[x]),
+                                    (times[y]),
                                     isMatched
                                         ? Colors.lightBlue.shade100
                                         : Colors.white)
@@ -104,9 +107,24 @@ class _TableBodyState extends State<TableBody> {
   }
 
   bool _checkMatch(Data d, Time t, int x, int y) {
-    if (d.time == t.time) {
-      return (d.time == t.time && d.id == x);
+    if (d.time.hour == t.hour) {
+      return (d.time.hour == t.hour && d.id == x);
     }
     return false;
   }
 }
+
+// Container(
+//   width: cellWidth,
+//   height: cellHeight,
+//   padding: EdgeInsets.zero,
+//   alignment: Alignment.center,
+//   margin: EdgeInsets.all(5),
+//   decoration: BoxDecoration(
+//     color: Colors.yellow.shade500,
+//     border: Border.all(
+//       color: Colors.black12,
+//       width: 0.5,
+//     ),
+//   ),
+//   child: Text(x.toString()));

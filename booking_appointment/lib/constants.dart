@@ -1,39 +1,82 @@
+import 'package:flutter/material.dart';
+
 import 'data.dart';
 import 'time.dart';
 
 const int maxNumber = 20;
 
 List<Data> datas = [
-  Data(title: 'Spa', time: '09:00', staff: 'Staff 0', id: 0),
-  Data(title: 'Nails', time: '10:00', staff: 'Staff 1', id: 1),
-  Data(title: 'Beauty', time: '05:00', staff: 'Staff 2', id: 2),
-  Data(title: 'Hair', time: '15:00', staff: 'Staff 3', id: 3),
-  Data(title: 'Massage', time: '18:00', staff: 'Staff 4', id: 4),
+  Data(
+    title: 'Spa',
+    staff: 'Staff 0',
+    id: 0,
+    time: TimeOfDay(hour: 9, minute: 00),
+  ),
+  Data(
+      title: 'Nails',
+      staff: 'Staff 1',
+      id: 1,
+      time: TimeOfDay(hour: 10, minute: 00)),
+  Data(
+      title: 'Beauty',
+      staff: 'Staff 2',
+      id: 2,
+      time: TimeOfDay(hour: 11, minute: 00)),
+  Data(
+      title: 'Hair',
+      staff: 'Staff 3',
+      id: 3,
+      time: TimeOfDay(hour: 12, minute: 00)),
+  Data(
+      title: 'Massage',
+      staff: 'Staff 4',
+      id: 4,
+      time: TimeOfDay(hour: 13, minute: 00)),
 ];
-
+List<int> rangeTime = [
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22
+];
 List<Time> times = [
-  Time(hour: '0', interval: 'am', time: '00:00'),
-  Time(hour: '1', interval: 'am', time: '01:00'),
-  Time(hour: '2', interval: 'am', time: '02:00'),
-  Time(hour: '3', interval: 'am', time: '03:00'),
-  Time(hour: '4', interval: 'am', time: '04:00'),
-  Time(hour: '5', interval: 'am', time: '05:00'),
-  Time(hour: '6', interval: 'am', time: '06:00'),
-  Time(hour: '7', interval: 'am', time: '07:00'),
-  Time(hour: '8', interval: 'am', time: '08:00'),
-  Time(hour: '9', interval: 'am', time: '09:00'),
-  Time(hour: '10', interval: 'am', time: '10:00'),
-  Time(hour: '11', interval: 'am', time: '11:00'),
-  Time(hour: '12', interval: 'pm', time: '12:00'),
-  Time(hour: '1', interval: 'pm', time: '13:00'),
-  Time(hour: '2', interval: 'pm', time: '14:00'),
-  Time(hour: '3', interval: 'pm', time: '15:00'),
-  Time(hour: '4', interval: 'pm', time: '16:00'),
-  Time(hour: '5', interval: 'pm', time: '17:00'),
-  Time(hour: '6', interval: 'pm', time: '18:00'),
-  Time(hour: '7', interval: 'pm', time: '19:00'),
-  Time(hour: '8', interval: 'pm', time: '20:00'),
-  Time(hour: '9', interval: 'pm', time: '21:00'),
-  Time(hour: '10', interval: 'pm', time: '22:00'),
-  Time(hour: '11', interval: 'pm', time: '23:00'),
+  // Time(hour: '0', time: '00:00'),
+  // Time(hour: '1', time: '01:00'),
+  // Time(hour: '2', time: '02:00'),
+  // Time(hour: '3', time: '03:00'),
+  // Time(hour: '4', time: '04:00'),
+  // Time(hour: '5', time: '05:00'),
+  // Time(hour: '6', time: '06:00'),
+  // Time(hour: '7', time: '07:00'),
+  // Time(
+  //     hour: '08',
+  //     duration: 60,
+  //     start_time: TimeOfDay(hour: 8, minute: 00),
+  //     end_time: TimeOfDay(hour: 9, minute: 00)),
+  Time(hour: '9', duration: 60, start_time: '09:00', end_time: '10:00'),
+  Time(hour: '10', duration: 60, start_time: '10:00', end_time: '11:00'),
+  Time(hour: '11', duration: 60, start_time: '11:00', end_time: '12:00'),
+  Time(hour: '12', duration: 60, start_time: '12:00', end_time: '13:00'),
+  Time(hour: '13', duration: 60, start_time: '13:00', end_time: '14:00'),
+  Time(hour: '14', duration: 60, start_time: '14:00', end_time: '15:00'),
+  Time(hour: '15', duration: 60, start_time: '15:00', end_time: '16:00'),
+  Time(hour: '16', duration: 60, start_time: '16:00', end_time: '17:00'),
+  Time(hour: '17', duration: 60, start_time: '17:00', end_time: '18:00'),
+  Time(hour: '18', duration: 60, start_time: '18:00', end_time: '19:00'),
+  Time(hour: '19', duration: 60, start_time: '19:00', end_time: '20:00'),
+  Time(hour: '20', duration: 60, start_time: '20:00', end_time: '21:00'),
+  Time(hour: '21', duration: 60, start_time: '21:00', end_time: '22:00'),
+  Time(hour: '22', duration: 60, start_time: '22:00', end_time: '23:00'),
+  // Time(hour: '11', time: '23:00'),
 ];

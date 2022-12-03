@@ -1,8 +1,12 @@
+import 'package:flutter/material.dart';
+
+import 'time.dart';
+
 class Data {
   int id;
   String staff;
   String title;
-  String time;
+  TimeOfDay time;
   Data({
     required this.id,
     required this.staff,
