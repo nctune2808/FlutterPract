@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:booking_appointment/constants.dart';
 
 import 'data.dart';
-import 'dragable.dart';
 import 'time.dart';
 
 const double cellWidth = 90;
@@ -61,7 +60,7 @@ class MultiplicationTableCell extends StatelessWidget {
             width: cellWidth,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: isMatched ? Colors.red : color,
+              color: color,
               border: Border.all(
                 color: Colors.black12,
                 width: 0.25,
@@ -73,7 +72,6 @@ class MultiplicationTableCell extends StatelessWidget {
   }
 
   bool _checkMatch(String at) {
-    print(TimeOfDay(hour: 8, minute: 10));
     if (valuex?.time.hour.toString() == valuey?.hour) {
       return (valuex?.time.hour.toString() == valuey?.hour && valuex?.id == x);
     }

@@ -72,32 +72,76 @@ class _TableBodyState extends State<TableBody> {
               child: Container(
                 height: cellHeight * 2 * times.length,
                 child: ListView.builder(
-                    controller: widget.scrollController,
-                    scrollDirection: Axis.horizontal,
-                    physics: AlwaysScrollableScrollPhysics(
-                        parent: BouncingScrollPhysics()),
-                    shrinkWrap: true,
-                    itemCount: datas.length,
-                    itemBuilder: (context, x) => SizedBox(
-                        width: cellWidth,
-                        child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: times.length,
-                            itemBuilder: (context, y) {
-                              isMatched = _checkMatch(datas[x], times[y], x, y);
+                  controller: widget.scrollController,
+                  scrollDirection: Axis.horizontal,
+                  physics: AlwaysScrollableScrollPhysics(
+                      parent: BouncingScrollPhysics()),
+                  shrinkWrap: true,
+                  itemCount: datas.length,
+                  itemBuilder: (context, x) => SizedBox(
+                    width: cellWidth,
+                    child: Stack(children: [
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: times.length,
+                        itemBuilder: (context, y) {
+                          isMatched = _checkMatch(datas[x], times[y], x, y);
 
-                              return Row(children: [
-                                MultiplicationTableCell(
-                                    x,
-                                    y,
-                                    (datas[x]),
-                                    (times[y]),
-                                    isMatched
-                                        ? Colors.lightBlue.shade100
-                                        : Colors.white)
-                              ]);
-                            }))),
+                          return Row(children: [
+                            MultiplicationTableCell(
+                                x,
+                                y,
+                                (datas[x]),
+                                (times[y]),
+                                isMatched
+                                    ? Colors.lightBlue.shade100
+                                    : Colors.white)
+                          ]);
+                        },
+                      ),
+                      Positioned(
+                        height: 150,
+                        child: Container(
+                            width: cellWidth,
+                            height: cellHeight,
+                            padding: EdgeInsets.zero,
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.yellow.shade500,
+                              border: Border.all(
+                                color: Colors.black12,
+                                width: 0.5,
+                              ),
+                            ),
+                            child: ListTile(
+                                onTap: () => {print('clicked')},
+                                title: Text(x.toString()))),
+                      ),
+                      Positioned(
+                        top: 300,
+                        height: 150,
+                        child: Container(
+                            width: cellWidth,
+                            height: cellHeight,
+                            padding: EdgeInsets.zero,
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.yellow.shade500,
+                              border: Border.all(
+                                color: Colors.black12,
+                                width: 0.5,
+                              ),
+                            ),
+                            child: ListTile(
+                                onTap: () => {print('clicked')},
+                                title: Text(x.toString()))),
+                      ),
+                    ]),
+                  ),
+                ),
               ),
             ),
           ),
@@ -115,16 +159,18 @@ class _TableBodyState extends State<TableBody> {
 }
 
 // Container(
-//   width: cellWidth,
-//   height: cellHeight,
-//   padding: EdgeInsets.zero,
-//   alignment: Alignment.center,
-//   margin: EdgeInsets.all(5),
-//   decoration: BoxDecoration(
-//     color: Colors.yellow.shade500,
-//     border: Border.all(
-//       color: Colors.black12,
-//       width: 0.5,
-//     ),
+// width: cellWidth,
+// height: cellHeight,
+// padding: EdgeInsets.zero,
+// alignment: Alignment.center,
+// margin: EdgeInsets.all(5),
+// decoration: BoxDecoration(
+//   color: Colors.yellow.shade500,
+//   border: Border.all(
+//     color: Colors.black12,
+//     width: 0.5,
 //   ),
-//   child: Text(x.toString()));
+// ),
+// child: ListTile(
+//     onTap: () => {print('clicked')},
+//     title: Text(x.toString()))),
