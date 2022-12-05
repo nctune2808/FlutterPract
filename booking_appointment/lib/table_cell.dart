@@ -63,7 +63,7 @@ class MultiplicationTableCell extends StatelessWidget {
               color: color,
               border: Border.all(
                 color: Colors.black12,
-                width: 0.25,
+                width: 0.15,
               ),
             ),
             child: Text(at),

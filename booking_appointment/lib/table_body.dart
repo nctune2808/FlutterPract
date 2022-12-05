@@ -101,44 +101,48 @@ class _TableBodyState extends State<TableBody> {
                         },
                       ),
                       Positioned(
-                        height: 150,
+                        top:
+                            (100 * x + datas[x].time.minute * 5 / 3).toDouble(),
+                        height: (datas[x].d * (cellHeight)),
                         child: Container(
-                            width: cellWidth,
-                            height: cellHeight,
+                            width: cellWidth - 8,
+                            height: cellHeight - 8,
                             padding: EdgeInsets.zero,
                             alignment: Alignment.center,
-                            margin: EdgeInsets.all(5),
+                            margin: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.yellow.shade500,
+                              color: Colors.lightBlue.shade100,
                               border: Border.all(
                                 color: Colors.black12,
                                 width: 0.5,
                               ),
                             ),
                             child: ListTile(
+                                dense: true,
                                 onTap: () => {print('clicked')},
                                 title: Text(x.toString()))),
                       ),
-                      Positioned(
-                        top: 300,
-                        height: 150,
-                        child: Container(
-                            width: cellWidth,
-                            height: cellHeight,
-                            padding: EdgeInsets.zero,
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.yellow.shade500,
-                              border: Border.all(
-                                color: Colors.black12,
-                                width: 0.5,
-                              ),
-                            ),
-                            child: ListTile(
-                                onTap: () => {print('clicked')},
-                                title: Text(x.toString()))),
-                      ),
+
+                      // Positioned(
+                      //   top: (20 * datas[x].d),
+                      //   height: 50 + datas[x].d,
+                      //   child: Container(
+                      //       width: cellWidth,
+                      //       height: cellHeight,
+                      //       padding: EdgeInsets.zero,
+                      //       alignment: Alignment.center,
+                      //       margin: EdgeInsets.all(5),
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.yellow.shade500,
+                      //         border: Border.all(
+                      //           color: Colors.black12,
+                      //           width: 0.5,
+                      //         ),
+                      //       ),
+                      //       child: ListTile(
+                      //           onTap: () => {print('clicked')},
+                      //           title: Text(x.toString()))),
+                      // ),
                     ]),
                   ),
                 ),
