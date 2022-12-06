@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'data/data.dart';
-import 'data/time.dart';
 
-
+import '../data/data.dart';
+import '../data/time.dart';
 
 const double cellWidth = 90;
 const double cellHeight = 50;
@@ -38,10 +37,21 @@ class MultiplicationTableCell extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _frameBuilder(at: '00'),
-          _frameBuilder(at: '15'),
-          _frameBuilder(at: '30'),
-          _frameBuilder(at: '45')
+          Container(
+            width: cellWidth,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: color,
+              border: Border.all(
+                color: Colors.black12,
+                width: 0.15,
+              ),
+            ),
+            child: Text(x.toString()),)
+          // _frameBuilder(at: '00'),
+          // _frameBuilder(at: '15'),
+          // _frameBuilder(at: '30'),
+          // _frameBuilder(at: '45')
         ],
       ),
     );

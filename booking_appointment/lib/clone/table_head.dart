@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'data/constants.dart';
+import '../data/constants.dart';
 import 'table_cell.dart';
 
 class TableHead extends StatelessWidget {

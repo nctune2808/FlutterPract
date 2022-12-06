@@ -2,7 +2,8 @@ import 'package:booking_appointment/datepicker.dart';
 import 'package:booking_appointment/grid_table.dart';
 import 'package:flutter/material.dart';
 
-import 'multiplication_table.dart';
+// import 'multiplication_table.dart';
+import './clone/multiplication_table.dart';
 
 void main() {
   runApp(MyApp());
@@ -43,7 +44,7 @@ class MyHomePage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(flex: 1, child: DatePickerFrame()),
+            // Expanded(flex: 1, child: DatePickerFrame()),
             Expanded(flex: 10, child: MultiplicationTable()),
           ],
         ),

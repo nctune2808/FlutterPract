@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
-import 'data/constants.dart';
-import 'data/data.dart';
-import 'data/time.dart';
+import '../data/constants.dart';
+import '../data/data.dart';
+import '../data/time.dart';
 import 'table_cell.dart';
 
 class TableBody extends StatefulWidget {
@@ -39,7 +39,6 @@ class _TableBodyState extends State<TableBody> {
 
   @override
   Widget build(BuildContext context) {
-    bool isMatched = false;
     return RefreshIndicator(
       notificationPredicate: (ScrollNotification notification) {
         return notification.depth == 0 || notification.depth == 1;
@@ -56,6 +55,7 @@ class _TableBodyState extends State<TableBody> {
             width: cellWidth,
             child: ListView.builder(
               // List Vertical
+              // scrollDirection: Axis.horizontal,
               controller: _firstColumnController,
               physics: AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics()),
@@ -68,41 +68,41 @@ class _TableBodyState extends State<TableBody> {
           ),
           Expanded(
             child: SingleChildScrollView(
-              // Default Vertical - Main
+              // Default Vertical
+              // scrollDirection: Axis.horizontal,
               controller: _restColumnsController,
               physics: AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics()),
               child: Container(
                 height: cellHeight * 2 * times.length,
                 child: ListView.builder(
-                  // List Horizontal  - X Axis
+                  // List Horizontal
                   controller: widget.scrollController,
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection: Axis.vertical,
                   physics: AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics()),
                   shrinkWrap: true,
                   itemCount: datas.length,
-                  itemBuilder: (context, x) => SizedBox(
+                  itemBuilder: (context, y) => SizedBox(
                     width: cellWidth,
                     child: Stack(children: [
                       ListView.builder(
-                        // List Vertical  - Y
+                        // List Vertical
+                        scrollDirection: Axis.horizontal,
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: times.length,
-                        itemBuilder: (context, y) {
-                          isMatched = _checkMatch(datas[x], times[y], x, y);
-                          return Row(children: [
+                        itemBuilder: (context, x) {
+                          return Column(children: [
                             // Row By Row
-                            MultiplicationTableCell(
-                                x,
-                                y,
-                                (datas[x]),
-                                (times[y]),
-                                isMatched
-                                    ? Colors.lightBlue.shade100
-                                    : Colors.white)
-                          ],);
+                            // MultiplicationTableCell(
+                            //     x,
+                            //     y,
+                            //     (datas[y]),
+                            //     (times[x]),
+                            //     Colors.white)
+                          ],
+                          );
                         },
                       ),
                       // Positioned(
