@@ -92,41 +92,43 @@ class _TableBodyState extends State<TableBody> {
                         itemCount: times.length,
                         itemBuilder: (context, y) {
                           isMatched = _checkMatch(datas[x], times[y], x, y);
-                          return Row(children: [
-                            // Row By Row
-                            MultiplicationTableCell(
-                                x,
-                                y,
-                                (datas[x]),
-                                (times[y]),
-                                isMatched
-                                    ? Colors.lightBlue.shade100
-                                    : Colors.white)
-                          ],);
+                          return Row(
+                            children: [
+                              // Row By Row
+                              MultiplicationTableCell(
+                                  x,
+                                  y,
+                                  (datas[x]),
+                                  (times[y]),
+                                  isMatched
+                                      ? Colors.lightBlue.shade100
+                                      : Colors.white)
+                            ],
+                          );
                         },
                       ),
-                      // Positioned(
-                      //   top:
-                      //       (100 * x + datas[x].time.minute * 5 / 3).toDouble(),
-                      //   height: (datas[x].d * (cellHeight)),
-                      //   child: Container(
-                      //       width: cellWidth - 8,
-                      //       height: cellHeight - 8,
-                      //       padding: EdgeInsets.zero,
-                      //       alignment: Alignment.center,
-                      //       margin: EdgeInsets.all(4),
-                      //       decoration: BoxDecoration(
-                      //         color: Colors.lightBlue.shade100,
-                      //         border: Border.all(
-                      //           color: Colors.black12,
-                      //           width: 0.5,
-                      //         ),
-                      //       ),
-                      //       child: ListTile(
-                      //           dense: true,
-                      //           onTap: () => {print('clicked')},
-                      //           title: Text(x.toString()))),
-                      // ),
+                      Positioned(
+                        top:
+                            (100 * x + datas[x].time.minute * 5 / 3).toDouble(),
+                        height: (datas[x].d * (cellHeight)),
+                        child: Container(
+                            width: cellWidth - 8,
+                            height: cellHeight - 8,
+                            padding: EdgeInsets.zero,
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.lightBlue.shade100,
+                              border: Border.all(
+                                color: Colors.black12,
+                                width: 0.5,
+                              ),
+                            ),
+                            child: ListTile(
+                                dense: true,
+                                onTap: () => {print('clicked')},
+                                title: Text(x.toString()))),
+                      ),
 
                       // Positioned(
                       //   top: (20 * datas[x].d),

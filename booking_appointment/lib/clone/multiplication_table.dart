@@ -1,8 +1,5 @@
+import 'package:booking_appointment/data/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:linked_scroll_controller/linked_scroll_controller.dart';
-
-import 'table_body.dart';
-import 'table_head.dart';
 
 class MultiplicationTable extends StatefulWidget {
   @override
@@ -10,39 +7,136 @@ class MultiplicationTable extends StatefulWidget {
 }
 
 class _MultiplicationTableState extends State<MultiplicationTable> {
-  late LinkedScrollControllerGroup _controllers;
-  late ScrollController _headController;
-  late ScrollController _bodyController;
-
-  @override
-  void initState() {
-    super.initState();
-    _controllers = LinkedScrollControllerGroup();
-    _headController = _controllers.addAndGet();
-    _bodyController = _controllers.addAndGet();
-  }
-
-  @override
-  void dispose() {
-    _headController.dispose();
-    _bodyController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('CLONE'),
-        TableHead(
-          scrollController: _headController,
-        ),
-        Expanded(
-          child: TableBody(
-            scrollController: _bodyController,
+    return Container(
+        color: Colors.white,
+        child: Stack(children: [
+          Wrap(
+            direction: Axis.vertical,
+            children: List.generate(32, (index) {
+              return Container(
+                height: 100,
+                width: 100,
+                child: new Column(
+                  children: [
+                    new Expanded(
+                      child: Card(
+                          child: ListTile(
+                              title: Text(index.toString()))), //your card wight
+                    ),
+                  ],
+                ),
+              );
+            }),
           ),
-        ),
-      ],
-    );
+          Wrap(
+            direction: Axis.vertical,
+            children: List.generate(32, (index) {
+              int varData = index;
+              return DragTarget(
+                  onWillAccept: (data) {
+                    return true;
+                  },
+                  onAccept: (data) {},
+                  onLeave: (data) {
+                    setState(() {
+                      varData = int.parse(data.toString());
+                    });
+                    print(varData);
+                  },
+                  builder: (context, candidateData, rejectedData) => Container(
+                        child: Draggable(
+                          // onDragCompleted: () {
+                          //   setState(() {
+                          //     varData = index;
+                          //   });
+                          // },
+                          data: index,
+                          feedback: Container(
+                            height: 100,
+                            width: 100,
+                            child: new Column(
+                              children: [
+                                new Expanded(
+                                  child: Card(
+                                      color: Colors.amber.shade100,
+                                      child: ListTile(
+                                          title: Text(varData
+                                              .toString()))), //your card wight
+                                ),
+                              ],
+                            ),
+                          ),
+                          childWhenDragging: Container(
+                              height: 100,
+                              width: 100,
+                              child: new Column(children: [
+                                new Expanded(
+                                  child: Card(
+                                      // color: Colors.amber,
+                                      child: ListTile(
+                                          title: Text(varData
+                                              .toString()))), //your card wight
+                                ),
+                              ])),
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            child: new Column(
+                              children: [
+                                new Expanded(
+                                  child: Card(
+                                      color: Colors.amber,
+                                      child: ListTile(
+                                          onTap: (() {
+                                            print(varData);
+                                          }),
+                                          title: Text(varData
+                                              .toString()))), //your card wight
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ));
+            }),
+          ),
+        ]));
   }
 }
+
+// DragTarget<String>(
+//                     builder: (
+//                       BuildContext context,
+//                       List<dynamic> accepted,
+//                       List<dynamic> rejected,
+//                     ) {
+//                       return Wrap(
+//                         direction: Axis.vertical,
+//                         children: List.generate(32, (index) {
+//                           return Container(
+//                             height: 100,
+//                             width: 100,
+//                             child: new Column(
+//                               children: [
+//                                 new Expanded(
+//                                   child: Card(
+//                                       child: ListTile(
+//                                           title: Text(index
+//                                               .toString()))), //your card wight
+//                                 ),
+//                               ],
+//                             ),
+//                           );
+//                         }),
+//                       );
+//                     },
+//                     onWillAccept: (data) {
+//                       print(data);
+//                       return false;
+//                     },
+//                     onAccept: (data) {
+//                       print(data);
+//                     },
+//                   )
