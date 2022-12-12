@@ -21,20 +21,23 @@ class MyTheme {
     final ThemeData base = ThemeData.light();
 
     return base.copyWith(
-      accentColor: SecondaryColor,
-      accentColorBrightness: Brightness.dark,
-      primaryColor: PrimaryColor,
+      primaryColor: GoldenColour,
       primaryColorDark: PrimaryColorDark,
       primaryColorLight: PrimaryColorLight,
-      primaryColorBrightness: Brightness.dark,
-      appBarTheme: AppBarTheme(color: PrimaryColor),
-      buttonTheme: base.buttonTheme.copyWith(
-        buttonColor: SecondaryColor,
-        textTheme: ButtonTextTheme.primary,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: GoldenColour,
+        foregroundColor: DarkenColour,
+        titleTextStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        // toolbarTextStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
-      scaffoldBackgroundColor: Background,
+      textTheme: base.textTheme.apply(
+        decorationColor: DarkenColour,
+        displayColor: DarkenColour,
+        bodyColor: DarkenColour,
+      ),
+      scaffoldBackgroundColor: DarkenColour,
       cardColor: Background,
-      backgroundColor: Background,
+      backgroundColor: DarkenColour,
     );
   }
 }

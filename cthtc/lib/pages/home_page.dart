@@ -1,3 +1,5 @@
+import 'package:adaptive_navbar/adaptive_navbar.dart';
+import 'package:cthtc/searchable/simple.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -14,19 +16,45 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-          titleSpacing:50,
-          actions: [
-            Container(width: 100, child: ListTile(visualDensity: VisualDensity.standard,title: Text('Menu 1'), onTap: () {},)),
-            Container(width: 100, child: ListTile(visualDensity: VisualDensity.standard,title: Text('Menu 2'), onTap: () {},)),
-            Container(width: 100, child: ListTile(visualDensity: VisualDensity.standard,title: Text('Menu 3'), onTap: () {},)),
-            Container(width: 100, child: ListTile(visualDensity: VisualDensity.standard,title: Text('Menu 4'), onTap: () {},)),
-            
-          ],
-          // actions: [Center(child: Text('Menu1')),Center(child: Text('Menu2')),Center(child: Text('Menu3'))],
+    return Scaffold(appBar: _topBuilder(), body: _centreBuilder());
+  }
+
+  AppBar _topBuilder() {
+    return AdaptiveNavBar(
+      screenWidth: MediaQuery.of(context).size.width,
+      toolbarHeight: MediaQuery.of(context).size.height / 12,
+      title: const Text('CTHTC'),
+      centerTitle: false,
+      titleSpacing: 30,
+      onTitleTapped: () {},
+      navBarItems: [
+        NavBarItem(
+          text: 'Home',
+          onTap: () {},
         ),
-        body: SimpleCarousel());
+        NavBarItem(
+          text: 'Project',
+          onTap: () {},
+        ),
+        NavBarItem(
+          text: 'About',
+          onTap: () {},
+        ),
+        NavBarItem(
+          text: 'Contact',
+          onTap: () {},
+        )
+      ],
+    );
+  }
+
+  Widget _centreBuilder() {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [SimpleCarousel(), SimpleSearch()],
+      ),
+    );
   }
 }

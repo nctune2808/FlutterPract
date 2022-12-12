@@ -17,7 +17,7 @@ class _SimpleCarouselState extends State<SimpleCarousel> {
       options: CarouselOptions(
           viewportFraction: 1,
           autoPlay: true,
-          height: MediaQuery.of(context).size.height / 1.5),
+          height: (MediaQuery.of(context).size.height / 2.5)),
       items: [1, 2, 3].map((i) {
         return Builder(
           builder: (BuildContext context) {
