@@ -21,11 +21,11 @@ class MyTheme {
     final ThemeData base = ThemeData.light();
 
     return base.copyWith(
-      primaryColor: GoldenColour,
+      primaryColor: PrimaryColorLight,
       primaryColorDark: PrimaryColorDark,
       primaryColorLight: PrimaryColorLight,
       appBarTheme: const AppBarTheme(
-        backgroundColor: GoldenColour,
+        backgroundColor: PrimaryColorLight,
         foregroundColor: DarkenColour,
         titleTextStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         // toolbarTextStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

@@ -19,7 +19,7 @@ class _SimpleSearchState extends State<SimpleSearch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 2,
+      height: MediaQuery.of(context).size.height / 1.5,
       color: PrimaryColor,
       child: Center(
         child: Form(
