@@ -28,18 +28,8 @@ class _HomePageState extends State<HomePage> {
         drawer: SideMenu(),
         appBar: context.responsive(
           df: AppBar(centerTitle: true, title: Text('CTHTC')),
-          md: AppBar(automaticallyImplyLeading:false, title: Text('CTHTC')),
+          md: AppBar(toolbarHeight: 60, automaticallyImplyLeading:false, flexibleSpace: TopMenuBar()),
         ),
-        
-        // AppBar(
-        //   automaticallyImplyLeading: context.responsive(df: true, sm: false),
-        //   flexibleSpace: context.responsive(
-        //     df: Text('AppBar')
-        //     // df: MenuBar(
-        //     //   path: HOME_PAGE,
-        //     // ),
-        //   )
-        // ),
         body: _centreBuilder());
   }
 
