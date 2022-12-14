@@ -1,5 +1,9 @@
 import 'package:adaptive_navbar/adaptive_navbar.dart';
+import 'package:cthtc/carousels/simple.dart';
+import 'package:cthtc/extension/responsive.dart';
 import 'package:cthtc/pages/navigation/menu_bar.dart';
+import 'package:cthtc/pages/navigation/side_menu.dart';
+import 'package:cthtc/pages/navigation/top_menu.dart';
 import 'package:cthtc/routes/router.dart';
 import 'package:cthtc/searchable/simple.dart';
 import 'package:cthtc/themes/colour.dart';
@@ -9,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import '../carousels/simple.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,11 +25,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          flexibleSpace: MenuBar(
-            path: HOME_PAGE,
-          ),
+        drawer: SideMenu(),
+        appBar: context.responsive(
+          df: AppBar(centerTitle: true, title: Text('CTHTC')),
+          md: AppBar(automaticallyImplyLeading:false, title: Text('CTHTC')),
         ),
+        
+        // AppBar(
+        //   automaticallyImplyLeading: context.responsive(df: true, sm: false),
+        //   flexibleSpace: context.responsive(
+        //     df: Text('AppBar')
+        //     // df: MenuBar(
+        //     //   path: HOME_PAGE,
+        //     // ),
+        //   )
+        // ),
         body: _centreBuilder());
   }
 
