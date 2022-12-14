@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cthtc/themes/colour.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -24,7 +25,7 @@ class _SimpleCarouselState extends State<SimpleCarousel> {
             return Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.symmetric(horizontal: 10.0),
-                decoration: BoxDecoration(color: Colors.lightBlueAccent),
+                decoration: BoxDecoration(color: Colors.white),
                 child: Center(
                   child: Text('SLIDE $i', style: TextStyle(fontSize: 16.0)),
                 ));

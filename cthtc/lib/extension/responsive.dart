@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+extension Responsive on BuildContext {
+  T responsive<T>({
+    required T df,
+    T? sm,
+    T? md,
+    T? lg,
+    T? xl,
+  }) {
+    final wd = MediaQuery.of(this).size.width;
+    return wd >= 1280
+        ? (xl ?? lg ?? md ?? sm ?? df)
+        : wd >= 1024
+            ? (lg ?? md ?? sm ?? df)
+            : wd >= 768
+                ? (md ?? sm ?? df)
+                : wd >= 640
+                    ? (sm ?? df)
+                    : df;
+  }
+}

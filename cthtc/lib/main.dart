@@ -7,7 +7,10 @@ import 'package:url_strategy/url_strategy.dart';
 
 void main() {
   setPathUrlStrategy();
-  runApp(MyApp(routers: AppRouter(),));
+  // setHashUrlStrategy();
+  runApp(MyApp(
+    routers: AppRouter(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,14 +20,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final navKey = new GlobalKey<NavigatorState>();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'CTHTC',
       theme: MyTheme.defaultTheme,
       onGenerateRoute: routers!.generateRoute,
-      initialRoute: '/',
-      
+      initialRoute: HOME_PAGE,
+      navigatorKey: navKey,
     );
   }
 }
-
