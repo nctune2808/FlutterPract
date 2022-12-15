@@ -9,12 +9,15 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(child: ListView(
-      children: [
-        MenuBarItem(title: 'Home', route: HOME_PAGE),
-        MenuBarItem(title: 'About', route: ABOUT_PAGE),
-        MenuBarItem(title: 'contact', route: CONTACT_PAGE),
-        MenuBarItem(title: 'Project', route: '')
-      ],));
+    return Drawer(
+        width: 150,
+        child: ListView(
+          children: [
+            MenuBarItem(title: 'Home', route: HOME_PAGE),
+            MenuBarItem(title: 'About', route: ABOUT_PAGE),
+            MenuBarItem(title: 'contact', route: CONTACT_PAGE),
+            MenuBarItem(title: 'Project', route: '')
+          ],
+        ));
   }
 }

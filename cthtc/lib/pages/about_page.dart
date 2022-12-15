@@ -1,5 +1,4 @@
 import 'package:cthtc/extension/responsive.dart';
-import 'package:cthtc/pages/navigation/menu_bar.dart';
 import 'package:cthtc/pages/navigation/top_menu.dart';
 import 'package:cthtc/routes/router.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +21,17 @@ class _AboutPageState extends State<AboutPage> {
         drawer: SideMenu(),
         appBar: context.responsive(
           df: AppBar(centerTitle: true, title: Text('CTHTC')),
-          md: AppBar(toolbarHeight: 60,automaticallyImplyLeading:false, flexibleSpace: TopMenuBar()),
+          md: AppBar(
+              toolbarHeight: 60,
+              automaticallyImplyLeading: false,
+              flexibleSpace: TopMenuBar()),
         ),
-        body: _centreBuilder()
-    );
+        body: _centreBuilder());
   }
 
   Widget _centreBuilder() {
-    return Container(child: Text('ABOUT'),);
+    return Container(
+      child: Text('ABOUT'),
+    );
   }
 }

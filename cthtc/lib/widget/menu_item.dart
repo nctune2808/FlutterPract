@@ -1,4 +1,5 @@
 import 'package:cthtc/extension/neumorphism.dart';
+import 'package:cthtc/extension/responsive.dart';
 import 'package:cthtc/themes/colour.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -12,16 +13,14 @@ class MenuBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15),
         child: Container(
           // color: isSelected ? Colors.amber : null,
           padding: EdgeInsets.all(20),
           // color: Colors.red,
           child: Text(title),
         ),
-        
-        onTap:(() {
-
+        onTap: (() {
           List<PopupMenuEntry> items = [
             PopupMenuItem(
               child: Text('1'),
@@ -33,13 +32,18 @@ class MenuBarItem extends StatelessWidget {
               child: Text('3'),
             ),
           ];
-          RelativeRect position = RelativeRect.fromLTRB(1, 65, 0, 0);
+          RelativeRect position = context.responsive(
+            df: RelativeRect.fromLTRB(150, 180, 200, 0),
+            md: RelativeRect.fromLTRB(1, 65, 0, 0),
+          );
 
-          route.isNotEmpty 
-          ? Navigator.of(context).popAndPushNamed(route)
-          : showMenu(context: context, position: position, items: items) 
-          ;
-        })
-      );
+          route.isNotEmpty
+              ? Navigator.of(context).popAndPushNamed(route)
+              : showMenu(
+                  context: context,
+                  position: position,
+                  items: items,
+                  elevation: 3);
+        }));
   }
 }

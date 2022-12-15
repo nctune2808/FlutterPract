@@ -1,7 +1,6 @@
 import 'package:adaptive_navbar/adaptive_navbar.dart';
 import 'package:cthtc/carousels/simple.dart';
 import 'package:cthtc/extension/responsive.dart';
-import 'package:cthtc/pages/navigation/menu_bar.dart';
 import 'package:cthtc/pages/navigation/side_menu.dart';
 import 'package:cthtc/pages/navigation/top_menu.dart';
 import 'package:cthtc/routes/router.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,7 +26,10 @@ class _HomePageState extends State<HomePage> {
         drawer: SideMenu(),
         appBar: context.responsive(
           df: AppBar(centerTitle: true, title: Text('CTHTC')),
-          md: AppBar(toolbarHeight: 60, automaticallyImplyLeading:false, flexibleSpace: TopMenuBar()),
+          md: AppBar(
+              toolbarHeight: 60,
+              automaticallyImplyLeading: false,
+              flexibleSpace: TopMenuBar()),
         ),
         body: _centreBuilder());
   }
