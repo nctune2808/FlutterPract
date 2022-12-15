@@ -1,4 +1,3 @@
-import 'package:adaptive_navbar/adaptive_navbar.dart';
 import 'package:cthtc/carousels/simple.dart';
 import 'package:cthtc/extension/responsive.dart';
 import 'package:cthtc/pages/navigation/side_menu.dart';

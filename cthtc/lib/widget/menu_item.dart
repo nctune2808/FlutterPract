@@ -32,18 +32,36 @@ class MenuBarItem extends StatelessWidget {
               child: Text('3'),
             ),
           ];
-          RelativeRect position = context.responsive(
-            df: RelativeRect.fromLTRB(150, 180, 200, 0),
-            md: RelativeRect.fromLTRB(1, 65, 0, 0),
+          // RelativeRect position = context.responsive(
+          //   df: RelativeRect.fromLTRB(150, 180, 200, 0),
+          //   md: RelativeRect.fromLTRB(1, 65, 0, 0),
+          // );
+          RelativeRect posDrawer = RelativeRect.fromLTRB(150, 180, 200, 0);
+          RelativeRect posNavBar = RelativeRect.fromLTRB(1, 65, 0, 0);
+
+          ShapeBorder shapeDrawer = RoundedRectangleBorder(
+            borderRadius: new BorderRadius.only(
+              topRight: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            ),
+          );
+
+          ShapeBorder shapeNavBar = RoundedRectangleBorder(
+            borderRadius: new BorderRadius.only(
+              bottomRight: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+            ),
           );
 
           route.isNotEmpty
               ? Navigator.of(context).popAndPushNamed(route)
               : showMenu(
                   context: context,
-                  position: position,
+                  position: context.responsive(df: posDrawer, md: posNavBar),
                   items: items,
-                  elevation: 3);
+                  elevation: 3,
+                  shape: context.responsive(df: shapeDrawer, md: shapeNavBar),
+                  color: PrimaryColor);
         }));
   }
 }

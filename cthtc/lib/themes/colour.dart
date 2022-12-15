@@ -57,18 +57,25 @@ class MyTheme {
         scrimColor: Colors.black87,
         elevation: 5,
       ),
-      
+
       sliderTheme: baseLight.sliderTheme.copyWith(
-        trackHeight: 25,
+        trackHeight: 8,
         activeTrackColor: PrimaryColorDark,
         inactiveTrackColor: PrimaryColorDisable,
         overlayColor: PrimaryColorDisable,
-        overlayShape: RoundSliderOverlayShape(overlayRadius: 25),
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 20),
         thumbColor: PrimaryColorDark,
-        thumbShape: RoundSliderThumbShape(
-          elevation: -1,
-          enabledThumbRadius: 13.5,
-        ),
+        activeTickMarkColor: PrimaryColorDark,
+        inactiveTickMarkColor: PrimaryColorDisable,
+        // valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+        // valueIndicatorColor: Colors.redAccent,
+        // valueIndicatorTextStyle: TextStyle(
+        //   color: Colors.white,
+        // ),
+        // thumbShape: RoundSliderThumbShape(
+        //   elevation: -1,
+        //   enabledThumbRadius: 20,
+        // ),
       ),
     );
   }

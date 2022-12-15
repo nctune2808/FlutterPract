@@ -32,7 +32,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  adaptive_navbar: ^0.0.3
   url_strategy: ^0.2.0
   carousel_slider: ^4.2.0
   # The following adds the Cupertino Icons font to your application.
