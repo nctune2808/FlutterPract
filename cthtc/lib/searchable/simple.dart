@@ -22,14 +22,17 @@ class _SimpleSearchState extends State<SimpleSearch> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(border: Border.all()),
-      padding: EdgeInsets.all(30),
+      padding: EdgeInsets.all(20),
       height: MediaQuery.of(context).size.height /
-          context.responsive(df: 1, sm: 2, md: 3, lg: 4),
-      child: GridView.count(
-        childAspectRatio: 5,
-        crossAxisCount: context.responsive(df: 1, sm: 2, md: 3, lg: 4, xl: 5),
-        crossAxisSpacing: 25,
-        mainAxisSpacing: 25,
+          context.responsive(df: 1, md: 3),
+      child:
+      GridView(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: context.responsive(df: 6, sm:6, md: 5),
+          crossAxisCount: context.responsive(df: 1, sm:2, md: 3, lg: 4, xl: 5),
+          crossAxisSpacing: 25,
+          mainAxisSpacing: 25, 
+        ),
         children: [
           _itemBuilder(),
           _itemBuilder(),
@@ -37,8 +40,22 @@ class _SimpleSearchState extends State<SimpleSearch> {
           _itemBuilder(),
           _sliderBuilder(),
           _sliderBuilder(),
-        ],
-      ),
+        ]
+      )
+      // GridView.count(
+      //   childAspectRatio: context.responsive(df: 8, sm:6, md: 5),
+      //   crossAxisCount: context.responsive(df: 1, sm: 2, md: 3, lg: 4, xl: 5),
+      //   crossAxisSpacing: 25,
+      //   mainAxisSpacing: 25,
+      //   children: [
+      //     _itemBuilder(),
+      //     _itemBuilder(),
+      //     _itemBuilder(),
+      //     _itemBuilder(),
+      //     _sliderBuilder(),
+      //     _sliderBuilder(),
+      //   ],
+      // ),
     );
   }
 
@@ -74,6 +91,8 @@ class _SimpleSearchState extends State<SimpleSearch> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
+          dropdownColor: PrimaryColor,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
           items: _data.map((String val) {
             return DropdownMenuItem<String>(
               value: val,
@@ -94,6 +113,7 @@ class _SimpleSearchState extends State<SimpleSearch> {
               _selectedType = val!;
             });
           },
+          
         ),
       ),
     ).addNeumorphism(

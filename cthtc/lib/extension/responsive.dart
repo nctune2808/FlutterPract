@@ -15,8 +15,8 @@ extension Responsive on BuildContext {
             ? (lg ?? md ?? sm ?? df)
             : wd >= 768
                 ? (md ?? sm ?? df)
-                : wd >= 640
-                    ? (sm ?? df)
-                    : df;
+                : wd > 460
+                  ? (sm ?? df)
+                  : df;
   }
 }
