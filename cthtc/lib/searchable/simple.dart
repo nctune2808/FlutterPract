@@ -22,28 +22,43 @@ class _SimpleSearchState extends State<SimpleSearch> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(border: Border.all()),
-      padding: EdgeInsets.all(20),
-      height: MediaQuery.of(context).size.height /
-          context.responsive(df: 1.25, sm: 2.25, md: 3),
-      child: GridView(
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: context.responsive(df: 5, sm: 6, md: 5),
-          crossAxisCount: context.responsive(df: 1, sm: 2, md: 3, lg: 4, xl: 5),
-          crossAxisSpacing: 25,
-          mainAxisSpacing: 25,
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [Container(
+        decoration: BoxDecoration(border: Border.all()),
+        padding: EdgeInsets.all(20),
+        height: context.responsive(df: 400, sm: 300, md: 250, xl: 225),
+        child: GridView(
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: context.responsive(df: 10, sm: 6, md: 5),
+            crossAxisCount: context.responsive(df: 1, sm: 2, md: 3, lg: 4, xl: 5),
+            crossAxisSpacing: 25,
+            mainAxisSpacing: 25,
+          ),
+          children: [
+            _itemBuilder(),
+            _itemBuilder(),
+            _itemBuilder(),
+            _itemBuilder(),
+            _sliderBuilder(symbol1: '£', min: 0.0, max: 1000.0, symbol2: ''),
+            _sliderBuilder(symbol1: '', min: 0.0, max: 1000.0, symbol2: ' m²'),
+          ],
         ),
-        children: [
-          _itemBuilder(),
-          _itemBuilder(),
-          _itemBuilder(),
-          _itemBuilder(),
-          _sliderBuilder(symbol1: '£', min: 0.0, max: 1000.0, symbol2: ''),
-          _sliderBuilder(symbol1: '', min: 0.0, max: 1000.0, symbol2: ' m²'),
-        ],
       ),
+        
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          decoration: BoxDecoration(
+            color: PrimaryColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+        child: Text('Search'))
+        .addNeumorphism(
+        borderRadius: 15,
+        bottomShadowColor: PrimaryColorDark,
+        topShadowColor: PrimaryColorLight),
+      ]
     );
   }
 

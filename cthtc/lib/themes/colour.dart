@@ -33,12 +33,13 @@ class MyTheme {
     return baseLight.copyWith(
       hoverColor: PrimaryColorDark,
       splashColor: PrimaryColorLight,
-      popupMenuTheme: PopupMenuThemeData(color: PrimaryColorLight),
+      popupMenuTheme: PopupMenuThemeData(color: PrimaryColor),
       primaryColor: PrimaryColor,
       primaryColorDark: PrimaryColorDark,
       primaryColorLight: PrimaryColorLight,
       scaffoldBackgroundColor: PrimaryColor,
       cardColor: PrimaryColor,
+      
       backgroundColor: PrimaryColor,
       appBarTheme: const AppBarTheme(
         elevation: 5,
@@ -77,6 +78,7 @@ class MyTheme {
         //   enabledThumbRadius: 20,
         // ),
       ),
+
     );
   }
 }

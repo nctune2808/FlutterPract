@@ -15,9 +15,7 @@ class MenuBarItem extends StatelessWidget {
     return InkWell(
         borderRadius: BorderRadius.circular(15),
         child: Container(
-          // color: isSelected ? Colors.amber : null,
           padding: EdgeInsets.all(20),
-          // color: Colors.red,
           child: Text(title),
         ),
         onTap: (() {
@@ -32,10 +30,7 @@ class MenuBarItem extends StatelessWidget {
               child: Text('3'),
             ),
           ];
-          // RelativeRect position = context.responsive(
-          //   df: RelativeRect.fromLTRB(150, 180, 200, 0),
-          //   md: RelativeRect.fromLTRB(1, 65, 0, 0),
-          // );
+          
           RelativeRect posDrawer = RelativeRect.fromLTRB(150, 180, 200, 0);
           RelativeRect posNavBar = RelativeRect.fromLTRB(1, 65, 0, 0);
 
@@ -61,7 +56,8 @@ class MenuBarItem extends StatelessWidget {
                   items: items,
                   elevation: 3,
                   shape: context.responsive(df: shapeDrawer, md: shapeNavBar),
-                  color: PrimaryColor);
+                  // color: PrimaryColor
+                  );
         }));
   }
 }
