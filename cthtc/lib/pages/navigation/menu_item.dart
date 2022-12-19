@@ -30,7 +30,7 @@ class MenuBarItem extends StatelessWidget {
               child: Text('3'),
             ),
           ];
-          
+
           RelativeRect posDrawer = RelativeRect.fromLTRB(150, 180, 200, 0);
           RelativeRect posNavBar = RelativeRect.fromLTRB(1, 65, 0, 0);
 
@@ -57,7 +57,7 @@ class MenuBarItem extends StatelessWidget {
                   elevation: 3,
                   shape: context.responsive(df: shapeDrawer, md: shapeNavBar),
                   // color: PrimaryColor
-                  );
+                );
         }));
   }
 }

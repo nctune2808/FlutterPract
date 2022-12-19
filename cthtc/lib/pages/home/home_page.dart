@@ -1,9 +1,10 @@
-import 'package:cthtc/carousels/simple.dart';
+import 'package:cthtc/pages/home/carousels/simple.dart';
 import 'package:cthtc/extension/responsive.dart';
+import 'package:cthtc/pages/home/previews/simple.dart';
 import 'package:cthtc/pages/navigation/side_menu.dart';
 import 'package:cthtc/pages/navigation/top_menu.dart';
 import 'package:cthtc/routes/router.dart';
-import 'package:cthtc/searchable/simple.dart';
+import 'package:cthtc/pages/home/searchable/simple.dart';
 import 'package:cthtc/themes/colour.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,11 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [SimpleCarousel(), SimpleSearch()],
+        children: [
+          SimpleCarousel(),
+          SimpleSearch(),
+          SimplePreview(),
+        ],
       ),
     );
   }

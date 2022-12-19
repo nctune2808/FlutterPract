@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cthtc/carousels/simple.dart';
+import 'package:cthtc/pages/home/carousels/simple.dart';
 import 'package:cthtc/routes/router.dart';
 import 'package:cthtc/themes/colour.dart';
 import 'package:flutter/material.dart';

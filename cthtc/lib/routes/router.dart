@@ -1,5 +1,5 @@
 import 'package:cthtc/pages/about_page.dart';
-import 'package:cthtc/pages/home_page.dart';
+import 'package:cthtc/pages/home/home_page.dart';
 import 'package:cthtc/pages/landing_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

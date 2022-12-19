@@ -39,17 +39,17 @@ class MyTheme {
       primaryColorLight: PrimaryColorLight,
       scaffoldBackgroundColor: PrimaryColor,
       cardColor: PrimaryColor,
-      
       backgroundColor: PrimaryColor,
       appBarTheme: const AppBarTheme(
         elevation: 5,
         backgroundColor: PrimaryColor,
         foregroundColor: BlackenColour,
-        // titleTextStyle: TextStyle(color: BlackenColour, fontSize: 25, fontWeight: FontWeight.bold),
+        // titleTextStyle: TextStyle(
+        //     color: BlackenColour, fontSize: 50, fontWeight: FontWeight.bold),
         // toolbarTextStyle: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
       ),
       // textTheme: baseLight.textTheme.apply(
-      //   decorationColor:BlackenColour,
+      //   decorationColor: BlackenColour,
       //   displayColor: BlackenColour,
       //   bodyColor: BlackenColour,
       // ),
@@ -58,7 +58,6 @@ class MyTheme {
         scrimColor: Colors.black87,
         elevation: 5,
       ),
-
       sliderTheme: baseLight.sliderTheme.copyWith(
         trackHeight: 8,
         activeTrackColor: PrimaryColorDark,
@@ -78,7 +77,6 @@ class MyTheme {
         //   enabledThumbRadius: 20,
         // ),
       ),
-
     );
   }
 }

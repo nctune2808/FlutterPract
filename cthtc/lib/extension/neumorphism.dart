@@ -1,3 +1,4 @@
+import 'package:cthtc/themes/colour.dart';
 import 'package:flutter/material.dart';
 
 extension Neumorphism on Widget {
@@ -8,8 +9,9 @@ extension Neumorphism on Widget {
     Color topShadowColor = Colors.white60,
     Color bottomShadowColor = const Color(0x26234395),
   }) {
-    return Container(
+    return Ink(
       decoration: BoxDecoration(
+        color: PrimaryColor,
         borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
         boxShadow: [
           BoxShadow(

@@ -9,14 +9,14 @@ extension Responsive on BuildContext {
     T? xl,
   }) {
     final wd = MediaQuery.of(this).size.width;
-    return wd >= 1280
+    return wd >= 1440
         ? (xl ?? lg ?? md ?? sm ?? df)
-        : wd >= 1024
+        : wd >= 1100
             ? (lg ?? md ?? sm ?? df)
-            : wd >= 768
+            : wd >= 650
                 ? (md ?? sm ?? df)
-                : wd > 460
-                  ? (sm ?? df)
-                  : df;
+                : wd > 450
+                    ? (sm ?? df)
+                    : df;
   }
 }
