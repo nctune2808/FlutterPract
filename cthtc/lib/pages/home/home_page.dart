@@ -5,12 +5,14 @@ import 'package:cthtc/pages/navigation/side_menu.dart';
 import 'package:cthtc/pages/navigation/top_menu.dart';
 import 'package:cthtc/routes/router.dart';
 import 'package:cthtc/pages/home/searchable/simple.dart';
+import 'package:cthtc/src/property/property_bloc.dart';
 import 'package:cthtc/themes/colour.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
