@@ -11,16 +11,8 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
   PropertyBloc() : super(Init_PropertyState());
 
   Stream<PropertyState> mapFetchEventToState() async* {
-    // List<Property?>? properties = await _propertyRepo.queryListItems();
-    yield state.copyWith(status: StatusSucess(), properties: [
-      Property(
-          id: '123',
-          title: '123',
-          price: 123,
-          isUrgent: true,
-          type: PropertyType.ACCOMMODATION,
-          status: PropertyStatus.LET)
-    ]);
+    List<Property> properties = await _propertyRepo.fetchProperties();
+    yield state.copyWith(status: StatusSucess(), properties: properties);
   }
 
   @override

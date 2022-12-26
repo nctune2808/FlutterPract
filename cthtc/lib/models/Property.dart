@@ -1,25 +1,12 @@
-enum PropertyType {
-  ACCOMMODATION,
-  PROJECT,
-  LAND,
-}
-
-enum PropertyStatus {
-  SOLD,
-  SELLING,
-  TOSELL,
-  LET,
-  LETTING,
-  TOLET,
-}
+import 'dart:convert';
 
 class Property {
   String id;
   String title;
   double price;
   bool isUrgent;
-  PropertyType type;
-  PropertyStatus status;
+  String type;
+  String status;
 
   Property({
     required this.id,
@@ -35,8 +22,8 @@ class Property {
     String? title,
     double? price,
     bool? isUrgent,
-    PropertyType? type,
-    PropertyStatus? status,
+    String? type,
+    String? status,
   }) {
     return Property(
       id: id ?? this.id,
@@ -47,4 +34,31 @@ class Property {
       status: status ?? this.status,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'isUrgent': isUrgent,
+      'type': type,
+      'status': status,
+    };
+  }
+
+  factory Property.fromMap(Map<String, dynamic> map) {
+    return Property(
+      id: map['id'] ?? '',
+      title: map['title'] ?? '',
+      price: map['price'] ?? 0.0,
+      isUrgent: map['isUrgent'] ?? false,
+      type: map['type'] ?? '',
+      status: map['status'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Property.fromJson(String source) =>
+      Property.fromMap(json.decode(source));
 }

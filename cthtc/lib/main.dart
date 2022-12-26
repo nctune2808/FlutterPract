@@ -1,13 +1,18 @@
 import 'package:cthtc/routes/router.dart';
 import 'package:cthtc/themes/colour.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:cthtc/global/services/graphql.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() {
   setPathUrlStrategy();
-  runApp(MyApp(
-    routers: AppRouter(),
-  ));
+  // WidgetsFlutterBinding.ensureInitialized();
+  var appWrapper = GraphQLProvider(
+    client: GraphQlService.clientValue,
+    child: MyApp(routers: AppRouter()),
+  );
+  runApp(appWrapper);
 }
 
 class MyApp extends StatefulWidget {
