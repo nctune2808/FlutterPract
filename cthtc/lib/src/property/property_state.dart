@@ -1,7 +1,7 @@
 part of 'property_bloc.dart';
 
 class PropertyState {
-  final List<Property?>? properties;
+  final List<Property>? properties;
   final Status? status;
 
   PropertyState({
@@ -10,7 +10,7 @@ class PropertyState {
   });
 
   PropertyState copyWith({
-    List<Property?>? properties,
+    List<Property>? properties,
     Status? status,
   }) {
     return PropertyState(

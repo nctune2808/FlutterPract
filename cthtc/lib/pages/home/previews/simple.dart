@@ -1,11 +1,9 @@
 import 'package:cthtc/extension/neumorphism.dart';
 import 'package:cthtc/extension/responsive.dart';
-import 'package:cthtc/models/Property.dart';
+import 'package:cthtc/models/property.dart';
 import 'package:cthtc/src/property/property_bloc.dart';
 import 'package:cthtc/themes/colour.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SimplePreview extends StatefulWidget {
@@ -44,7 +42,7 @@ class _SimplePreviewState extends State<SimplePreview> {
               ),
               children: List.generate(
                 length,
-                (index) => _cardBuilder(state.properties![index]!),
+                (index) => _cardBuilder(state.properties!.first),
               ),
             ),
           );

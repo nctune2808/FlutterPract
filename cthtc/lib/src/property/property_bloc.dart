@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cthtc/global/states/status.dart';
-import 'package:cthtc/models/Property.dart';
+import 'package:cthtc/models/property.dart';
 import 'package:cthtc/src/property/property_repo.dart';
-import 'package:meta/meta.dart';
 
 part 'property_event.dart';
 part 'property_state.dart';
@@ -12,8 +11,16 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
   PropertyBloc() : super(Init_PropertyState());
 
   Stream<PropertyState> mapFetchEventToState() async* {
-    List<Property?>? properties = await _propertyRepo.queryListItems();
-    yield state.copyWith(status: StatusSucess(), properties: properties);
+    // List<Property?>? properties = await _propertyRepo.queryListItems();
+    yield state.copyWith(status: StatusSucess(), properties: [
+      Property(
+          id: '123',
+          title: '123',
+          price: 123,
+          isUrgent: true,
+          type: PropertyType.ACCOMMODATION,
+          status: PropertyStatus.LET)
+    ]);
   }
 
   @override
