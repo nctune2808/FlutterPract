@@ -42,7 +42,7 @@ class _SimplePreviewState extends State<SimplePreview> {
               ),
               children: List.generate(
                 length,
-                (index) => _cardBuilder(state.properties!.first),
+                (index) => _cardBuilder(state.properties![index]),
               ),
             ),
           );
